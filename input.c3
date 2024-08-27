@@ -94,7 +94,7 @@ extern fn int get_gamepad_axis_count(int gamepad) @extern("GetGamepadAxisCount")
 /**
  * Get axis movement value for a gamepad axis
  */
-extern fn float get_gamepad_axis_movement(int gamepad, int axis) @extern("GetGamepadAxisMovement");
+extern fn float get_gamepad_axis_movement(int gamepad, GamepadAxis axis) @extern("GetGamepadAxisMovement");
 
 /**
  * Set internal gamepad mappings (SDL_GameControllerDB)
