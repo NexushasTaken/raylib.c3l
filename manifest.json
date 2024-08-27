@@ -1,0 +1,117 @@
+{
+  "provides" : "raylib",
+  "targets" : {
+    "freebsd-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "linux-aarch64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "linux-riscv32" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "linux-riscv64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "linux-x86" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "linux-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "macos-aarch64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "macos-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "netbsd-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "openbsd-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "wasm32" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "wasm64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "windows-aarch64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+    "windows-x64" : {
+      // Extra flags to the linker for this target:
+      "link-args" : [],
+      // C3 libraries this target depends on:
+      "dependencies" : [],
+      // The external libraries to link for this target:
+      "linked-libraries" : [ "raylib" ],
+    },
+  }
+}
