@@ -26,6 +26,7 @@ extern fn Image load_image_svg(ZString file_name_or_string, int width, int heigh
 
 /**
  * Load image sequence from file (frames appended to image.data)
+ * @param [out] frames
  */
 extern fn Image load_image_anim(ZString file_name, int *frames) @extern("LoadImageAnim");
 
@@ -62,7 +63,11 @@ extern fn bool export_image(Image image, ZString file_name) @extern("ExportImage
 /**
  * Export image to memory buffer
  */
-extern fn char* export_image_to_memory(Image image, ZString file_type, int *file_size) @extern("ExportImageToMemory");
+fn char[] export_image_to_memory(Image image, ZString file_type) @inline {
+    int len = 0;
+    char *ptr = __export_image_to_memory(image, file_type, &len);
+    return ptr[:len];
+}
 
 /**
  * Export image as code file defining an array of bytes, returns true on success
@@ -263,22 +268,34 @@ extern fn void image_color_replace(Image* image, Color color, Color replace) @ex
 /**
  * Load color data from image as a Color array (RGBA - 32bit)
  */
-extern fn Color* load_image_colors(Image image) @extern("LoadImageColors");
+fn Color[] load_image_colors(Image image) @inline {
+    usz len = (usz)(image.width * image.height);
+    Color* ptr = __load_image_colors(image);
+    return ptr[:len];
+}
 
 /**
  * Load colors palette from image as a Color array (RGBA - 32bit)
  */
-extern fn Color* load_image_palette(Image image, int max_palette_size, int *color_count) @extern("LoadImagePalette");
+fn Color[] load_image_palette(Image image, int max_palette_size) @inline {
+    int len = 0;
+    Color* ptr = __load_image_palette(image, max_palette_size, &len);
+    return ptr[:len];
+}
 
 /**
  * Unload color data loaded with LoadImageColors()
  */
-extern fn void unload_image_colors(Color* colors) @extern("UnloadImageColors");
+fn void unload_image_colors(Color[] colors) @inline {
+    __unload_image_colors(colors.ptr);
+}
 
 /**
  * Unload colors palette loaded with LoadImagePalette()
  */
-extern fn void unload_image_palette(Color* colors) @extern("UnloadImagePalette");
+fn void unload_image_palette(Color[] colors) @inline {
+    __unload_image_palette(colors.ptr);
+}
 
 /**
  * Get image alpha border rectangle
@@ -545,15 +562,15 @@ extern fn Color get_color(uint hex_value) @extern("GetColor");
 /**
  * Get Color from a source pixel pointer of certain format
  */
-extern fn Color get_pixel_color(void* src_ptr, int format) @extern("GetPixelColor");
+extern fn Color get_pixel_color(void* src_ptr, PixelFormat format) @extern("GetPixelColor");
 
 /**
  * Set color formatted into destination pixel pointer
  */
-extern fn void set_pixel_color(void* dst_ptr, Color color, int format) @extern("SetPixelColor");
+extern fn void set_pixel_color(void* dst_ptr, Color color, PixelFormat format) @extern("SetPixelColor");
 
 /**
  * Get pixel data size in bytes for certain format
  */
-extern fn int get_pixel_data_size(int width, int height, int format) @extern("GetPixelDataSize");
+extern fn int get_pixel_data_size(int width, int height, PixelFormat format) @extern("GetPixelDataSize");
 

@@ -1,5 +1,6 @@
 // vi: ts=4 sw=4
 module rl;
+import std::collections;
 
 //------------------------------------------------------------------------------------
 // Window and Graphics Device Functions (Module: core)
@@ -106,7 +107,9 @@ extern fn void set_window_icon(Image image) @extern("SetWindowIcon");
 /**
  * Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
  */
-extern fn void set_window_icons(Image* images, int count) @extern("SetWindowIcons");
+fn void set_window_icons(List(<Image>) images) @inline {
+    __set_window_icons(images.entries, (int)images.len());
+}
 
 /**
  * Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
@@ -534,12 +537,16 @@ extern fn int get_random_value(int min, int max) @extern("GetRandomValue");
 /**
  * Load random values sequence, no values repeated
  */
-extern fn int* load_random_sequence(uint count, int min, int max) @extern("LoadRandomSequence");
+fn int[] load_random_sequence(uint count, int min, int max) @inline {
+    return __load_random_sequence(count, min, max)[:(usz)count];
+}
 
 /**
  * Unload random values sequence
  */
-extern fn void unload_random_sequence(int* sequence) @extern("UnloadRandomSequence");
+fn void unload_random_sequence(int[] sequence) @inline {
+    return __unload_random_sequence(sequence.ptr);
+}
 
 // Misc. functions
 //------------------------------------------------------------------------------------
@@ -617,12 +624,18 @@ extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @exter
 /**
  * Load file data as byte array (read)
  */
-extern fn char* load_file_data(ZString file_name, int* data_size) @extern("LoadFileData");
+fn char[] load_file_data(ZString file_name) @inline {
+    int len = 0;
+    char* ptr = __load_file_data(file_name, &len);
+    return ptr[:len];
+}
 
 /**
  * Unload file data allocated by LoadFileData()
  */
-extern fn void unload_file_data(ZString data) @extern("UnloadFileData");
+fn void unload_file_data(char[] data) @inline {
+    __unload_file_data(data.ptr);
+}
 
 /**
  * Save data to file from byte array (write), returns true on success
@@ -637,7 +650,7 @@ extern fn bool export_data_as_code(ZString data, int data_size, ZString file_nam
 /**
  * Load text data from file (read), returns a '\0' terminated string
  */
-extern fn char* load_file_text(ZString file_name) @extern("LoadFileText");
+extern fn ZString load_file_text(ZString file_name) @extern("LoadFileText");
 
 /**
  * Unload file text data allocated by LoadFileText()

@@ -1,5 +1,6 @@
 // vi: ts=4 sw=4
 module rl;
+import std::collections;
 
 //------------------------------------------------------------------------------------
 // Basic 3d Shapes Drawing Functions (Module: models)
@@ -11,27 +12,29 @@ module rl;
 /**
  * Draw a line in 3D world space
  */
-extern fn void draw_line3_d(Vector3 start_pos, Vector3 end_pos, Color color) @extern("DrawLine3D");
+extern fn void draw_line3d(Vector3 start_pos, Vector3 end_pos, Color color) @extern("DrawLine3D");
 
 /**
  * Draw a point in 3D space, actually a small line
  */
-extern fn void draw_point3_d(Vector3 position, Color color) @extern("DrawPoint3D");
+extern fn void draw_point3d(Vector3 position, Color color) @extern("DrawPoint3D");
 
 /**
  * Draw a circle in 3D world space
  */
-extern fn void draw_circle3_d(Vector3 center, float radius, Vector3 rotation_axis, float rotation_angle, Color color) @extern("DrawCircle3D");
+extern fn void draw_circle3d(Vector3 center, float radius, Vector3 rotation_axis, float rotation_angle, Color color) @extern("DrawCircle3D");
 
 /**
  * Draw a color-filled triangle (vertex in counter-clockwise order!)
  */
-extern fn void draw_triangle3_d(Vector3 v1, Vector3 v2, Vector3 v3, Color color) @extern("DrawTriangle3D");
+extern fn void draw_triangle3d(Vector3 v1, Vector3 v2, Vector3 v3, Color color) @extern("DrawTriangle3D");
 
 /**
  * Draw a triangle strip defined by points
  */
-extern fn void draw_triangle_strip3_d(Vector3* points, int point_count, Color color) @extern("DrawTriangleStrip3D");
+fn void draw_triangle_strip3d(List(<Vector3>) points, Color color) @inline {
+    __draw_triangle_strip3d(points.entries, (int)points.len(), color);
+}
 
 /**
  * Draw cube
@@ -295,7 +298,11 @@ extern fn Mesh gen_mesh_cubicmap(Image cubicmap, Vector3 cube_size) @extern("Gen
 /**
  * Load materials from model file
  */
-extern fn Material* load_materials(ZString file_name, int *material_count) @extern("LoadMaterials");
+fn Material[] load_materials(ZString file_name) @inline {
+    int len = 0;
+    Material* ptr = __load_materials(file_name, &len);
+    return ptr[:len];
+}
 
 /**
  * Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)
@@ -315,7 +322,7 @@ extern fn void unload_material(Material material) @extern("UnloadMaterial");
 /**
  * Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)
  */
-extern fn void set_material_texture(Material* material, int map_type, Texture2D texture) @extern("SetMaterialTexture");
+extern fn void set_material_texture(Material* material, MaterialMapIndex map_type, Texture2D texture) @extern("SetMaterialTexture");
 
 /**
  * Set material for a mesh
@@ -328,7 +335,11 @@ extern fn void set_model_mesh_material(Model* model, int mesh_id, int material_i
 /**
  * Load model animations from file
  */
-extern fn ModelAnimation* load_model_animations(ZString file_name, int *anim_count) @extern("LoadModelAnimations");
+fn ModelAnimation[] load_model_animations(ZString file_name) @inline {
+    int len = 0;
+    ModelAnimation* ptr = __load_model_animations(file_name, &len);
+    return ptr[:len];
+}
 
 /**
  * Update model animation pose
@@ -343,7 +354,9 @@ extern fn void unload_model_animation(ModelAnimation anim) @extern("UnloadModelA
 /**
  * Unload animation array data
  */
-extern fn void unload_model_animations(ModelAnimation* animations, int anim_count) @extern("UnloadModelAnimations");
+fn void unload_model_animations(ModelAnimation[] animations) @inline {
+    __unload_model_animations(animations.ptr, (int)animations.len);
+}
 
 /**
  * Check model animation skeleton match
