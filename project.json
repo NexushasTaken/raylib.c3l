@@ -52,6 +52,21 @@
       "features": [ "SUPPORT_RANDOM_GENERATION", ],
     },
 
+    "controls_test_suite": {
+      // Executable or library.
+      "type": "executable",
+      // Additional libraries, sources
+      // and overrides of global settings here.
+      "sources": [ "./examples/controls_test_suite/controls_test_suite.c3" ],
+      "output": "./examples/controls_test_suite",
+      "features": [
+        "SUPPORT_FILE_SYSTEM_FUNCTIONS",
+        "RAYGUI_NO_ICONS",
+        "RAYGUI_CUSTOM_ICONS",
+        "SUPPORT_TEXT_C_STRING_MANAGEMENT",
+      ],
+    },
+
     // Unit tests
     "test_data_compression": {
       "type": "executable",

@@ -1,7 +1,8 @@
 RAYLIB_SRC := "./thirdparty/raylib/src"
+RAYGUI := "TRUE"
 
 build_raylib:
-  make -C {{RAYLIB_SRC}} all
+  make -C {{RAYLIB_SRC}} RAYLIB_MODULE_RAYGUI={{RAYGUI}} all
   cp -v {{RAYLIB_SRC}}/libraylib.a ./linux-x64/
 
 run_example MODULE TARGET:
