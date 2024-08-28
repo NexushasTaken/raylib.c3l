@@ -4,6 +4,18 @@ module rl;
 //------------------------------------------------------------------------------------
 // Audio Loading and Playing Functions (Module: audio)
 //------------------------------------------------------------------------------------
+
+/*
+
+Index of this module:
+// Audio device management functions
+// Wave/Sound loading/unloading functions
+// Wave/Sound management functions
+// Music management functions
+// AudioStream management functions
+
+*/
+
 def AudioCallback = fn void(void* buffer_data, uint frames);
 
 // Audio device management functions

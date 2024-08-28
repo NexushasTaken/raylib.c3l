@@ -5,6 +5,16 @@ module rl;
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
 
+/*
+
+Index of this module:
+// Input-related functions: keyboard
+// Input-related functions: gamepads
+// Input-related functions: mouse
+// Input-related functions: touch
+
+*/
+
 // Input-related functions: keyboard
 //------------------------------------------------------------------------------------
 

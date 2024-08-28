@@ -7,6 +7,27 @@ import std::io;
 // Window and Graphics Device Functions (Module: core)
 //------------------------------------------------------------------------------------
 
+/*
+
+Index of this module:
+// Window-related functions
+// Cursor-related functions
+// Drawing-related functions
+// VR stereo config functions for VR simulator
+// Shader management functions
+// Screen-space-related functions
+// Timing-related functions
+// Custom frame control functions
+// Random values generation functions
+// Misc. functions
+// Set custom callbacks
+// Files management functions
+// File system functions
+// Compression/Encoding functionality
+// Automation events functionality
+
+*/
+
 // Window-related functions
 //------------------------------------------------------------------------------------
 
