@@ -23,7 +23,7 @@
   // "target": "windows-x64",
   "features": [
     // See rcore.c3
-    //"SUPPORT_MEMORY_MANAGEMENT",
+    //"SUPPORT_INTERNAL_MEMORY_MANAGEMENT",
     //"SUPPORT_STANDARD_FILEIO",
     //"SUPPORT_FILE_SYSTEM_FUNCTIONS",
     //"SUPPORT_DATA_ENCODER",
