@@ -42,6 +42,16 @@
       "sources": [ "./examples/examples_template.c3" ],
     },
 
+    "core_2d_camera": {
+      // Executable or library.
+      "type": "executable",
+      // Additional libraries, sources
+      // and overrides of global settings here.
+      "sources": [ "./examples/core/core_2d_camera.c3" ],
+      "output": "./examples/core",
+      "features": [ "SUPPORT_RANDOM_GENERATION", ],
+    },
+
     // Unit tests
     "test_data_compression": {
       "type": "executable",
