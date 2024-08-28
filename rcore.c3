@@ -483,7 +483,7 @@ extern fn Matrix get_camera_matrix(Camera camera) @extern("GetCameraMatrix");
 /**
  * Get camera 2d transform matrix
  */
-extern fn Matrix get_camera_matrix2_d(Camera2D camera) @extern("GetCameraMatrix2D");
+extern fn Matrix get_camera_matrix2d(Camera2D camera) @extern("GetCameraMatrix2D");
 
 /**
  * Get the screen space position for a 3d world space position
@@ -493,7 +493,7 @@ extern fn Vector2 get_world_to_screen(Vector3 position, Camera camera) @extern("
 /**
  * Get the world space position for a 2d camera screen space position
  */
-extern fn Vector2 get_screen_to_world2_d(Vector2 position, Camera2D camera) @extern("GetScreenToWorld2D");
+extern fn Vector2 get_screen_to_world2d(Vector2 position, Camera2D camera) @extern("GetScreenToWorld2D");
 
 /**
  * Get size position for a 3d world space position
@@ -503,7 +503,7 @@ extern fn Vector2 get_world_to_screen_ex(Vector3 position, Camera camera, int wi
 /**
  * Get the screen space position for a 2d camera world space position
  */
-extern fn Vector2 get_world_to_screen2_d(Vector2 position, Camera2D camera) @extern("GetWorldToScreen2D");
+extern fn Vector2 get_world_to_screen2d(Vector2 position, Camera2D camera) @extern("GetWorldToScreen2D");
 
 // Timing-related functions
 //------------------------------------------------------------------------------------
