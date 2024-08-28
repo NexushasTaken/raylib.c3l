@@ -394,7 +394,7 @@ const ConfigFlags FLAG_INTERLACED_HINT    = 0x00010000;   // Set to try enabling
 
 // Trace log level
 // NOTE: Organized by priority level
-enum TraceLogLevel : uint {
+enum TraceLogLevel : int {
 	ALL,            // Display all logs (0)
 	TRACE,          // Trace logging, intended for internal use only
 	DEBUG,          // Debug logging, used for internal debugging, it should be disabled on release builds
@@ -405,12 +405,12 @@ enum TraceLogLevel : uint {
 	NONE            // Disable logging
 }
 
-$assert((uint)TraceLogLevel.ALL == 0);
+$assert((int)TraceLogLevel.ALL == 0);
 
 // Keyboard keys (US keyboard layout)
 // NOTE: Use GetKeyPressed() to allow redefining
 // required keys for alternative layouts
-distinct KeyboardKey = uint;
+distinct KeyboardKey = int;
 const KeyboardKey KEY_NULL            = 0;        // Key: NULL, used for no key pressed
 // Alphanumeric keys
 const KeyboardKey KEY_APOSTROPHE      = 39;       // Key: '
@@ -527,7 +527,7 @@ const KeyboardKey KEY_VOLUME_UP       = 24;       // Key: Android volume up butt
 const KeyboardKey KEY_VOLUME_DOWN     = 25;       // Key: Android volume down button
 
 // Mouse buttons
-enum MouseButton : uint {
+enum MouseButton : int {
 	LEFT,    // Mouse button left
 	RIGHT,   // Mouse button right
 	MIDDLE,  // Mouse button middle (pressed wheel)
@@ -537,10 +537,10 @@ enum MouseButton : uint {
 	BACK,    // Mouse button back (advanced mouse device)
 }
 
-$assert((uint)MouseButton.LEFT == 0);
+$assert((int)MouseButton.LEFT == 0);
 
 // Mouse cursor
-enum MouseCursor : uint {
+enum MouseCursor : int {
 	DEFAULT,       // Default pointer shape
 	ARROW,         // Arrow shape
 	IBEAM,         // Text writing cursor shape
@@ -554,10 +554,10 @@ enum MouseCursor : uint {
 	NOT_ALLOWED,   // The operation-not-allowed shape
 }
 
-$assert((uint)MouseCursor.DEFAULT == 0);
+$assert((int)MouseCursor.DEFAULT == 0);
 
 // Gamepad buttons
-enum GamepadButton : uint {
+enum GamepadButton : int {
 	UNKNOWN,             // Unknown button, just for error checking
 	LEFT_FACE_UP,        // Gamepad left DPAD up button
 	LEFT_FACE_RIGHT,     // Gamepad left DPAD right button
@@ -578,10 +578,10 @@ enum GamepadButton : uint {
 	RIGHT_THUMB,         // Gamepad joystick pressed button right
 }
 
-$assert((uint)GamepadButton.UNKNOWN == 0);
+$assert((int)GamepadButton.UNKNOWN == 0);
 
 // Gamepad axis
-enum GamepadAxis : uint {
+enum GamepadAxis : int {
 	LEFT_X,        // Gamepad left stick X axis
 	LEFT_Y,        // Gamepad left stick Y axis
 	RIGHT_X,       // Gamepad right stick X axis
@@ -590,10 +590,10 @@ enum GamepadAxis : uint {
 	RIGHT_TRIGGER, // Gamepad back trigger right, pressure level: [1..-1]
 }
 
-$assert((uint)GamepadAxis.LEFT_X == 0);
+$assert((int)GamepadAxis.LEFT_X == 0);
 
 // Material map index
-enum MaterialMapIndex : uint {
+enum MaterialMapIndex : int {
 	ALBEDO,            // Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 	METALNESS,         // Metalness material (same as: MATERIAL_MAP_SPECULAR)
 	NORMAL,            // Normal material
@@ -607,10 +607,10 @@ enum MaterialMapIndex : uint {
 	BRDF,              // Brdf material
 }
 
-$assert((uint)MaterialMapIndex.ALBEDO == 0);
+$assert((int)MaterialMapIndex.ALBEDO == 0);
 
 // Shader location index
-enum ShaderLocationIndex : uint {
+enum ShaderLocationIndex : int {
 	VERTEX_POSITION,     // Shader location: vertex attribute: position
 	VERTEX_TEXCOORD01,   // Shader location: vertex attribute: texcoord01
 	VERTEX_TEXCOORD02,   // Shader location: vertex attribute: texcoord02
@@ -639,10 +639,10 @@ enum ShaderLocationIndex : uint {
 	MAP_BRDF,            // Shader location: sampler2d texture: brdf
 }
 
-$assert((uint)ShaderLocationIndex.VERTEX_POSITION == 0);
+$assert((int)ShaderLocationIndex.VERTEX_POSITION == 0);
 
 // Shader uniform data type
-enum ShaderUniformDataType : uint {
+enum ShaderUniformDataType : int {
 	FLOAT,           // Shader uniform type: float
 	VEC2,            // Shader uniform type: vec2 (2 float)
 	VEC3,            // Shader uniform type: vec3 (3 float)
@@ -654,21 +654,21 @@ enum ShaderUniformDataType : uint {
 	SAMPLER2D,       // Shader uniform type: sampler2d
 }
 
-$assert((uint)ShaderUniformDataType.FLOAT == 0);
+$assert((int)ShaderUniformDataType.FLOAT == 0);
 
 // Shader attribute data types
-enum ShaderAttributeDataType : uint {
-	FLOAT,        // Shader attribute type: float
+enum ShaderAttributeDataType : int {
+	FLOAT,            // Shader attribute type: float
 	VEC2,             // Shader attribute type: vec2 (2 float)
 	VEC3,             // Shader attribute type: vec3 (3 float)
 	VEC4              // Shader attribute type: vec4 (4 float)
 }
 
-$assert((uint)ShaderAttributeDataType.FLOAT == 0);
+$assert((int)ShaderAttributeDataType.FLOAT == 0);
 
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform
-enum PixelFormat : uint {
+enum PixelFormat : int {
 	NONE,
 	UNCOMPRESSED_GRAYSCALE,     // 8 bit per pixel (no alpha)
 	UNCOMPRESSED_GRAY_ALPHA,    // 8*2 bpp (2 channels)
@@ -696,12 +696,12 @@ enum PixelFormat : uint {
 	COMPRESSED_ASTC_8X8_RGBA,   // 2 bpp
 }
 
-$assert((uint)PixelFormat.UNCOMPRESSED_GRAYSCALE == 1);
+$assert((int)PixelFormat.UNCOMPRESSED_GRAYSCALE == 1);
 
 // Texture parameters: filter mode
 // NOTE 1: Filtering considers mipmaps if available in the texture
 // NOTE 2: Filter is accordingly set for minification and magnification
-enum TextureFilter : uint {
+enum TextureFilter : int {
 	POINT,                   // No filter, just pixel approximation
 	BILINEAR,                // Linear filtering
 	TRILINEAR,               // Trilinear filtering (linear with mipmaps)
@@ -710,20 +710,20 @@ enum TextureFilter : uint {
 	ANISOTROPIC_16X,         // Anisotropic filtering 16x
 }
 
-$assert((uint)TextureFilter.POINT == 0);
+$assert((int)TextureFilter.POINT == 0);
 
 // Texture parameters: wrap mode
-enum TextureWrap : uint {
-	REPEAT,                // Repeats texture in tiled mode
+enum TextureWrap : int {
+	REPEAT,                    // Repeats texture in tiled mode
 	CLAMP,                     // Clamps texture to edge pixel in tiled mode
 	MIRROR_REPEAT,             // Mirrors and repeats the texture in tiled mode
 	MIRROR_CLAMP               // Mirrors and clamps to border the texture in tiled mode
 }
 
-$assert((uint)TextureWrap.REPEAT == 0);
+$assert((int)TextureWrap.REPEAT == 0);
 
 // Cubemap layouts
-enum CubemapLayout : uint {
+enum CubemapLayout : int {
 	AUTO_DETECT,             // Automatically detect layout type
 	LINE_VERTICAL,           // Layout is defined by a vertical line with faces
 	LINE_HORIZONTAL,         // Layout is defined by a horizontal line with faces
@@ -732,19 +732,19 @@ enum CubemapLayout : uint {
 	PANORAMA                 // Layout is defined by a panorama image (equirrectangular map)
 }
 
-$assert((uint)CubemapLayout.AUTO_DETECT == 0);
+$assert((int)CubemapLayout.AUTO_DETECT == 0);
 
 // Font type, defines generation method
-enum FontType : uint {
-	DEFAULT,               // Default font generation, anti-aliased
+enum FontType : int {
+	DEFAULT,                   // Default font generation, anti-aliased
 	BITMAP,                    // Bitmap font generation, no anti-aliasing
 	SDF                        // SDF font generation, requires external shader
 }
 
-$assert((uint)FontType.DEFAULT == 0);
+$assert((int)FontType.DEFAULT == 0);
 
 // Color blending modes (pre-defined)
-enum BlendMode : uint {
+enum BlendMode : int {
 	ALPHA,                    // Blend textures considering alpha (default)
 	ADDITIVE,                 // Blend textures adding colors
 	MULTIPLIED,               // Blend textures multiplying colors
@@ -755,7 +755,7 @@ enum BlendMode : uint {
 	CUSTOM_SEPARATE           // Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 }
 
-$assert((uint)BlendMode.ALPHA == 0);
+$assert((int)BlendMode.ALPHA == 0);
 
 // Gesture
 // NOTE: Provided as bit-wise flags to enable only desired gestures
@@ -773,7 +773,7 @@ const Gesture GESTURE_PINCH_IN    = 256;      // Pinch in gesture
 const Gesture GESTURE_PINCH_OUT   = 512;      // Pinch out gesture
 
 // Camera system modes
-enum CameraMode : uint {
+enum CameraMode : int {
 	CUSTOM,                  // Custom camera
 	FREE,                    // Free camera
 	ORBITAL,                 // Orbital camera
@@ -781,18 +781,18 @@ enum CameraMode : uint {
 	THIRD_PERSON             // Third person camera
 }
 
-$assert((uint)CameraMode.CUSTOM == 0);
+$assert((int)CameraMode.CUSTOM == 0);
 
 // Camera projection
-enum CameraProjection : uint {
+enum CameraProjection : int {
 	PERSPECTIVE,             // Perspective projection
 	ORTHOGRAPHIC,            // Orthographic projection
 }
 
-$assert((uint)CameraProjection.PERSPECTIVE == 0);
+$assert((int)CameraProjection.PERSPECTIVE == 0);
 
 // N-patch layout
-enum NPatchLayout {
+enum NPatchLayout : int {
 	NINE_PATCH,              // Npatch layout: 3x3 tiles
 	THREE_PATCH_VERTICAL,    // Npatch layout: 1x3 tiles
 	THREE_PATCH_HORIZONTAL   // Npatch layout: 3x1 tiles

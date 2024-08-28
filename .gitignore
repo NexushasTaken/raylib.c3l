@@ -1,1 +1,12 @@
 build
+
+examples/textures
+examples/text
+examples/audio
+examples/core
+examples/models
+examples/others
+examples/shaders
+examples/shapes
+
+linux-x64/libraylib.a

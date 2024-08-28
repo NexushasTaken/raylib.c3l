@@ -148,7 +148,7 @@ extern fn Image image_text_ex(Font font, ZString text, float font_size, float sp
 /**
  * Convert image data to desired format
  */
-extern fn void image_format(Image* image, int new_format) @extern("ImageFormat");
+extern fn void image_format(Image* image, PixelFormat new_format) @extern("ImageFormat");
 
 /**
  * Convert image to POT (power-of-two)
@@ -408,7 +408,7 @@ extern fn Texture2D load_texture_from_image(Image image) @extern("LoadTextureFro
 /**
  * Load cubemap from image, multiple image cubemap layouts supported
  */
-extern fn TextureCubemap load_texture_cubemap(Image image, int layout) @extern("LoadTextureCubemap");
+extern fn TextureCubemap load_texture_cubemap(Image image, CubemapLayout layout) @extern("LoadTextureCubemap");
 
 /**
  * Load texture for rendering (framebuffer)
@@ -456,12 +456,12 @@ extern fn void gen_texture_mipmaps(Texture2D* texture) @extern("GenTextureMipmap
 /**
  * Set texture scaling filter mode
  */
-extern fn void set_texture_filter(Texture2D texture, int filter) @extern("SetTextureFilter");
+extern fn void set_texture_filter(Texture2D texture, TextureFilter filter) @extern("SetTextureFilter");
 
 /**
  * Set texture wrapping mode
  */
-extern fn void set_texture_wrap(Texture2D texture, int wrap) @extern("SetTextureWrap");
+extern fn void set_texture_wrap(Texture2D texture, TextureWrap wrap) @extern("SetTextureWrap");
 
 // Texture drawing functions
 //------------------------------------------------------------------------------------

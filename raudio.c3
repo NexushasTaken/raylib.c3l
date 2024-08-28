@@ -45,7 +45,9 @@ extern fn Wave load_wave(ZString file_name) @extern("LoadWave");
 /**
  * Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
  */
-extern fn Wave load_wave_from_memory(ZString file_type, ZString file_data, int data_size) @extern("LoadWaveFromMemory");
+fn Wave load_wave_from_memory(ZString file_type, char[] file_data) @inline {
+    return __load_wave_from_memory(file_type, file_data.ptr, (int)file_data.len);
+}
 
 /**
  * Checks if wave data is ready
@@ -274,7 +276,7 @@ extern fn void unload_audio_stream(AudioStream stream) @extern("UnloadAudioStrea
 /**
  * Update audio stream buffers with data
  */
-extern fn void update_audio_stream(AudioStream stream, void* data, int frameCount) @extern("UpdateAudioStream");
+extern fn void update_audio_stream(AudioStream stream, void* data, int frame_count) @extern("UpdateAudioStream");
 
 /**
  * Check if any audio stream buffers requires refill

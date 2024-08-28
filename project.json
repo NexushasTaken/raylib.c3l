@@ -21,6 +21,17 @@
   // Architecture and OS target.
   // You can use 'c3c --list-targets' to list all valid targets.
   // "target": "windows-x64",
+  "features": [
+    // See rcore.c3
+    //"SUPPORT_MEMORY_MANAGEMENT",
+    //"SUPPORT_STANDARD_FILEIO",
+    //"SUPPORT_FILE_SYSTEM_FUNCTIONS",
+    //"SUPPORT_DATA_ENCODER",
+    // See text.c3
+    //"SUPPORT_TEXT_CODEPOINTS_MANAGEMENT",
+    //"SUPPORT_TEXT_C_STRING_MANAGEMENT",
+    //"SUPPORT_RANDOM_GENERATION",
+  ],
   // Targets.
   "targets": {
     "examples_template": {
@@ -29,6 +40,21 @@
       // Additional libraries, sources
       // and overrides of global settings here.
       "sources": [ "./examples/examples_template.c3" ],
+    },
+
+    // Unit tests
+    "test_data_compression": {
+      "type": "executable",
+      "sources": [ "./test/unit/test_data_compression.c3" ],
+    },
+    "test_data_encoder": {
+      "type": "executable",
+      "sources": [ "./test/unit/test_data_encoder.c3" ],
+      "features": [ "SUPPORT_DATA_ENCODER" ],
+    },
+    "test_export_data_as_code": {
+      "type": "executable",
+      "sources": [ "./test/unit/test_export_data_as_code.c3" ],
     },
   },
   // Global settings.

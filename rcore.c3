@@ -1,6 +1,7 @@
 // vi: ts=4 sw=4
 module rl;
 import std::collections;
+import std::io;
 
 //------------------------------------------------------------------------------------
 // Window and Graphics Device Functions (Module: core)
@@ -305,22 +306,22 @@ extern fn void end_drawing() @extern("EndDrawing");
 /**
  * Begin 2D mode with custom camera (2D)
  */
-extern fn void begin_mode2_d(Camera2D camera) @extern("BeginMode2D");
+extern fn void begin_mode2d(Camera2D camera) @extern("BeginMode2D");
 
 /**
  * Ends 2D mode with custom camera
  */
-extern fn void end_mode2_d() @extern("EndMode2D");
+extern fn void end_mode2d() @extern("EndMode2D");
 
 /**
  * Begin 3D mode with custom camera (3D)
  */
-extern fn void begin_mode3_d(Camera3D camera) @extern("BeginMode3D");
+extern fn void begin_mode3d(Camera3D camera) @extern("BeginMode3D");
 
 /**
  * Ends 3D mode and returns to default 2D orthographic mode
  */
-extern fn void end_mode3_d() @extern("EndMode3D");
+extern fn void end_mode3d() @extern("EndMode3D");
 
 /**
  * Begin drawing to render texture
@@ -345,7 +346,7 @@ extern fn void end_shader_mode() @extern("EndShaderMode");
 /**
  * Begin blending mode (alpha, additive, multiplied, subtract, custom)
  */
-extern fn void begin_blend_mode(int mode) @extern("BeginBlendMode");
+extern fn void begin_blend_mode(BlendMode mode) @extern("BeginBlendMode");
 
 /**
  * End blending mode (reset to default: alpha blending)
@@ -407,22 +408,28 @@ extern fn bool is_shader_ready(Shader shader) @extern("IsShaderReady");
 /**
  * Get shader uniform location
  */
-extern fn int get_shader_location(Shader shader, ZString uniform_name) @extern("GetShaderLocation");
+fn int! get_shader_location(Shader shader, ZString uniform_name) @inline {
+    int loc = __get_shader_location(shader, uniform_name);
+    return loc == -1 ? SearchResult.MISSING? : loc;
+}
 
 /**
  * Get shader attribute location
  */
-extern fn int get_shader_location_attrib(Shader shader, ZString attrib_name) @extern("GetShaderLocationAttrib");
+fn int! get_shader_location_attrib(Shader shader, ZString attrib_name) @inline {
+    int loc = __get_shader_location_attrib(shader, attrib_name);
+    return loc == -1 ? SearchResult.MISSING? : loc;
+}
 
 /**
  * Set shader uniform value
  */
-extern fn void set_shader_value(Shader shader, int loc_index, void* value, int uniform_type) @extern("SetShaderValue");
+extern fn void set_shader_value(Shader shader, int loc_index, void* value, ShaderUniformDataType uniform_type) @extern("SetShaderValue");
 
 /**
  * Set shader uniform value vector
  */
-extern fn void set_shader_value_v(Shader shader, int locIndex, void* value, int uniform_type, int count) @extern("SetShaderValueV");
+extern fn void set_shader_value_v(Shader shader, int locIndex, void* value, ShaderUniformDataType uniform_type, int count) @extern("SetShaderValueV");
 
 /**
  * Set shader uniform value (matrix 4x4)
@@ -523,28 +530,42 @@ extern fn void wait_time(double seconds) @extern("WaitTime");
 
 // Random values generation functions
 //------------------------------------------------------------------------------------
-
+bool is_random_initialized @local @if($feature(SUPPORT_RANDOM_GENERATION)) = false; // WARNING: required if raylib was configured with SUPPORT_RPRAND_GENERATOR
 /**
  * Set the seed for the random number generator
  */
-extern fn void set_random_seed(uint seed) @extern("SetRandomSeed");
+extern fn void set_random_seed(uint seed) @extern("SetRandomSeed") @if($feature(SUPPORT_RANDOM_GENERATION)) ;
 
 /**
  * Get a random value between min and max (both included)
  */
-extern fn int get_random_value(int min, int max) @extern("GetRandomValue");
+fn int get_random_value(int min, int max) @inline @if($feature(SUPPORT_RANDOM_GENERATION)) {
+    $if $defined(is_random_initialized):
+        if (!is_random_initialized) {
+            set_random_seed(0);
+            is_random_initialized = true;
+        }
+    $endif
+    return get_random_value(min, max);
+}
 
 /**
  * Load random values sequence, no values repeated
  */
-fn int[] load_random_sequence(uint count, int min, int max) @inline {
+fn int[] load_random_sequence(uint count, int min, int max) @inline @if($feature(SUPPORT_RANDOM_GENERATION)) {
+    $if $defined(is_random_initialized):
+        if (!is_random_initialized) {
+            set_random_seed(0);
+            is_random_initialized = true;
+        }
+    $endif
     return __load_random_sequence(count, min, max)[:(usz)count];
 }
 
 /**
  * Unload random values sequence
  */
-fn void unload_random_sequence(int[] sequence) @inline {
+fn void unload_random_sequence(int[] sequence) @inline @if($feature(SUPPORT_RANDOM_GENERATION)) {
     return __unload_random_sequence(sequence.ptr);
 }
 
@@ -582,17 +603,17 @@ extern fn void set_trace_log_level(TraceLogLevel logLevel) @extern("SetTraceLogL
 /**
  * Internal memory allocator
  */
-extern fn void* mem_alloc(uint size) @extern("MemAlloc");
+extern fn void* mem_alloc(uint size) @extern("MemAlloc") @if($feature(SUPPORT_MEMORY_MANAGEMENT));
 
 /**
  * Internal memory reallocator
  */
-extern fn void* mem_realloc(void* ptr, uint size) @extern("MemRealloc");
+extern fn void* mem_realloc(void* ptr, uint size) @extern("MemRealloc") @if($feature(SUPPORT_MEMORY_MANAGEMENT));
 
 /**
  * Internal memory free
  */
-extern fn void mem_free(void* ptr) @extern("MemFree");
+extern fn void mem_free(void* ptr) @extern("MemFree") @if($feature(SUPPORT_MEMORY_MANAGEMENT));
 
 // Set custom callbacks
 // WARNING: Callbacks setup is intended for advance users
@@ -601,22 +622,22 @@ extern fn void mem_free(void* ptr) @extern("MemFree");
 /**
  * Set custom file binary data loader
  */
-extern fn void set_load_file_data_callback(LoadFileDataCallback callback) @extern("SetLoadFileDataCallback");
+extern fn void set_load_file_data_callback(LoadFileDataCallback callback) @extern("SetLoadFileDataCallback") @if($feature(SUPPORT_STANDARD_FILEIO));
 
 /**
  * Set custom file binary data saver
  */
-extern fn void set_save_file_data_callback(SaveFileDataCallback callback) @extern("SetSaveFileDataCallback");
+extern fn void set_save_file_data_callback(SaveFileDataCallback callback) @extern("SetSaveFileDataCallback") @if($feature(SUPPORT_STANDARD_FILEIO));
 
 /**
  * Set custom file text data loader
  */
-extern fn void set_load_file_text_callback(LoadFileTextCallback callback) @extern("SetLoadFileTextCallback");
+extern fn void set_load_file_text_callback(LoadFileTextCallback callback) @extern("SetLoadFileTextCallback") @if($feature(SUPPORT_STANDARD_FILEIO));
 
 /**
  * Set custom file text data saver
  */
-extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @extern("SetSaveFileTextCallback");
+extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @extern("SetSaveFileTextCallback") @if($feature(SUPPORT_STANDARD_FILEIO));
 
 // Files management functions
 //------------------------------------------------------------------------------------
@@ -624,43 +645,49 @@ extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @exter
 /**
  * Load file data as byte array (read)
  */
-fn char[] load_file_data(ZString file_name) @inline {
+fn char[] load_file_data(ZString file_name) @inline @if($feature(SUPPORT_STANDARD_FILEIO)) {
     int len = 0;
     char* ptr = __load_file_data(file_name, &len);
-    return ptr[:len];
+    return ptr[:(usz)len];
 }
 
 /**
  * Unload file data allocated by LoadFileData()
  */
-fn void unload_file_data(char[] data) @inline {
+fn void unload_file_data(char[] data) @inline @if($feature(SUPPORT_STANDARD_FILEIO)) {
     __unload_file_data(data.ptr);
 }
 
 /**
  * Save data to file from byte array (write), returns true on success
  */
-extern fn bool save_file_data(ZString file_name, void* data, int data_size) @extern("SaveFileData");
+extern fn bool save_file_data(ZString file_name, void* data, int data_size) @extern("SaveFileData") @if($feature(SUPPORT_STANDARD_FILEIO));
 
+// TODO: review
 /**
  * Export data to code (.h), returns true on success
  */
-extern fn bool export_data_as_code(ZString data, int data_size, ZString file_name) @extern("ExportDataAsCode");
+macro bool export_data_as_code(ZString file_name, char[] data) @if($feature(SUPPORT_STANDARD_FILEIO)) {
+    return __export_data_as_code(data.ptr, data.len, file_name);
+}
 
 /**
  * Load text data from file (read), returns a '\0' terminated string
  */
-extern fn ZString load_file_text(ZString file_name) @extern("LoadFileText");
+fn ZString! load_file_text(ZString file_name) @inline @if($feature(SUPPORT_STANDARD_FILEIO)) {
+    char* zstr = __load_file_text(file_name);
+    return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
+}
 
 /**
  * Unload file text data allocated by LoadFileText()
  */
-extern fn void unload_file_text(ZString text) @extern("UnloadFileText");
+extern fn void unload_file_text(ZString text) @extern("UnloadFileText") @if($feature(SUPPORT_STANDARD_FILEIO));
 
 /**
  * Save text data to file (write), string must be '\0' terminated, returns true on success
  */
-extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFileText");
+extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFileText") @if($feature(SUPPORT_STANDARD_FILEIO));
 //------------------------------------------------------------------
 
 // File system functions
@@ -669,125 +696,142 @@ extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFile
 /**
  * Check if file exists
  */
-extern fn bool file_exists(ZString file_name) @extern("FileExists");
+extern fn bool file_exists(ZString file_name) @extern("FileExists") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Check if a directory path exists
  */
-extern fn bool directory_exists(ZString dir_path) @extern("DirectoryExists");
+extern fn bool directory_exists(ZString dir_path) @extern("DirectoryExists") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Check file extension (including point: .png, .wav)
  */
-extern fn bool is_file_extension(ZString file_name, ZString ext) @extern("IsFileExtension");
+extern fn bool is_file_extension(ZString file_name, ZString ext) @extern("IsFileExtension") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
  */
-extern fn int get_file_length(ZString file_name) @extern("GetFileLength");
+extern fn int get_file_length(ZString file_name) @extern("GetFileLength") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get pointer to extension for a filename string (includes dot: '.png')
  */
-extern fn ZString get_file_extension(ZString file_name) @extern("GetFileExtension");
+extern fn ZString get_file_extension(ZString file_name) @extern("GetFileExtension") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get pointer to filename for a path string
  */
-extern fn ZString get_file_name(ZString file_path) @extern("GetFileName");
+extern fn ZString get_file_name(ZString file_path) @extern("GetFileName") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get filename string without extension (uses static string)
  */
-extern fn ZString get_file_name_without_ext(ZString file_path) @extern("GetFileNameWithoutExt");
+extern fn ZString get_file_name_without_ext(ZString file_path) @extern("GetFileNameWithoutExt") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get full path for a given fileName with path (uses static string)
  */
-extern fn ZString get_directory_path(ZString file_path) @extern("GetDirectoryPath");
+extern fn ZString get_directory_path(ZString file_path) @extern("GetDirectoryPath") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get previous directory path for a given path (uses static string)
  */
-extern fn ZString get_prev_directory_path(ZString dir_path) @extern("GetPrevDirectoryPath");
+extern fn ZString get_prev_directory_path(ZString dir_path) @extern("GetPrevDirectoryPath") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get current working directory (uses static string)
  */
-extern fn ZString get_working_directory() @extern("GetWorkingDirectory");
+extern fn ZString get_working_directory() @extern("GetWorkingDirectory") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get the directory of the running application (uses static string)
  */
-extern fn ZString get_application_directory() @extern("GetApplicationDirectory");
+extern fn ZString get_application_directory() @extern("GetApplicationDirectory") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Change working directory, return true on success
  */
-extern fn bool change_directory(ZString dir) @extern("ChangeDirectory");
+extern fn bool change_directory(ZString dir) @extern("ChangeDirectory") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Check if a given path is a file or a directory
  */
-extern fn bool is_path_file(ZString path) @extern("IsPathFile");
+extern fn bool is_path_file(ZString path) @extern("IsPathFile") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Load directory filepaths
  */
-extern fn FilePathList load_directory_files(ZString  dir_path) @extern("LoadDirectoryFiles");
+extern fn FilePathList load_directory_files(ZString  dir_path) @extern("LoadDirectoryFiles") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Load directory filepaths with extension filtering and recursive directory scan
  */
-extern fn FilePathList load_directory_files_ex(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx");
+extern fn FilePathList load_directory_files_ex(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Unload filepaths
  */
-extern fn void unload_directory_files(FilePathList files) @extern("UnloadDirectoryFiles");
+extern fn void unload_directory_files(FilePathList files) @extern("UnloadDirectoryFiles") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Check if a file has been dropped into window
  */
-extern fn bool is_file_dropped() @extern("IsFileDropped");
+extern fn bool is_file_dropped() @extern("IsFileDropped") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Load dropped filepaths
  */
-extern fn FilePathList load_dropped_files() @extern("LoadDroppedFiles");
+extern fn FilePathList load_dropped_files() @extern("LoadDroppedFiles") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Unload dropped filepaths
  */
-extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFiles");
+extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFiles") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 /**
  * Get file modification time (last write time)
  */
-extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime");
+extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime") @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 // Compression/Encoding functionality
 //------------------------------------------------------------------------------------
+// INFO: add test units
 
 /**
  * Compress data (DEFLATE algorithm), memory must be MemFree()
  */
-extern fn char* compress_data(ZString data, int dataSize, int *comp_data_size) @extern("CompressData");
+fn char[] compress_data(char[] data) @inline {
+    int size = 0;
+    char* comp_data = __compress_data(data.ptr, data.len, &size);
+    return comp_data[:(usz)size];
+}
 
 /**
  * Decompress data (DEFLATE algorithm), memory must be MemFree()
  */
-extern fn char* decompress_data(ZString comp_data, int comp_data_size, int *data_size) @extern("DecompressData");
+fn char[] decompress_data(char[] comp_data) @inline {
+    int size = 0;
+    char* decomp_data = __decompress_data(comp_data.ptr, comp_data.len, &size);
+    return decomp_data[:(usz)size];
+}
 
 /**
  * Encode data to Base64 string, memory must be MemFree()
  */
-extern fn char* encode_data_base64(ZString data, int data_size, int *outputSize) @extern("EncodeDataBase64");
+macro char[] encode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
+    int size = 0;
+    char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
+    return encoded_data[:(usz)size];
+}
 
 /**
  * Decode Base64 string data, memory must be MemFree()
  */
-extern fn char* decode_data_base64(ZString data, int *output_size) @extern("DecodeDataBase64");
+macro char[] decode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
+    int size = 0;
+    char* decoded_data = __decode_data_base64(data.ptr, &size);
+    return decoded_data[:(usz)size];
+}
 
 // Automation events functionality
 //------------------------------------------------------------------------------------

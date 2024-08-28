@@ -214,10 +214,13 @@ extern fn void unload_mesh(Mesh mesh) @extern("UnloadMesh");
  */
 extern fn void draw_mesh(Mesh mesh, Material material, Matrix transform) @extern("DrawMesh");
 
+// INFO: is this fine though?
 /**
  * Draw multiple mesh instances with material and different transforms
  */
-extern fn void draw_mesh_instanced(Mesh mesh, Material material, Matrix* transforms, int instances) @extern("DrawMeshInstanced");
+fn void draw_mesh_instanced(Mesh mesh, Material material, List(<Matrix>) transforms) @inline {
+		__draw_mesh_instanced(mesh, material, transforms.entries, (int)transforms.len());
+}
 
 /**
  * Export mesh data to file, returns true on success
