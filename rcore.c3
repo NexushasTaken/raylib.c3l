@@ -567,7 +567,7 @@ fn int get_random_value(int min, int max) @inline @if($feature(SUPPORT_RANDOM_GE
             is_random_initialized = true;
         }
     $endif
-    return get_random_value(min, max);
+    return __get_random_value(min, max);
 }
 
 /**
