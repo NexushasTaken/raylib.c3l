@@ -15,7 +15,7 @@ fn void load_style(
     // NOTE: Default properties are propagated
     foreach (prop : props)
     {
-        rgui::gui_set_style(
+        rgui::set_style(
             prop.control_id,
             prop.property_id,
             prop.property_value
@@ -38,7 +38,7 @@ fn void load_style(
     font.glyphs = mem::new_array(rl::GlyphInfo, font.glyph_count).ptr;
     mem::copy(font.glyphs, chars.ptr, font.glyph_count * rl::GlyphInfo.sizeof);
 
-    rgui::gui_set_font(font);
+    rgui::set_font(font);
 
     // Setup a white rectangle on the font to be used on shapes drawing,
     // this way we make sure all gui can be drawn on a single pass because no texture change is required

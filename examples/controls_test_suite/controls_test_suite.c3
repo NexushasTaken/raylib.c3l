@@ -3,21 +3,21 @@
 *   raygui - controls test suite
 *
 *   TEST CONTROLS:
-*       - GuiDropdownBox()
-*       - GuiCheckBox()
-*       - GuiSpinner()
-*       - GuiValueBox()
-*       - GuiTextBox()
-*       - GuiButton()
-*       - GuiComboBox()
-*       - GuiListView()
-*       - GuiToggleGroup()
-*       - GuiColorPicker()
-*       - GuiSlider()
-*       - GuiSliderBar()
-*       - GuiProgressBar()
-*       - GuiColorBarAlpha()
-*       - GuiScrollPanel()
+*       - rgui::dropdown_box()
+*       - rgui::check_box()
+*       - rgui::spinner()
+*       - rgui::value_box()
+*       - rgui::text_box()
+*       - rgui::button()
+*       - rgui::combo_box()
+*       - rgui::list_view()
+*       - rgui::toggle_group()
+*       - rgui::color_picker()
+*       - rgui::slider()
+*       - rgui::slider_bar()
+*       - rgui::progress_bar()
+*       - rgui::color_bar_alpha()
+*       - rgui::scroll_panel()
 *
 *
 *   DEPENDENCIES:
@@ -115,7 +115,7 @@ fn int main()
 
     // Custom GUI font loading
     //rl::Font font = rl::load_font_ex("fonts/rainyhearts16.ttf", 12, 0, 0);
-    //rgui::gui_set_font(font);
+    //rgui::set_font(font);
 
     bool exitWindow = false;
     bool showMessageBox = false;
@@ -128,8 +128,8 @@ fn int main()
     float alpha = 1.0f;
 
     // DEBUG: Testing how those two properties affect all controls!
-    //rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_PADDING, 0);
-    //rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
+    //rgui::set_style(rgui::DEFAULT, rgui::TEXT_PADDING, 0);
+    //rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
 
     rl::set_target_fps(60);
     //--------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ fn int main()
         {
             rl::FilePathList droppedFiles = rl::load_dropped_files();
 
-            if ((droppedFiles.count > 0) && rl::is_file_extension((ZString)droppedFiles.paths[0], ".rgs")) { rgui::gui_load_style((ZString)droppedFiles.paths[0]); }
+            if ((droppedFiles.count > 0) && rl::is_file_extension((ZString)droppedFiles.paths[0], ".rgs")) { rgui::load_style((ZString)droppedFiles.paths[0]); }
 
             rl::unload_dropped_files(droppedFiles);    // Clear internal buffers
         }
@@ -158,7 +158,7 @@ fn int main()
         if (alpha < 0.0f) alpha = 0.0f;
         if (rl::is_key_pressed(rl::KEY_SPACE)) alpha = 1.0f;
 
-        rgui::gui_set_alpha(alpha);
+        rgui::set_alpha(alpha);
 
         //progressValue += 0.002f;
         if (rl::is_key_pressed(rl::KEY_LEFT)) { progressValue -= 0.1f; }
@@ -168,7 +168,7 @@ fn int main()
 
         if (visualStyleActive != prevVisualStyleActive)
         {
-            rgui::gui_load_style_default();
+            rgui::load_style_default();
 
             switch (visualStyleActive)
             {
@@ -182,7 +182,7 @@ fn int main()
                 default: break;
             }
 
-            rgui::gui_set_style(rgui::LABEL, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            rgui::set_style(rgui::LABEL, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
 
             prevVisualStyleActive = visualStyleActive;
         }
@@ -192,102 +192,102 @@ fn int main()
         //----------------------------------------------------------------------------------
         rl::begin_drawing();
 
-            rl::clear_background(rl::get_color(rgui::gui_get_style(rgui::DEFAULT, rgui::BACKGROUND_COLOR)));
+            rl::clear_background(rl::get_color(rgui::get_style(rgui::DEFAULT, rgui::BACKGROUND_COLOR)));
 
             // raygui: controls drawing
             //----------------------------------------------------------------------------------
             // Check all possible events that require GuiLock
-            if (dropDown000EditMode || dropDown001EditMode) { rgui::gui_lock(); }
+            if (dropDown000EditMode || dropDown001EditMode) { rgui::lock(); }
 
             // First GUI column
-            //rgui::gui_set_style(rgui::CHECKBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            rgui::gui_check_box(Rectangle { 25, 108, 15, 15 }, "FORCE CHECK!", &forceSquaredChecked);
+            //rgui::set_style(rgui::CHECKBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            rgui::check_box(Rectangle { 25, 108, 15, 15 }, "FORCE CHECK!", &forceSquaredChecked);
 
-            rgui::gui_set_style(rgui::TEXTBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
-            //rgui::gui_set_style(rgui::VALUEBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            if (rgui::gui_spinner(Rectangle { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
-            if (rgui::gui_value_box(Rectangle { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
-            rgui::gui_set_style(rgui::TEXTBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            if (rgui::gui_text_box(Rectangle { 25, 215, 125, 30 }, textBoxText, textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
+            rgui::set_style(rgui::TEXTBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
+            //rgui::set_style(rgui::VALUEBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            if (rgui::spinner(Rectangle { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
+            if (rgui::value_box(Rectangle { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
+            rgui::set_style(rgui::TEXTBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            if (rgui::text_box(Rectangle { 25, 215, 125, 30 }, textBoxText, textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
 
-            rgui::gui_set_style(rgui::BUTTON, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
+            rgui::set_style(rgui::BUTTON, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
 
-            if (rgui::gui_button(Rectangle { 25, 255, 125, 30 }, rgui::gui_icon_text(rgui::GuiIconName.ICON_FILE_SAVE, "Save File"))) { showTextInputBox = true; }
+            if (rgui::button(Rectangle { 25, 255, 125, 30 }, rgui::icon_text(rgui::GuiIconName.ICON_FILE_SAVE, "Save File"))) { showTextInputBox = true; }
 
-            rgui::gui_group_box(Rectangle { 25, 310, 125, 150 }, "STATES");
-            //rgui::gui_lock();
-            rgui::gui_set_state(rgui::STATE_NORMAL); if (rgui::gui_button(Rectangle { 30, 320, 115, 30 }, "NORMAL")) { }
-            rgui::gui_set_state(rgui::STATE_FOCUSED); if (rgui::gui_button(Rectangle { 30, 355, 115, 30 }, "FOCUSED")) { }
-            rgui::gui_set_state(rgui::STATE_PRESSED); if (rgui::gui_button(Rectangle { 30, 390, 115, 30 }, "#15#PRESSED")) { }
-            rgui::gui_set_state(rgui::STATE_DISABLED); if (rgui::gui_button(Rectangle { 30, 425, 115, 30 }, "DISABLED")) { }
-            rgui::gui_set_state(rgui::STATE_NORMAL);
-            //rgui::gui_unlock();
+            rgui::group_box(Rectangle { 25, 310, 125, 150 }, "STATES");
+            //rgui::lock();
+            rgui::set_state(rgui::STATE_NORMAL); if (rgui::button(Rectangle { 30, 320, 115, 30 }, "NORMAL")) { }
+            rgui::set_state(rgui::STATE_FOCUSED); if (rgui::button(Rectangle { 30, 355, 115, 30 }, "FOCUSED")) { }
+            rgui::set_state(rgui::STATE_PRESSED); if (rgui::button(Rectangle { 30, 390, 115, 30 }, "#15#PRESSED")) { }
+            rgui::set_state(rgui::STATE_DISABLED); if (rgui::button(Rectangle { 30, 425, 115, 30 }, "DISABLED")) { }
+            rgui::set_state(rgui::STATE_NORMAL);
+            //rgui::unlock();
 
-            rgui::gui_combo_box(Rectangle { 25, 480, 125, 30 }, "default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal", &visualStyleActive);
+            rgui::combo_box(Rectangle { 25, 480, 125, 30 }, "default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal", &visualStyleActive);
 
             // NOTE: GuiDropdownBox must draw after any other control that can be covered on unfolding
-            rgui::gui_unlock();
-            rgui::gui_set_style(rgui::DROPDOWNBOX, rgui::TEXT_PADDING, 4);
-            rgui::gui_set_style(rgui::DROPDOWNBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            if (rgui::gui_dropdown_box(Rectangle { 25, 65, 125, 30 }, "#01#ONE;#02#TWO;#03#THREE;#04#FOUR", &dropdownBox001Active, dropDown001EditMode)) dropDown001EditMode = !dropDown001EditMode;
-            rgui::gui_set_style(rgui::DROPDOWNBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
-            rgui::gui_set_style(rgui::DROPDOWNBOX, rgui::TEXT_PADDING, 0);
+            rgui::unlock();
+            rgui::set_style(rgui::DROPDOWNBOX, rgui::TEXT_PADDING, 4);
+            rgui::set_style(rgui::DROPDOWNBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            if (rgui::dropdown_box(Rectangle { 25, 65, 125, 30 }, "#01#ONE;#02#TWO;#03#THREE;#04#FOUR", &dropdownBox001Active, dropDown001EditMode)) dropDown001EditMode = !dropDown001EditMode;
+            rgui::set_style(rgui::DROPDOWNBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
+            rgui::set_style(rgui::DROPDOWNBOX, rgui::TEXT_PADDING, 0);
 
-            if (rgui::gui_dropdown_box(Rectangle { 25, 25, 125, 30 }, "ONE;TWO;THREE", &dropdownBox000Active, dropDown000EditMode)) dropDown000EditMode = !dropDown000EditMode;
+            if (rgui::dropdown_box(Rectangle { 25, 25, 125, 30 }, "ONE;TWO;THREE", &dropdownBox000Active, dropDown000EditMode)) dropDown000EditMode = !dropDown000EditMode;
 
             // Second GUI column
-            rgui::gui_list_view(Rectangle { 165, 25, 140, 124 }, "Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey", &listViewScrollIndex, &listViewActive);
-            rgui::gui_list_view_ex(Rectangle { 165, 162, 140, 184 }, listViewExList, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
+            rgui::list_view(Rectangle { 165, 25, 140, 124 }, "Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey", &listViewScrollIndex, &listViewActive);
+            rgui::list_view_ex(Rectangle { 165, 162, 140, 184 }, listViewExList, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
 
-            //rgui::gui_toggle(Rectangle { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
-            rgui::gui_toggle_group(Rectangle { 165, 360, 140, 24 }, "#1#ONE\n#3#TWO\n#8#THREE\n#23#", &toggleGroupActive);
-            //rgui::gui_disable();
-            rgui::gui_set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 2);
-            rgui::gui_toggle_slider(Rectangle { 165, 480, 140, 30 }, "ON;OFF", &toggleSliderActive);
-            rgui::gui_set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 0);
+            //rgui::toggle(Rectangle { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
+            rgui::toggle_group(Rectangle { 165, 360, 140, 24 }, "#1#ONE\n#3#TWO\n#8#THREE\n#23#", &toggleGroupActive);
+            //rgui::disable();
+            rgui::set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 2);
+            rgui::toggle_slider(Rectangle { 165, 480, 140, 30 }, "ON;OFF", &toggleSliderActive);
+            rgui::set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 0);
 
             // Third GUI column
-            rgui::gui_panel(Rectangle { 320, 25, 225, 140 }, "Panel Info");
-            rgui::gui_color_picker(Rectangle { 320, 185, 196, 192 }, null, &colorPickerValue);
+            rgui::panel(Rectangle { 320, 25, 225, 140 }, "Panel Info");
+            rgui::color_picker(Rectangle { 320, 185, 196, 192 }, null, &colorPickerValue);
 
             //GuiDisable();
-            rgui::gui_slider(Rectangle { 355, 400, 165, 20 }, "TEST", rl::text_format("%2.2f", sliderValue), &sliderValue, -50, 100);
-            rgui::gui_slider_bar(Rectangle { 320, 430, 200, 20 }, null, rl::text_format("%i", (int)sliderBarValue), &sliderBarValue, 0, 100);
+            rgui::slider(Rectangle { 355, 400, 165, 20 }, "TEST", rl::text_format("%2.2f", sliderValue), &sliderValue, -50, 100);
+            rgui::slider_bar(Rectangle { 320, 430, 200, 20 }, null, rl::text_format("%i", (int)sliderBarValue), &sliderBarValue, 0, 100);
             
-            rgui::gui_progress_bar(Rectangle { 320, 460, 200, 20 }, null, rl::text_format("%i%%", (int)(progressValue*100)), &progressValue, 0.0f, 1.0f);
-            rgui::gui_enable();
+            rgui::progress_bar(Rectangle { 320, 460, 200, 20 }, null, rl::text_format("%i%%", (int)(progressValue*100)), &progressValue, 0.0f, 1.0f);
+            rgui::enable();
 
             // NOTE: View rectangle could be used to perform some scissor test
             Rectangle view;
-            rgui::gui_scroll_panel(Rectangle { 560, 25, 102, 354 }, null, Rectangle { 560, 25, 300, 1200 }, &viewScroll, &view);
+            rgui::scroll_panel(Rectangle { 560, 25, 102, 354 }, null, Rectangle { 560, 25, 300, 1200 }, &viewScroll, &view);
 
             Vector2 mouseCell;
-            rgui::gui_grid(Rectangle  { 560, 25 + 180 + 195, 100, 120 }, null, 20, 3, &mouseCell);
+            rgui::grid(Rectangle  { 560, 25 + 180 + 195, 100, 120 }, null, 20, 3, &mouseCell);
 
-            rgui::gui_color_bar_alpha(Rectangle { 320, 490, 200, 30 }, null, &alphaValue);
+            rgui::color_bar_alpha(Rectangle { 320, 490, 200, 30 }, null, &alphaValue);
 
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_TOP);   // WARNING: Word-wrap does not work as expected in case of no-top alignment
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_WORD);            // WARNING: If wrap mode enabled, text editing is not supported
-            if (rgui::gui_text_box(Rectangle { 678, 25, 258, 492 }, textBoxMultiText, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_NONE);
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_MIDDLE);
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_TOP);   // WARNING: Word-wrap does not work as expected in case of no-top alignment
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_WORD);            // WARNING: If wrap mode enabled, text editing is not supported
+            if (rgui::text_box(Rectangle { 678, 25, 258, 492 }, textBoxMultiText, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_NONE);
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_MIDDLE);
 
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            rgui::gui_status_bar(Rectangle { 0, (float)rl::get_screen_height() - 20, (float)rl::get_screen_width(), 20 }, "This is a status bar");
-            rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
-            //rgui::gui_set_style(rgui::STATUSBAR, rgui::TEXT_INDENTATION, 20);
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
+            rgui::status_bar(Rectangle { 0, (float)rl::get_screen_height() - 20, (float)rl::get_screen_width(), 20 }, "This is a status bar");
+            rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
+            //rgui::set_style(rgui::STATUSBAR, rgui::TEXT_INDENTATION, 20);
 
             if (showMessageBox)
             {
                 rl::draw_rectangle(0, 0, rl::get_screen_width(), rl::get_screen_height(), rl::fade(rl::RAYWHITE, 0.8f));
-                int result = rgui::gui_message_box(
+                int result = rgui::message_box(
                   Rectangle {
                     (float)rl::get_screen_width()/2 - 125,
                     (float)rl::get_screen_height()/2 - 50,
                     250,
                     100
                   },
-                  rgui::gui_icon_text(ICON_EXIT, "Close Window"),
+                  rgui::icon_text(ICON_EXIT, "Close Window"),
                   "Do you really want to exit?",
                   "Yes;No"
                 );
@@ -299,14 +299,14 @@ fn int main()
             if (showTextInputBox)
             {
                 rl::draw_rectangle(0, 0, rl::get_screen_width(), rl::get_screen_height(), rl::fade(rl::RAYWHITE, 0.8f));
-                int result = rgui::gui_text_input_box(
+                int result = rgui::text_input_box(
                   Rectangle {
                     (float)rl::get_screen_width()/2 - 120,
                     (float)rl::get_screen_height()/2 - 60,
                     240,
                     140
                   },
-                  rgui::gui_icon_text(rgui::GuiIconName.ICON_FILE_SAVE, "Save file as..."),
+                  rgui::icon_text(rgui::GuiIconName.ICON_FILE_SAVE, "Save file as..."),
                   "Introduce output file name:", "Ok;Cancel", textInput, null);
 
 
