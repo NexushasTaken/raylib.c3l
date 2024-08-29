@@ -1,4 +1,4 @@
-module rgui_ffi @if(env::SUPPORT_RAYGUI);
+module rgui_ffi @if(config::SUPPORT_RAYGUI);
 import rl;
 
 // Style set/get functions

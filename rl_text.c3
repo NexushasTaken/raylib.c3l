@@ -140,47 +140,47 @@ extern fn Rectangle get_glyph_atlas_rec(Font font, int codepoint) @extern("GetGl
 /**
  * Load UTF-8 text encoded from codepoints array
  */
-extern fn char* load_utf8(int *codepoints, int length) @extern("LoadUTF8") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn char* load_utf8(int *codepoints, int length) @extern("LoadUTF8") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Unload UTF-8 text encoded from codepoints array
  */
-extern fn void unload_utf8(char* text) @extern("UnloadUTF8") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn void unload_utf8(char* text) @extern("UnloadUTF8") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
  */
-extern fn int* load_codepoints(ZString text, int *count) @extern("LoadCodepoints") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn int* load_codepoints(ZString text, int *count) @extern("LoadCodepoints") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Unload codepoints data from memory
  */
-extern fn void unload_codepoints(int* codepoints) @extern("UnloadCodepoints") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn void unload_codepoints(int* codepoints) @extern("UnloadCodepoints") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Get total number of codepoints in a UTF-8 encoded string
  */
-extern fn int get_codepoint_count(ZString text) @extern("GetCodepointCount") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn int get_codepoint_count(ZString text) @extern("GetCodepointCount") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
  */
-extern fn int get_codepoint(ZString text, int *codepoint_size) @extern("GetCodepoint") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn int get_codepoint(ZString text, int *codepoint_size) @extern("GetCodepoint") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
  */
-extern fn int get_codepoint_next(ZString text, int *codepoint_size) @extern("GetCodepointNext") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn int get_codepoint_next(ZString text, int *codepoint_size) @extern("GetCodepointNext") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
  */
-extern fn int get_codepoint_previous(ZString text, int *codepoint_size) @extern("GetCodepointPrevious") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn int get_codepoint_previous(ZString text, int *codepoint_size) @extern("GetCodepointPrevious") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 /**
  * Encode one codepoint into UTF-8 byte array (array length returned as parameter)
  */
-extern fn ZString codepoint_to_utf8(int codepoint, int *utf8_size) @extern("CodepointToUTF8") @if(env::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+extern fn ZString codepoint_to_utf8(int codepoint, int *utf8_size) @extern("CodepointToUTF8") @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
 
 // Text strings management functions (no UTF-8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
@@ -189,75 +189,75 @@ extern fn ZString codepoint_to_utf8(int codepoint, int *utf8_size) @extern("Code
 /**
  * Copy one string to another, returns bytes copied
  */
-extern fn int text_copy(ZString dst, ZString src) @extern("TextCopy") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn int text_copy(ZString dst, ZString src) @extern("TextCopy") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Check if two text string are equal
  */
-extern fn bool text_is_equal(ZString text1, ZString text2) @extern("TextIsEqual") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn bool text_is_equal(ZString text1, ZString text2) @extern("TextIsEqual") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get text length, checks for '\0' ending
  */
-extern fn uint text_length(ZString text) @extern("TextLength") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn uint text_length(ZString text) @extern("TextLength") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Text formatting with variables (sprintf() style)
  */
-extern fn ZString text_format(ZString text, ...) @extern("TextFormat") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_format(ZString text, ...) @extern("TextFormat") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get a piece of a text string
  */
-extern fn ZString text_subtext(ZString text, int position, int length) @extern("TextSubtext") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_subtext(ZString text, int position, int length) @extern("TextSubtext") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Replace text string (WARNING: memory must be freed!)
  */
-extern fn char* text_replace(char *text, ZString replace, ZString by) @extern("TextReplace") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn char* text_replace(char *text, ZString replace, ZString by) @extern("TextReplace") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Insert text in a position (WARNING: memory must be freed!)
  */
-extern fn char* text_insert(ZString text, ZString insert, int position) @extern("TextInsert") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn char* text_insert(ZString text, ZString insert, int position) @extern("TextInsert") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Join text strings with delimiter
  */
-extern fn ZString text_join(ZString *text_list, int count, ZString delimiter) @extern("TextJoin") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_join(ZString *text_list, int count, ZString delimiter) @extern("TextJoin") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Split text into multiple strings
  */
-extern fn ZString *text_split(ZString text, char delimiter, int *count) @extern("TextSplit") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString *text_split(ZString text, char delimiter, int *count) @extern("TextSplit") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Append text at specific position and move cursor!
  */
-extern fn void text_append(char* text, ZString append, int *position) @extern("TextAppend") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn void text_append(char* text, ZString append, int *position) @extern("TextAppend") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Find first text occurrence within a string
  */
-extern fn int text_find_index(ZString text, ZString find) @extern("TextFindIndex") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn int text_find_index(ZString text, ZString find) @extern("TextFindIndex") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get upper case version of provided string
  */
-extern fn ZString text_to_upper(ZString text) @extern("TextToUpper") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_to_upper(ZString text) @extern("TextToUpper") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get lower case version of provided string
  */
-extern fn ZString text_to_lower(ZString text) @extern("TextToLower") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_to_lower(ZString text) @extern("TextToLower") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get Pascal case notation version of provided string
  */
-extern fn ZString text_to_pascal(ZString text) @extern("TextToPascal") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn ZString text_to_pascal(ZString text) @extern("TextToPascal") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 
 /**
  * Get integer value from text (negative values not supported)
  */
-extern fn int text_to_integer(ZString text) @extern("TextToInteger") @if(env::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+extern fn int text_to_integer(ZString text) @extern("TextToInteger") @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
 

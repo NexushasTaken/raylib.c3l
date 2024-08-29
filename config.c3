@@ -1,4 +1,4 @@
-module rl::env;
+module rl::config;
 
 const SUPPORT_INTERNAL_MEMORY_MANAGEMENT = $feature(SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
 const SUPPORT_STANDARD_FILEIO = $feature(SUPPORT_STANDARD_FILEIO);
@@ -10,7 +10,7 @@ const SUPPORT_RANDOM_GENERATION = $feature(SUPPORT_RANDOM_GENERATION);
 
 const SUPPORT_RAYGUI = $feature(SUPPORT_RAYGUI);
 
-module rl::env @if(SUPPORT_RAYGUI);
+module rl::config @if(SUPPORT_RAYGUI);
 
 const RAYGUI_NO_ICONS = $feature(RAYGUI_NO_ICONS);
 const RAYGUI_CUSTOM_ICONS = $feature(RAYGUI_CUSTOM_ICONS);

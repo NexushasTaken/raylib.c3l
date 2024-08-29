@@ -551,16 +551,16 @@ extern fn void wait_time(double seconds) @extern("WaitTime");
 
 // Random values generation functions
 //------------------------------------------------------------------------------------
-bool is_random_initialized @local @if(env::SUPPORT_RANDOM_GENERATION) = false; // WARNING: required if raylib was configured with SUPPORT_RPRAND_GENERATOR
+bool is_random_initialized @local @if(config::SUPPORT_RANDOM_GENERATION) = false; // WARNING: required if raylib was configured with SUPPORT_RPRAND_GENERATOR
 /**
  * Set the seed for the random number generator
  */
-extern fn void set_random_seed(uint seed) @extern("SetRandomSeed") @if(env::SUPPORT_RANDOM_GENERATION) ;
+extern fn void set_random_seed(uint seed) @extern("SetRandomSeed") @if(config::SUPPORT_RANDOM_GENERATION) ;
 
 /**
  * Get a random value between min and max (both included)
  */
-fn int get_random_value(int min, int max) @inline @if(env::SUPPORT_RANDOM_GENERATION) {
+fn int get_random_value(int min, int max) @inline @if(config::SUPPORT_RANDOM_GENERATION) {
     $if $defined(is_random_initialized):
         if (!is_random_initialized) {
             set_random_seed(0);
@@ -573,7 +573,7 @@ fn int get_random_value(int min, int max) @inline @if(env::SUPPORT_RANDOM_GENERA
 /**
  * Load random values sequence, no values repeated
  */
-fn int[] load_random_sequence(uint count, int min, int max) @inline @if(env::SUPPORT_RANDOM_GENERATION) {
+fn int[] load_random_sequence(uint count, int min, int max) @inline @if(config::SUPPORT_RANDOM_GENERATION) {
     $if $defined(is_random_initialized):
         if (!is_random_initialized) {
             set_random_seed(0);
@@ -586,7 +586,7 @@ fn int[] load_random_sequence(uint count, int min, int max) @inline @if(env::SUP
 /**
  * Unload random values sequence
  */
-fn void unload_random_sequence(int[] sequence) @inline @if(env::SUPPORT_RANDOM_GENERATION) {
+fn void unload_random_sequence(int[] sequence) @inline @if(config::SUPPORT_RANDOM_GENERATION) {
     return __unload_random_sequence(sequence.ptr);
 }
 
@@ -624,17 +624,17 @@ extern fn void set_trace_log_level(TraceLogLevel logLevel) @extern("SetTraceLogL
 /**
  * Internal memory allocator
  */
-extern fn void* mem_alloc(uint size) @extern("MemAlloc") @if(env::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
+extern fn void* mem_alloc(uint size) @extern("MemAlloc") @if(config::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
 
 /**
  * Internal memory reallocator
  */
-extern fn void* mem_realloc(void* ptr, uint size) @extern("MemRealloc") @if(env::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
+extern fn void* mem_realloc(void* ptr, uint size) @extern("MemRealloc") @if(config::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
 
 /**
  * Internal memory free
  */
-extern fn void mem_free(void* ptr) @extern("MemFree") @if(env::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
+extern fn void mem_free(void* ptr) @extern("MemFree") @if(config::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
 
 // Set custom callbacks
 // WARNING: Callbacks setup is intended for advance users
@@ -643,22 +643,22 @@ extern fn void mem_free(void* ptr) @extern("MemFree") @if(env::SUPPORT_INTERNAL_
 /**
  * Set custom file binary data loader
  */
-extern fn void set_load_file_data_callback(LoadFileDataCallback callback) @extern("SetLoadFileDataCallback") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn void set_load_file_data_callback(LoadFileDataCallback callback) @extern("SetLoadFileDataCallback") @if(config::SUPPORT_STANDARD_FILEIO);
 
 /**
  * Set custom file binary data saver
  */
-extern fn void set_save_file_data_callback(SaveFileDataCallback callback) @extern("SetSaveFileDataCallback") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn void set_save_file_data_callback(SaveFileDataCallback callback) @extern("SetSaveFileDataCallback") @if(config::SUPPORT_STANDARD_FILEIO);
 
 /**
  * Set custom file text data loader
  */
-extern fn void set_load_file_text_callback(LoadFileTextCallback callback) @extern("SetLoadFileTextCallback") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn void set_load_file_text_callback(LoadFileTextCallback callback) @extern("SetLoadFileTextCallback") @if(config::SUPPORT_STANDARD_FILEIO);
 
 /**
  * Set custom file text data saver
  */
-extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @extern("SetSaveFileTextCallback") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @extern("SetSaveFileTextCallback") @if(config::SUPPORT_STANDARD_FILEIO);
 
 // Files management functions
 //------------------------------------------------------------------------------------
@@ -666,7 +666,7 @@ extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @exter
 /**
  * Load file data as byte array (read)
  */
-fn char[] load_file_data(ZString file_name) @inline @if(env::SUPPORT_STANDARD_FILEIO) {
+fn char[] load_file_data(ZString file_name) @inline @if(config::SUPPORT_STANDARD_FILEIO) {
     int len = 0;
     char* ptr = __load_file_data(file_name, &len);
     return ptr[:(usz)len];
@@ -675,27 +675,27 @@ fn char[] load_file_data(ZString file_name) @inline @if(env::SUPPORT_STANDARD_FI
 /**
  * Unload file data allocated by LoadFileData()
  */
-fn void unload_file_data(char[] data) @inline @if(env::SUPPORT_STANDARD_FILEIO) {
+fn void unload_file_data(char[] data) @inline @if(config::SUPPORT_STANDARD_FILEIO) {
     __unload_file_data(data.ptr);
 }
 
 /**
  * Save data to file from byte array (write), returns true on success
  */
-extern fn bool save_file_data(ZString file_name, void* data, int data_size) @extern("SaveFileData") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn bool save_file_data(ZString file_name, void* data, int data_size) @extern("SaveFileData") @if(config::SUPPORT_STANDARD_FILEIO);
 
 // TODO: review
 /**
  * Export data to code (.h), returns true on success
  */
-macro bool export_data_as_code(ZString file_name, char[] data) @if(env::SUPPORT_STANDARD_FILEIO) {
+macro bool export_data_as_code(ZString file_name, char[] data) @if(config::SUPPORT_STANDARD_FILEIO) {
     return __export_data_as_code(data.ptr, data.len, file_name);
 }
 
 /**
  * Load text data from file (read), returns a '\0' terminated string
  */
-fn ZString! load_file_text(ZString file_name) @inline @if(env::SUPPORT_STANDARD_FILEIO) {
+fn ZString! load_file_text(ZString file_name) @inline @if(config::SUPPORT_STANDARD_FILEIO) {
     char* zstr = __load_file_text(file_name);
     return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
 }
@@ -703,12 +703,12 @@ fn ZString! load_file_text(ZString file_name) @inline @if(env::SUPPORT_STANDARD_
 /**
  * Unload file text data allocated by LoadFileText()
  */
-extern fn void unload_file_text(ZString text) @extern("UnloadFileText") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn void unload_file_text(ZString text) @extern("UnloadFileText") @if(config::SUPPORT_STANDARD_FILEIO);
 
 /**
  * Save text data to file (write), string must be '\0' terminated, returns true on success
  */
-extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFileText") @if(env::SUPPORT_STANDARD_FILEIO);
+extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFileText") @if(config::SUPPORT_STANDARD_FILEIO);
 //------------------------------------------------------------------
 
 // File system functions
@@ -717,102 +717,102 @@ extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFile
 /**
  * Check if file exists
  */
-extern fn bool file_exists(ZString file_name) @extern("FileExists") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool file_exists(ZString file_name) @extern("FileExists") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Check if a directory path exists
  */
-extern fn bool directory_exists(ZString dir_path) @extern("DirectoryExists") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool directory_exists(ZString dir_path) @extern("DirectoryExists") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Check file extension (including point: .png, .wav)
  */
-extern fn bool is_file_extension(ZString file_name, ZString ext) @extern("IsFileExtension") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool is_file_extension(ZString file_name, ZString ext) @extern("IsFileExtension") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
  */
-extern fn int get_file_length(ZString file_name) @extern("GetFileLength") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn int get_file_length(ZString file_name) @extern("GetFileLength") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get pointer to extension for a filename string (includes dot: '.png')
  */
-extern fn ZString get_file_extension(ZString file_name) @extern("GetFileExtension") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_file_extension(ZString file_name) @extern("GetFileExtension") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get pointer to filename for a path string
  */
-extern fn ZString get_file_name(ZString file_path) @extern("GetFileName") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_file_name(ZString file_path) @extern("GetFileName") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get filename string without extension (uses static string)
  */
-extern fn ZString get_file_name_without_ext(ZString file_path) @extern("GetFileNameWithoutExt") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_file_name_without_ext(ZString file_path) @extern("GetFileNameWithoutExt") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get full path for a given fileName with path (uses static string)
  */
-extern fn ZString get_directory_path(ZString file_path) @extern("GetDirectoryPath") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_directory_path(ZString file_path) @extern("GetDirectoryPath") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get previous directory path for a given path (uses static string)
  */
-extern fn ZString get_prev_directory_path(ZString dir_path) @extern("GetPrevDirectoryPath") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_prev_directory_path(ZString dir_path) @extern("GetPrevDirectoryPath") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get current working directory (uses static string)
  */
-extern fn ZString get_working_directory() @extern("GetWorkingDirectory") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_working_directory() @extern("GetWorkingDirectory") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get the directory of the running application (uses static string)
  */
-extern fn ZString get_application_directory() @extern("GetApplicationDirectory") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn ZString get_application_directory() @extern("GetApplicationDirectory") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Change working directory, return true on success
  */
-extern fn bool change_directory(ZString dir) @extern("ChangeDirectory") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool change_directory(ZString dir) @extern("ChangeDirectory") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Check if a given path is a file or a directory
  */
-extern fn bool is_path_file(ZString path) @extern("IsPathFile") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool is_path_file(ZString path) @extern("IsPathFile") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Load directory filepaths
  */
-extern fn FilePathList load_directory_files(ZString  dir_path) @extern("LoadDirectoryFiles") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn FilePathList load_directory_files(ZString  dir_path) @extern("LoadDirectoryFiles") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Load directory filepaths with extension filtering and recursive directory scan
  */
-extern fn FilePathList load_directory_files_ex(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn FilePathList load_directory_files_ex(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Unload filepaths
  */
-extern fn void unload_directory_files(FilePathList files) @extern("UnloadDirectoryFiles") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn void unload_directory_files(FilePathList files) @extern("UnloadDirectoryFiles") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Check if a file has been dropped into window
  */
-extern fn bool is_file_dropped() @extern("IsFileDropped") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn bool is_file_dropped() @extern("IsFileDropped") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Load dropped filepaths
  */
-extern fn FilePathList load_dropped_files() @extern("LoadDroppedFiles") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn FilePathList load_dropped_files() @extern("LoadDroppedFiles") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Unload dropped filepaths
  */
-extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFiles") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFiles") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 /**
  * Get file modification time (last write time)
  */
-extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime") @if(env::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime") @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
 
 // Compression/Encoding functionality
 //------------------------------------------------------------------------------------
@@ -839,7 +839,7 @@ fn char[] decompress_data(char[] comp_data) @inline {
 /**
  * Encode data to Base64 string, memory must be MemFree()
  */
-macro char[] encode_data_base64(char[] data) @if(env::SUPPORT_DATA_ENCODER) {
+macro char[] encode_data_base64(char[] data) @if(config::SUPPORT_DATA_ENCODER) {
     int size = 0;
     char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
     return encoded_data[:(usz)size];
@@ -848,7 +848,7 @@ macro char[] encode_data_base64(char[] data) @if(env::SUPPORT_DATA_ENCODER) {
 /**
  * Decode Base64 string data, memory must be MemFree()
  */
-macro char[] decode_data_base64(char[] data) @if(env::SUPPORT_DATA_ENCODER) {
+macro char[] decode_data_base64(char[] data) @if(config::SUPPORT_DATA_ENCODER) {
     int size = 0;
     char* decoded_data = __decode_data_base64(data.ptr, &size);
     return decoded_data[:(usz)size];
