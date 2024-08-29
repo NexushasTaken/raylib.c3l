@@ -2,6 +2,7 @@
 module rl;
 import std::math::vector;
 
+// Vector convertion functions
 // TODO: find a better way to convert math::vector types to raylib Vector types and vice versa? and think a better name...
 
 fn Vector2 vector::Vec2f.to_vec_rl(&this) @inline {
