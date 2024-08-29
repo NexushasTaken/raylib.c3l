@@ -310,8 +310,10 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
-module rgui;
+module rgui @if(env::SUPPORT_RAYGUI);
+import std::collections;
 import rl;
+import rgui_ffi @public;
 
 const RAYGUI_VERSION_MAJOR = 4;
 const RAYGUI_VERSION_MINOR = 0;
@@ -397,8 +399,8 @@ const GuiControlProperty BORDER_WIDTH          = 12;     // Control border size,
 //const GuiControlProperty TEXT_SIZE;                      // Control text size (glyphs max height) -> GLOBAL for all controls
 //const GuiControlProperty TEXT_SPACING;                   // Control text spacing between glyphs -> GLOBAL for all controls
 //const GuiControlProperty TEXT_LINE_SPACING;              // Control text spacing between lines -> GLOBAL for all controls
-const GuiControlProperty TEXT_PADDING          = 12;     // Control text padding, not considering border
-const GuiControlProperty TEXT_ALIGNMENT        = 13;     // Control text horizontal alignment inside control text bound (after border and padding)
+const GuiControlProperty TEXT_PADDING          = 13;     // Control text padding, not considering border
+const GuiControlProperty TEXT_ALIGNMENT        = 14;     // Control text horizontal alignment inside control text bound (after border and padding)
 
 // Gui extended properties depend on control
 // NOTE: RAYGUI_MAX_PROPS_EXTENDED properties (by default, max 8 properties)
@@ -408,12 +410,12 @@ const GuiControlProperty TEXT_ALIGNMENT        = 13;     // Control text horizon
 // WARNING: We only have 8 slots for those properties by default!!! -> New global control: TEXT?
 def GuiDefaultProperty = int;
 const GuiDefaultProperty TEXT_SIZE               = 16; // Text size (glyphs max height)
-const GuiDefaultProperty TEXT_SPACING            = 18; // Text spacing between glyphs
-const GuiDefaultProperty LINE_COLOR              = 19; // Line control color
-const GuiDefaultProperty BACKGROUND_COLOR        = 20; // Background color
-const GuiDefaultProperty TEXT_LINE_SPACING       = 21; // Text spacing between lines
-const GuiDefaultProperty TEXT_ALIGNMENT_VERTICAL = 22; // Text vertical alignment inside text bounds (after border and padding)
-const GuiDefaultProperty TEXT_WRAP_MODE          = 23; // Text wrap-mode inside text bounds
+const GuiDefaultProperty TEXT_SPACING            = 17; // Text spacing between glyphs
+const GuiDefaultProperty LINE_COLOR              = 18; // Line control color
+const GuiDefaultProperty BACKGROUND_COLOR        = 19; // Background color
+const GuiDefaultProperty TEXT_LINE_SPACING       = 20; // Text spacing between lines
+const GuiDefaultProperty TEXT_ALIGNMENT_VERTICAL = 21; // Text vertical alignment inside text bounds (after border and padding)
+const GuiDefaultProperty TEXT_WRAP_MODE          = 22; // Text wrap-mode inside text bounds
 //const GuiDefaultProperty TEXT_DECORATION;              // Text decoration: 0-None, 1-Underline, 2-Line-through, 3-Overline
 //const GuiDefaultProperty TEXT_DECORATION_THICK;        // Text decoration line thikness
 
@@ -480,6 +482,7 @@ const GuiColorPickerProperty HUEBAR_SELECTOR_OVERFLOW = 20; // ColorPicker right
 const SCROLLBAR_LEFT_SIDE  = 0;
 const SCROLLBAR_RIGHT_SIDE = 1;
 
+// TODO: remove functions name 'gui_' prefix?
 //------------------------------------------------------------------------------------
 // Global gui state control functions
 //------------------------------------------------------------------------------------
@@ -511,13 +514,14 @@ extern fn bool gui_is_locked() @extern("GuiIsLocked");
 
 /**
  * Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
+ * @require alpha >= 0.0f && alpha <= 1.0f
  */
 extern fn void gui_set_alpha(float alpha) @extern("GuiSetAlpha");
 
 /**
  * Set gui state (global state)
  */
-extern fn void gui_set_state(int state) @extern("GuiSetState");
+extern fn void gui_set_state(GuiState state) @extern("GuiSetState");
 
 /**
  * Get gui state (global state)
@@ -531,7 +535,7 @@ extern fn int gui_get_state() @extern("GuiGetState");
 /**
  * Set gui custom font (global state)
  */
-extern fn void gui_set_font(Font font) @extern("GuiSetFont");
+extern fn void gui_set_font(rl::Font font) @extern("GuiSetFont");
 
 /**
  * Get gui custom font (global state)
@@ -642,11 +646,16 @@ extern fn int gui_panel(rl::Rectangle bounds, ZString text) @extern("GuiPanel");
 
 /**
  * Tab Bar control, returns TAB to be closed or -1
+ * @param [&inout] active
  */
-extern fn int gui_tab_bar(rl::Rectangle bounds, char** text, int count, int* active) @extern("GuiTabBar");
+fn int gui_tab_bar(rl::Rectangle bounds, List(<ZString>) text, int* active) @inline {
+  return rgui_ffi::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
+}
 
 /**
  * Scroll Panel control
+ * @param [inout] scroll
+ * @param [&inout] view
  */
 extern fn int gui_scroll_panel(rl::Rectangle bounds, ZString text, Rectangle content, rl::Vector2* scroll, rl::Rectangle* view) @extern("GuiScrollPanel");
 
@@ -671,63 +680,77 @@ extern fn int gui_label_button(rl::Rectangle bounds, ZString text) @extern("GuiL
 
 /**
  * Toggle Button control, returns true when active
+ * @param [&inout] active
  */
 extern fn int gui_toggle(rl::Rectangle bounds, ZString text, bool* active) @extern("GuiToggle");
 
 /**
  * Toggle Group control, returns active toggle index
+ * @param [&inout] active
  */
 extern fn int gui_toggle_group(rl::Rectangle bounds, ZString text, int* active) @extern("GuiToggleGroup");
 
 /**
  * Toggle Slider control, returns true when clicked
+ * @param [&inout] active
  */
 extern fn int gui_toggle_slider(rl::Rectangle bounds, ZString text, int* active) @extern("GuiToggleSlider");
 
 /**
  * Check Box control, returns true when active
+ * @param [&inout] checked
  */
 extern fn int gui_check_box(rl::Rectangle bounds, ZString text, bool* checked) @extern("GuiCheckBox");
 
 /**
  * Combo Box control, returns selected item index
+ * @param [&inout] active
  */
 extern fn int gui_combo_box(rl::Rectangle bounds, ZString text, int* active) @extern("GuiComboBox");
 
 /**
  * Dropdown Box control, returns selected item
+ * @param [&inout] active
  */
 extern fn int gui_dropdown_box(rl::Rectangle bounds, ZString text, int* active, bool edit_mode) @extern("GuiDropdownBox");
 
 /**
  * Spinner control, returns selected value
+ * @param [&inout] value
  */
-extern fn int gui_spinner(rl::Rectangle bounds, ZString text, int *value, int min_value, int max_value, bool edit_mode) @extern("GuiSpinner");
+extern fn int gui_spinner(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @extern("GuiSpinner");
 
 /**
  * Value Box control, updates input text with numbers
+ * @param [&inout] value
  */
-extern fn int gui_value_box(rl::Rectangle bounds, ZString text, int *value, int min_value, int max_value, bool edit_mode) @extern("GuiValueBox");
+extern fn int gui_value_box(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @extern("GuiValueBox");
 
+// TODO: find a better type for param 'text' 
 /**
  * Text Box control, updates input text
  */
-extern fn int gui_text_box(rl::Rectangle bounds, char *text, int text_size, bool edit_mode) @extern("GuiTextBox");
+fn int gui_text_box(rl::Rectangle bounds, char[] text, bool edit_mode) @inline {
+    return rgui_ffi::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
+}
 
 /**
  * Slider control, returns selected value
+ * @param [&inout] value
  */
-extern fn int gui_slider(rl::Rectangle bounds, ZString text_left, ZString text_right, float *value, float min_value, float max_value) @extern("GuiSlider");
+extern fn int gui_slider(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiSlider");
 
 /**
  * Slider Bar control, returns selected value
+ * @param [&inout] value
  */
-extern fn int gui_slider_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float *value, float min_value, float max_value) @extern("GuiSliderBar");
+extern fn int gui_slider_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiSliderBar");
 
 /**
  * Progress Bar control, shows current progress value
+ * @param [&inout] value
  */
-extern fn int gui_progress_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float *value, float min_value, float max_value) @extern("GuiProgressBar");
+extern fn int gui_progress_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiProgressBar");
 
 /**
  * Status Bar control, shows info text
@@ -741,8 +764,9 @@ extern fn int gui_dummy_rec(rl::Rectangle bounds, ZString text) @extern("GuiDumm
 
 /**
  * Grid control, returns mouse cell position
+ * @param [out] mouse_cell
  */
-extern fn int gui_grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, Vector2 *mouse_cell) @extern("GuiGrid");
+extern fn int gui_grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, Vector2* mouse_cell) @extern("GuiGrid");
 
 //------------------------------------------------------------------------------------
 // Advance controls set
@@ -750,53 +774,70 @@ extern fn int gui_grid(rl::Rectangle bounds, ZString text, float spacing, int su
 
 /**
  * List View control, returns selected list item index
+ * @param [&inout] scroll_index
+ * @param [&inout] active
  */
-extern fn int gui_list_view(rl::Rectangle bounds, ZString text, int *scroll_index, int *active) @extern("GuiListView");
+extern fn int gui_list_view(rl::Rectangle bounds, ZString text, int* scroll_index, int* active) @extern("GuiListView");
 
 /**
  * List View with extended parameters
+ * @param [&inout] scroll_index
+ * @param [&inout] active
+ * @param [&inout] focus
  */
-extern fn int gui_list_view_ex(rl::Rectangle bounds, char** text, int count, int *scroll_index, int *active, int *focus) @extern("GuiListViewEx");
+fn int gui_list_view_ex(rl::Rectangle bounds, List(<ZString>) text, int* scroll_index, int* active, int* focus) @inline {
+    return rgui_ffi::__gui_list_view_ex(bounds, text.entries, (int)text.len(), scroll_index, active, focus);
+}
 
 /**
  * Message Box control, displays a message
  */
 extern fn int gui_message_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons) @extern("GuiMessageBox");
 
+// TODO: find a better type for param 'text'
 /**
  * Text Input Box control, ask for text, supports secret
+ * @param [in] secret_view_active
  */
-extern fn int gui_text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char *text, int text_max_size, bool *secret_view_active) @extern("GuiTextInputBox");
+fn int gui_text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char[] text, bool* secret_view_active) @inline {
+    return rgui_ffi::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
+}
 
 /**
  * Color Picker control (multiple color controls)
+ * @param [inout] color
  */
 extern fn int gui_color_picker(rl::Rectangle bounds, ZString text, Color* color) @extern("GuiColorPicker");
 
 /**
  * Color Panel control
+ * @param [&inout] color
  */
 extern fn int gui_color_panel(rl::Rectangle bounds, ZString text, Color* color) @extern("GuiColorPanel");
 
 /**
  * Color Bar Alpha control
+ * @param [&inout] alpha
  */
 extern fn int gui_color_bar_alpha(rl::Rectangle bounds, ZString text, float* alpha) @extern("GuiColorBarAlpha");
 
 /**
  * Color Bar Hue control
+ * @param [&inout] value
  */
 extern fn int gui_color_bar_hue(rl::Rectangle bounds, ZString text, float* value) @extern("GuiColorBarHue");
 
 /**
  * Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+ * @param [&inout] color_hsv
  */
-extern fn int gui_color_picker_h_s_v(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPickerHSV");
+extern fn int gui_color_picker_hsv(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPickerHSV");
 
 /**
  * Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
+ * @param [&inout] color_hsv
  */
-extern fn int gui_color_panel_h_s_v(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPanelHSV");
+extern fn int gui_color_panel_hsv(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPanelHSV");
 
 //----------------------------------------------------------------------------------------------------------
 

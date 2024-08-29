@@ -34,30 +34,18 @@
 **********************************************************************************************/
 
 module controls_test_suite;
+import std::io;
+import std::collections;
 import rl;
 import rgui;
 
-//#define RAYGUI_DEBUG_RECS_BOUNDS
-//#define RAYGUI_DEBUG_TEXT_BOUNDS
-
-/*
-#define RAYGUI_IMPLEMENTATION
-//#define RAYGUI_CUSTOM_ICONS     // It requires providing gui_icons.h in the same directory
-//#include "gui_icons.h"          // External icons data provided, it can be generated with rGuiIcons tool
-#include "../../src/raygui.h"
-
-// raygui embedded styles
-#include "../styles/style_cyber.h"             // raygui style: cyber
-#include "../styles/style_jungle.h"            // raygui style: jungle
-#include "../styles/style_lavanda.h"           // raygui style: lavanda
-#include "../styles/style_dark.h"              // raygui style: dark
-#include "../styles/style_bluish.h"            // raygui style: bluish
-#include "../styles/style_terminal.h"          // raygui style: terminal
-*/
-
-macro ZString to_zstr(arr) {
-  return (ZString)((char[])&arr).ptr;
-}
+// raygui styles
+import style_bluish;
+import style_cyber;
+import style_dark;
+import style_jungle;
+import style_lavanda;
+import style_terminal;
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -86,10 +74,12 @@ fn int main()
     int valueBox002Value = 0;
     bool valueBoxEditMode = false;
 
-    char[64] textBoxText = "Text box";
-    bool textBoxEditMode = false;
+    char[64] textBoxTextBuffer = "Text box";
+    char[] textBoxText = textBoxTextBuffer[:textBoxTextBuffer.len];
+    bool textBoxEditMode = true;
 
-    char[1024] textBoxMultiText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    char[1024] textBoxMultiTextBuffer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    char[] textBoxMultiText = textBoxMultiTextBuffer[:textBoxMultiTextBuffer.len];
     bool textBoxMultiEditMode = false;
 
     int listViewScrollIndex = 0;
@@ -98,7 +88,8 @@ fn int main()
     int listViewExScrollIndex = 0;
     int listViewExActive = 2;
     int listViewExFocus = -1;
-    char*[8] listViewExList = { "This", "is", "a", "list view", "with", "disable", "elements", "amazing!" };
+    List(<ZString>) listViewExList;
+    listViewExList.temp_init_with_array({ "This", "is", "a", "list view", "with", "disable", "elements", "amazing!" });
 
     char[256] multiTextBoxText = "Multi text box";
     bool multiTextBoxEditMode = false;
@@ -113,7 +104,7 @@ fn int main()
     float alphaValue = 0.5f;
 
     //int comboBoxActive = 1;
-    int visualStyleActive = 0;
+    int visualStyleActive = 4;
     int prevVisualStyleActive = 0;
 
     int toggleGroupActive = 0;
@@ -123,21 +114,22 @@ fn int main()
     //----------------------------------------------------------------------------------
 
     // Custom GUI font loading
-    //Font font = LoadFontEx("fonts/rainyhearts16.ttf", 12, 0, 0);
-    //GuiSetFont(font);
+    //rl::Font font = rl::load_font_ex("fonts/rainyhearts16.ttf", 12, 0, 0);
+    //rgui::gui_set_font(font);
 
     bool exitWindow = false;
     bool showMessageBox = false;
 
-    char[256] textInput;
-    char[256] textInputFileName;
+
+    char[] textInput = mem::temp_new_array(char, 256);
+    char[] textInputFileName = mem::temp_new_array(char, 256);
     bool showTextInputBox = false;
 
     float alpha = 1.0f;
 
     // DEBUG: Testing how those two properties affect all controls!
-    //GuiSetStyle(DEFAULT, TEXT_PADDING, 0);
-    //GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_CENTER);
+    //rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_PADDING, 0);
+    //rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
 
     rl::set_target_fps(60);
     //--------------------------------------------------------------------------------------
@@ -174,7 +166,6 @@ fn int main()
         if (progressValue > 1.0f) { progressValue = 1.0f; }
         else if (progressValue < 0.0f) { progressValue = 0.0f; }
 
-        /*
         if (visualStyleActive != prevVisualStyleActive)
         {
             rgui::gui_load_style_default();
@@ -182,20 +173,19 @@ fn int main()
             switch (visualStyleActive)
             {
                 case 0: break;      // Default style
-                case 1: GuiLoadStyleJungle(); break;
-                case 2: GuiLoadStyleLavanda(); break;
-                case 3: GuiLoadStyleDark(); break;
-                case 4: GuiLoadStyleBluish(); break;
-                case 5: GuiLoadStyleCyber(); break;
-                case 6: GuiLoadStyleTerminal(); break;
+                case 1: style_jungle::load_style(); break;
+                case 2: style_lavanda::load_style(); break;
+                case 3: style_dark::load_style(); break;
+                case 4: style_bluish::load_style(); break;
+                case 5: style_cyber::load_style(); break;
+                case 6: style_terminal::load_style(); break;
                 default: break;
             }
 
-            rgui::gui_set_style(LABEL, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+            rgui::gui_set_style(rgui::LABEL, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
 
             prevVisualStyleActive = visualStyleActive;
         }
-        */
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -218,7 +208,7 @@ fn int main()
             if (rgui::gui_spinner(Rectangle { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
             if (rgui::gui_value_box(Rectangle { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
             rgui::gui_set_style(rgui::TEXTBOX, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
-            if (rgui::gui_text_box(Rectangle { 25, 215, 125, 30 }, to_zstr(textBoxText), 64, textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
+            if (rgui::gui_text_box(Rectangle { 25, 215, 125, 30 }, textBoxText, textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
 
             rgui::gui_set_style(rgui::BUTTON, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
 
@@ -247,11 +237,11 @@ fn int main()
 
             // Second GUI column
             rgui::gui_list_view(Rectangle { 165, 25, 140, 124 }, "Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey", &listViewScrollIndex, &listViewActive);
-            rgui::gui_list_view_ex(Rectangle { 165, 162, 140, 184 }, (char**)&listViewExList, 8, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
+            rgui::gui_list_view_ex(Rectangle { 165, 162, 140, 184 }, listViewExList, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
 
-            //GuiToggle(Rectangle { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
+            //rgui::gui_toggle(Rectangle { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
             rgui::gui_toggle_group(Rectangle { 165, 360, 140, 24 }, "#1#ONE\n#3#TWO\n#8#THREE\n#23#", &toggleGroupActive);
-            //GuiDisable();
+            //rgui::gui_disable();
             rgui::gui_set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 2);
             rgui::gui_toggle_slider(Rectangle { 165, 480, 140, 30 }, "ON;OFF", &toggleSliderActive);
             rgui::gui_set_style(rgui::SLIDER, rgui::SLIDER_PADDING, 0);
@@ -278,14 +268,14 @@ fn int main()
 
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_TOP);   // WARNING: Word-wrap does not work as expected in case of no-top alignment
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_WORD);            // WARNING: If wrap mode enabled, text editing is not supported
-            if (rgui::gui_text_box(Rectangle { 678, 25, 258, 492 }, to_zstr(textBoxMultiText), textBoxMultiText.len, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
+            if (rgui::gui_text_box(Rectangle { 678, 25, 258, 492 }, textBoxMultiText, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_NONE);
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_MIDDLE);
 
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_LEFT);
             rgui::gui_status_bar(Rectangle { 0, (float)rl::get_screen_height() - 20, (float)rl::get_screen_width(), 20 }, "This is a status bar");
             rgui::gui_set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT, rgui::TEXT_ALIGN_CENTER);
-            //gui_set_style(STATUSBAR, TEXT_INDENTATION, 20);
+            //rgui::gui_set_style(rgui::STATUSBAR, rgui::TEXT_INDENTATION, 20);
 
             if (showMessageBox)
             {
@@ -317,24 +307,20 @@ fn int main()
                     140
                   },
                   rgui::gui_icon_text(rgui::GuiIconName.ICON_FILE_SAVE, "Save file as..."),
-                  "Introduce output file name:",
-                  "Ok;Cancel",
-                  to_zstr(textInput),
-                  textInput.len,
-                  null
-                );
+                  "Introduce output file name:", "Ok;Cancel", textInput, null);
+
 
                 if (result == 1)
                 {
                     // TODO: Validate textInput value and save
 
-                    rl::text_copy(to_zstr(textInputFileName), to_zstr(textInput));
+                    rl::text_copy((ZString)textInputFileName.ptr, (ZString)textInput.ptr);
                 }
 
                 if ((result == 0) || (result == 1) || (result == 2))
                 {
                     showTextInputBox = false;
-                    rl::text_copy(to_zstr(textInput), "\0");
+                    rl::text_copy((ZString)textInput.ptr, "\0");
                 }
             }
             //----------------------------------------------------------------------------------

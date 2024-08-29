@@ -31,6 +31,10 @@
     //"SUPPORT_TEXT_CODEPOINTS_MANAGEMENT",
     //"SUPPORT_TEXT_C_STRING_MANAGEMENT",
     //"SUPPORT_RANDOM_GENERATION",
+
+    //"SUPPORT_RAYGUI",
+    //"RAYGUI_NO_ICONS",
+    //"RAYGUI_CUSTOM_ICONS",
   ],
   // Targets.
   "targets": {
@@ -57,12 +61,20 @@
       "type": "executable",
       // Additional libraries, sources
       // and overrides of global settings here.
-      "sources": [ "./examples/controls_test_suite/controls_test_suite.c3" ],
+      "sources": [
+        "./examples/controls_test_suite/controls_test_suite.c3",
+        "./examples/styles/style_loader.c3",
+        "./examples/styles/style_bluish.c3",
+        "./examples/styles/style_cyber.c3",
+        "./examples/styles/style_dark.c3",
+        "./examples/styles/style_jungle.c3",
+        "./examples/styles/style_lavanda.c3",
+        "./examples/styles/style_terminal.c3",
+      ],
       "output": "./examples/controls_test_suite",
       "features": [
         "SUPPORT_FILE_SYSTEM_FUNCTIONS",
-        "RAYGUI_NO_ICONS",
-        "RAYGUI_CUSTOM_ICONS",
+        "SUPPORT_RAYGUI",
         "SUPPORT_TEXT_C_STRING_MANAGEMENT",
       ],
     },
