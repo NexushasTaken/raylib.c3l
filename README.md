@@ -70,7 +70,7 @@ You can use `just` package to automatically build raylib and copy to its specifi
 
 After you installed `just` package, enter these commands
 ```
-cd libs/raylib.c3l && just bulid_raylib
+cd libs/raylib.c3l && just build_raylib
 ```
 
 # Future goals
