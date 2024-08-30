@@ -12,12 +12,12 @@ Though, C Libraries can be easily ported to C3, this binding supposed to use the
 
 ## Supported Platforms
 
-| API    | Windows | Linux        | macOS | Web | Android | Raspberry Pi |
-| ------ | ------- | ------------ | ----- | --- | ------- | ------------ |
-| core   |         | :check_mark: |       |     |         |              |
-| rgui   |         | :check_mark: |       |     |         |              |
-| physac |         | :x:          |       |     |         |              |
-| rlgl   |         | :x:          |       |     |         |              |
+ | API    | Windows | Linux              | macOS | Web | Android | Raspberry Pi |
+ | ------ | ------- | ------------------ | ----- | --- | ------- | ------------ |
+ | core   |         | :heavy_check_mark: |       |     |         |              |
+ | rgui   |         | :heavy_check_mark: |       |     |         |              |
+ | physac |         | :x:                |       |     |         |              |
+ | rlgl   |         | :x:                |       |     |         |              |
 
 I only have linux running on my pc, so i can't test it on other OS.
 You can however compile raylib from source yourself(with raygui enabled) and copy the compiled library to target folder in parent directory of this binding.
