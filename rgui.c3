@@ -616,7 +616,7 @@ extern fn char** load_icons(ZString file_name, bool load_icons_name) @extern("Gu
 /**
  * Draw icon using pixel size at specified position
  */
-extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, Color color) @extern("GuiDrawIcon") @if(!config::RAYGUI_NO_ICONS);
+extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @extern("GuiDrawIcon") @if(!config::RAYGUI_NO_ICONS);
 
 //------------------------------------------------------------------------------------
 // Controls
@@ -632,7 +632,7 @@ extern fn int window_box(rl::Rectangle bounds, ZString title) @extern("GuiWindow
 /**
  * Group Box control with text name
  */
-extern fn int group_box(Rectangle bounds, ZString text) @extern("GuiGroupBox");
+extern fn int group_box(rl::Rectangle bounds, ZString text) @extern("GuiGroupBox");
 
 /**
  * Line separator control, could contain text
@@ -657,7 +657,7 @@ fn int tab_bar(rl::Rectangle bounds, List(<ZString>) text, int* active) @inline 
  * @param [inout] scroll
  * @param [&inout] view
  */
-extern fn int scroll_panel(rl::Rectangle bounds, ZString text, Rectangle content, rl::Vector2* scroll, rl::Rectangle* view) @extern("GuiScrollPanel");
+extern fn int scroll_panel(rl::Rectangle bounds, ZString text, rl::Rectangle content, rl::Vector2* scroll, rl::Rectangle* view) @extern("GuiScrollPanel");
 
 //------------------------------------------------------------------------------------
 // Basic controls set
@@ -766,7 +766,7 @@ extern fn int dummy_rec(rl::Rectangle bounds, ZString text) @extern("GuiDummyRec
  * Grid control, returns mouse cell position
  * @param [out] mouse_cell
  */
-extern fn int grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, Vector2* mouse_cell) @extern("GuiGrid");
+extern fn int grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, rl::Vector2* mouse_cell) @extern("GuiGrid");
 
 //------------------------------------------------------------------------------------
 // Advance controls set
@@ -831,13 +831,13 @@ extern fn int color_bar_hue(rl::Rectangle bounds, ZString text, float* value) @e
  * Color Picker control that avoids conversion to RGB on each call (multiple color controls)
  * @param [&inout] color_hsv
  */
-extern fn int color_picker_hsv(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPickerHSV");
+extern fn int color_picker_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @extern("GuiColorPickerHSV");
 
 /**
  * Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
  * @param [&inout] color_hsv
  */
-extern fn int color_panel_hsv(rl::Rectangle bounds, ZString text, Vector3* color_hsv) @extern("GuiColorPanelHSV");
+extern fn int color_panel_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @extern("GuiColorPanelHSV");
 
 //----------------------------------------------------------------------------------------------------------
 
