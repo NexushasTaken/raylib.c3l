@@ -4,7 +4,7 @@ raylib.c3l is a C3 bindings for [raylib](http://www.raylib.com/) 5.0.
 
 Though, C Libraries can be easily ported to C3, this binding supposed to use the C3 features for easier usage.
 - Since C3 has builtin vector support such as Vec2f, Vec3f, etc...; Vector helpers are added to convert raylib Vectors to C3 vectors and vice versa. (See [rl_vector](./rl_vector.c3)).
-- This bindings uses `features` to disable some raylib functions such as Memory Management, Standard File IO and so on, are disabled by default because C3 already has its functions(see [dependencies](##Dependencies)).
+- This bindings uses `features` to disable some raylib functions such as Memory Management, Standard File IO and so on, are disabled by default because C3 already has its functions(see #Installation).
 - Some raylib functions returns an error, this bindings replaced that using Optionals (under construction).
 - For function that required a array/object pointer and its length, is replaced by `List(<Object>)` or `Object[]` depending on function usage.
 
@@ -51,9 +51,21 @@ Add this to your `project.json`, you can uncomment some features that are listed
 
 ## Linux
 You can use `just` package to automatically build raylib and copy to its specific folder.
-- Archlinux
+- [Archlinux](https://www.archlinux.org/)
   ```
   sudo pacman -S just
+  ```
+- [Debian derivatives](https://en.wikipedia.org/wiki/APT_(software))
+  ```
+  sudo apt install just
+  ```
+- [Microsoft Windows (scoop)](https://scoop.sh/)
+  ```
+  scoop install just
+  ```
+- [macOS](https://www.macports.org/)
+  ```
+  port install just
   ```
 
 After you installed `just` package, enter these commands
