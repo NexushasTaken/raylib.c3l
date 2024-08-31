@@ -26,7 +26,7 @@ You can however compile raylib from source yourself(with raygui enabled) and cop
 
 In your project parent directory, run this command:
 ```sh
-git clone --recurse-submodules https://github.com/NexushasTaken/raylib.c3l ./libs/raylib.c3l
+git clone --recurse-submodules https://github.com/NexushasTaken/raylib.c3l ./lib/raylib.c3l
 ```
 
 Add this to your `project.json`, you can uncomment some features that are listed if you want to use those functions.
@@ -70,7 +70,7 @@ You can use `just` package to automatically build raylib and copy to its specifi
 
 After you installed `just` package, enter these commands
 ```
-cd libs/raylib.c3l && just build_raylib
+cd lib/raylib.c3l && just build_raylib
 ```
 
 # Future goals
