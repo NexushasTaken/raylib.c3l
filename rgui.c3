@@ -648,7 +648,7 @@ extern fn int panel(rl::Rectangle bounds, ZString text) @extern("GuiPanel");
  * @param [&inout] active
  */
 fn int tab_bar(rl::Rectangle bounds, List(<ZString>) text, int* active) @inline {
-  return rgui_ffi::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
+  return rgui::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
 }
 
 /**
@@ -730,7 +730,7 @@ extern fn int value_box(rl::Rectangle bounds, ZString text, int* value, int min_
  * Text Box control, updates input text
  */
 fn int text_box(rl::Rectangle bounds, char[] text, bool edit_mode) @inline {
-    return rgui_ffi::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
+    return rgui::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
 }
 
 /**
@@ -785,7 +785,7 @@ extern fn int list_view(rl::Rectangle bounds, ZString text, int* scroll_index, i
  * @param [&inout] focus
  */
 fn int list_view_ex(rl::Rectangle bounds, List(<ZString>) text, int* scroll_index, int* active, int* focus) @inline {
-    return rgui_ffi::__gui_list_view_ex(bounds, text.entries, (int)text.len(), scroll_index, active, focus);
+    return rgui::__gui_list_view_ex(bounds, text.entries, (int)text.len(), scroll_index, active, focus);
 }
 
 /**
@@ -799,7 +799,7 @@ extern fn int message_box(rl::Rectangle bounds, ZString title, ZString message, 
  * @param [in] secret_view_active
  */
 fn int text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char[] text, bool* secret_view_active) @inline {
-    return rgui_ffi::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
+    return rgui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
 }
 
 /**
