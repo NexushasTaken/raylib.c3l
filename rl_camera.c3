@@ -8,7 +8,7 @@ module rl;
 /**
  * Update camera position for selected mode
  */
-extern fn void update_camera(Camera* camera, CameraMode mode) @extern("UpdateCamera");
+extern fn void Camera.update_camera(Camera* camera, CameraMode mode) @extern("UpdateCamera");
 
 /**
  * Update camera movement/rotation
