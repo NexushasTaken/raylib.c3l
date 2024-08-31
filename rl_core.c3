@@ -601,7 +601,7 @@ fn char[] decompress_data(char[] comp_data) @inline {
 /**
  * Encode data to Base64 string, memory must be MemFree()
  */
-macro char[] encode_data_base64(char[] data) @if(config::SUPPORT_DATA_ENCODER) {
+macro char[] encode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
     int size = 0;
     char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
     return encoded_data[:(usz)size];
@@ -610,7 +610,7 @@ macro char[] encode_data_base64(char[] data) @if(config::SUPPORT_DATA_ENCODER) {
 /**
  * Decode Base64 string data, memory must be MemFree()
  */
-macro char[] decode_data_base64(char[] data) @if(config::SUPPORT_DATA_ENCODER) {
+macro char[] decode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
     int size = 0;
     char* decoded_data = __decode_data_base64(data.ptr, &size);
     return decoded_data[:(usz)size];

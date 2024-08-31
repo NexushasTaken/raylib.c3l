@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_INTERNAL_MEMORY_MANAGEMENT);
+module rl @if($feature(SUPPORT_INTERNAL_MEMORY_MANAGEMENT));
 
 /**
  * Internal memory allocator

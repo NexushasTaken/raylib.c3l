@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_STANDARD_FILEIO);
+module rl @if($feature(SUPPORT_STANDARD_FILEIO));
 import std::io;
 
 // Set custom callbacks

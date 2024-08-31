@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_TEXT_C_STRING_MANAGEMENT);
+module rl @if($feature(SUPPORT_TEXT_C_STRING_MANAGEMENT));
 
 // Text strings management functions (no UTF-8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!

@@ -310,7 +310,7 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
-module rgui @if(config::SUPPORT_RAYGUI);
+module rgui @if($feature(SUPPORT_RAYGUI));
 import std::collections;
 import rl;
 import rgui_ffi @public;
@@ -601,22 +601,22 @@ extern fn ZString icon_text(GuiIconName icon_id, ZString text) @extern("GuiIconT
 /**
  * Set default icon drawing size
  */
-extern fn void set_icon_scale(int scale) @extern("GuiSetIconScale") @if(!config::RAYGUI_NO_ICONS);
+extern fn void set_icon_scale(int scale) @extern("GuiSetIconScale") @if(!$feature(RAYGUI_NO_ICONS));
 
 /**
  * Get raygui icons data pointer
  */
-extern fn uint* get_icons() @extern("GuiGetIcons") @if(!config::RAYGUI_NO_ICONS);
+extern fn uint* get_icons() @extern("GuiGetIcons") @if(!$feature(RAYGUI_NO_ICONS));
 
 /**
  * Load raygui icons file (.rgi) into internal icons data
  */
-extern fn char** load_icons(ZString file_name, bool load_icons_name) @extern("GuiLoadIcons") @if(!config::RAYGUI_NO_ICONS);
+extern fn char** load_icons(ZString file_name, bool load_icons_name) @extern("GuiLoadIcons") @if(!$feature(RAYGUI_NO_ICONS));
 
 /**
  * Draw icon using pixel size at specified position
  */
-extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @extern("GuiDrawIcon") @if(!config::RAYGUI_NO_ICONS);
+extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @extern("GuiDrawIcon") @if(!$feature(RAYGUI_NO_ICONS));
 
 //------------------------------------------------------------------------------------
 // Controls
@@ -841,7 +841,9 @@ extern fn int color_panel_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* c
 
 //----------------------------------------------------------------------------------------------------------
 
-enum GuiIconName : int @if(!config::RAYGUI_NO_ICONS && !config::RAYGUI_CUSTOM_ICONS) {
+module rgui @if(!$feature(RAYGUI_NO_ICONS) && !$feature(RAYGUI_CUSTOM_ICONS));
+
+enum GuiIconName : int {
     ICON_NONE,
     ICON_FOLDER_FILE_OPEN,
     ICON_FILE_SAVE_CLASSIC,

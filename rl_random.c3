@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_RANDOM_GENERATION);
+module rl @if($feature(SUPPORT_RANDOM_GENERATION));
 
 // Random values generation functions
 //------------------------------------------------------------------------------------

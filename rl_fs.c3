@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_FILE_SYSTEM_FUNCTIONS);
+module rl @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 // File system functions
 //------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 // vi: ts=4 sw=4
-module rl @if(config::SUPPORT_TEXT_CODEPOINTS_MANAGEMENT);
+module rl @if($feature(SUPPORT_TEXT_CODEPOINTS_MANAGEMENT));
 
 // Text codepoints management functions (unicode characters)
 //------------------------------------------------------------------------------------
