@@ -313,7 +313,6 @@
 module rgui @if($feature(SUPPORT_RAYGUI));
 import std::collections;
 import rl;
-import rgui_ffi @public;
 
 const RAYGUI_VERSION_MAJOR = 4;
 const RAYGUI_VERSION_MINOR = 0;

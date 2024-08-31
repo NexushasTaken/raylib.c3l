@@ -1,4 +1,4 @@
-module rgui_ffi @if($feature(SUPPORT_RAYGUI));
+module rgui @if($feature(SUPPORT_RAYGUI));
 import rl;
 
 // Controls
