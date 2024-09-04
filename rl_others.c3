@@ -374,7 +374,7 @@ struct AutomationEventList {
 // System/Window config flags
 // NOTE: Every bit registers one state (use it with bit masks)
 // By default all flags are set to 0
-distinct ConfigFlags = uint;
+def ConfigFlags = uint;
 const ConfigFlags FLAG_VSYNC_HINT         = 0x00000040;   // Set to try enabling V-Sync on GPU
 const ConfigFlags FLAG_FULLSCREEN_MODE    = 0x00000002;   // Set to run program in fullscreen
 const ConfigFlags FLAG_WINDOW_RESIZABLE   = 0x00000004;   // Set to allow resizable window
@@ -410,7 +410,7 @@ $assert((int)TraceLogLevel.ALL == 0);
 // Keyboard keys (US keyboard layout)
 // NOTE: Use GetKeyPressed() to allow redefining
 // required keys for alternative layouts
-distinct KeyboardKey = int;
+def KeyboardKey = int;
 const KeyboardKey KEY_NULL            = 0;        // Key: NULL, used for no key pressed
 // Alphanumeric keys
 const KeyboardKey KEY_APOSTROPHE      = 39;       // Key: '
@@ -759,7 +759,7 @@ $assert((int)BlendMode.ALPHA == 0);
 
 // Gesture
 // NOTE: Provided as bit-wise flags to enable only desired gestures
-distinct Gesture = uint;
+def Gesture = uint;
 const Gesture GESTURE_NONE        = 0;        // No gesture
 const Gesture GESTURE_TAP         = 1;        // Tap gesture
 const Gesture GESTURE_DOUBLETAP   = 2;        // Double tap gesture

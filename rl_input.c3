@@ -184,7 +184,7 @@ extern fn Vector2 get_mouse_wheel_move_v() @extern("GetMouseWheelMoveV");
 /**
  * Set mouse cursor
  */
-extern fn void set_mouse_cursor(int cursor) @extern("SetMouseCursor");
+extern fn void set_mouse_cursor(MouseCursor cursor) @extern("SetMouseCursor");
 
 // Input-related functions: touch
 //------------------------------------------------------------------------------------
