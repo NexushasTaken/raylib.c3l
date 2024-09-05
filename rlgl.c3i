@@ -1,0 +1,1081 @@
+module rlgl::env;
+
+const GRAPHICS_API_OPENGL_11 @if($feature(GRAPHICS_API_OPENGL_11)) = true;
+const GRAPHICS_API_OPENGL_33 @if($feature(GRAPHICS_API_OPENGL_33) || $feature(GRAPHICS_API_OPENGL_21) || $feature(GRAPHICS_API_OPENGL_43)) = true;
+const GRAPHICS_API_OPENGL_ES2 @if($feature(GRAPHICS_API_OPENGL_ES2) || $feature(GRAPHICS_API_OPENGL_ES3)) = true;
+
+//// Security check in case no GRAPHICS_API_OPENGL_* defined
+const GRAPHICS_API_OPENGL_33
+  @if(!$defined(GRAPHICS_API_OPENGL_11) &&
+      !$defined(GRAPHICS_API_OPENGL_21) &&
+      !$defined(GRAPHICS_API_OPENGL_33) &&
+      !$defined(GRAPHICS_API_OPENGL_43) &&
+      !$defined(GRAPHICS_API_OPENGL_ES2) &&
+      !$defined(GRAPHICS_API_OPENGL_ES3)) = true;
+
+
+module rlgl;
+import rl;
+
+const RLGL_VERSION = "4.5";
+
+//----------------------------------------------------------------------------------
+// Defines and Macros
+//----------------------------------------------------------------------------------
+
+// Texture parameters (equivalent to OpenGL defines)
+const TEXTURE_WRAP_S                       = 0x2802;      // GL_TEXTURE_WRAP_S
+const TEXTURE_WRAP_T                       = 0x2803;      // GL_TEXTURE_WRAP_T
+const TEXTURE_MAG_FILTER                   = 0x2800;      // GL_TEXTURE_MAG_FILTER
+const TEXTURE_MIN_FILTER                   = 0x2801;      // GL_TEXTURE_MIN_FILTER
+
+const TEXTURE_FILTER_NEAREST               = 0x2600;      // GL_NEAREST
+const TEXTURE_FILTER_LINEAR                = 0x2601;      // GL_LINEAR
+const TEXTURE_FILTER_MIP_NEAREST           = 0x2700;      // GL_NEAREST_MIPMAP_NEAREST
+const TEXTURE_FILTER_NEAREST_MIP_LINEAR    = 0x2702;      // GL_NEAREST_MIPMAP_LINEAR
+const TEXTURE_FILTER_LINEAR_MIP_NEAREST    = 0x2701;      // GL_LINEAR_MIPMAP_NEAREST
+const TEXTURE_FILTER_MIP_LINEAR            = 0x2703;      // GL_LINEAR_MIPMAP_LINEAR
+const TEXTURE_FILTER_ANISOTROPIC           = 0x3000;      // Anisotropic filter (custom identifier)
+const TEXTURE_MIPMAP_BIAS_RATIO            = 0x4000;      // Texture mipmap bias, percentage ratio (custom identifier)
+
+const TEXTURE_WRAP_REPEAT                  = 0x2901;      // GL_REPEAT
+const TEXTURE_WRAP_CLAMP                   = 0x812F;      // GL_CLAMP_TO_EDGE
+const TEXTURE_WRAP_MIRROR_REPEAT           = 0x8370;      // GL_MIRRORED_REPEAT
+const TEXTURE_WRAP_MIRROR_CLAMP            = 0x8742;      // GL_MIRROR_CLAMP_EXT
+
+// Matrix modes (equivalent to OpenGL)
+const MODELVIEW                            = 0x1700;      // GL_MODELVIEW
+const PROJECTION                           = 0x1701;      // GL_PROJECTION
+const TEXTURE                              = 0x1702;      // GL_TEXTURE
+
+// Primitive assembly draw modes
+const LINES                                = 0x0001;      // GL_LINES
+const TRIANGLES                            = 0x0004;      // GL_TRIANGLES
+const QUADS                                = 0x0007;      // GL_QUADS
+
+// GL equivalent data types
+const UNSIGNED_BYTE                        = 0x1401;      // GL_UNSIGNED_BYTE
+const FLOAT                                = 0x1406;      // GL_FLOAT
+
+// GL buffer usage hint
+const STREAM_DRAW                          = 0x88E0;      // GL_STREAM_DRAW
+const STREAM_READ                          = 0x88E1;      // GL_STREAM_READ
+const STREAM_COPY                          = 0x88E2;      // GL_STREAM_COPY
+const STATIC_DRAW                          = 0x88E4;      // GL_STATIC_DRAW
+const STATIC_READ                          = 0x88E5;      // GL_STATIC_READ
+const STATIC_COPY                          = 0x88E6;      // GL_STATIC_COPY
+const DYNAMIC_DRAW                         = 0x88E8;      // GL_DYNAMIC_DRAW
+const DYNAMIC_READ                         = 0x88E9;      // GL_DYNAMIC_READ
+const DYNAMIC_COPY                         = 0x88EA;      // GL_DYNAMIC_COPY
+
+// GL Shader type
+const FRAGMENT_SHADER                      = 0x8B30;      // GL_FRAGMENT_SHADER
+const VERTEX_SHADER                        = 0x8B31;      // GL_VERTEX_SHADER
+const COMPUTE_SHADER                       = 0x91B9;      // GL_COMPUTE_SHADER
+
+// GL blending factors
+const ZERO                                 = 0;           // GL_ZERO
+const ONE                                  = 1;           // GL_ONE
+const SRC_COLOR                            = 0x0300;      // GL_SRC_COLOR
+const ONE_MINUS_SRC_COLOR                  = 0x0301;      // GL_ONE_MINUS_SRC_COLOR
+const SRC_ALPHA                            = 0x0302;      // GL_SRC_ALPHA
+const ONE_MINUS_SRC_ALPHA                  = 0x0303;      // GL_ONE_MINUS_SRC_ALPHA
+const DST_ALPHA                            = 0x0304;      // GL_DST_ALPHA
+const ONE_MINUS_DST_ALPHA                  = 0x0305;      // GL_ONE_MINUS_DST_ALPHA
+const DST_COLOR                            = 0x0306;      // GL_DST_COLOR
+const ONE_MINUS_DST_COLOR                  = 0x0307;      // GL_ONE_MINUS_DST_COLOR
+const SRC_ALPHA_SATURATE                   = 0x0308;      // GL_SRC_ALPHA_SATURATE
+const CONSTANT_COLOR                       = 0x8001;      // GL_CONSTANT_COLOR
+const ONE_MINUS_CONSTANT_COLOR             = 0x8002;      // GL_ONE_MINUS_CONSTANT_COLOR
+const CONSTANT_ALPHA                       = 0x8003;      // GL_CONSTANT_ALPHA
+const ONE_MINUS_CONSTANT_ALPHA             = 0x8004;      // GL_ONE_MINUS_CONSTANT_ALPHA
+
+// GL blending functions/equations
+const FUNC_ADD                             = 0x8006;      // GL_FUNC_ADD
+const MIN                                  = 0x8007;      // GL_MIN
+const MAX                                  = 0x8008;      // GL_MAX
+const FUNC_SUBTRACT                        = 0x800A;      // GL_FUNC_SUBTRACT
+const FUNC_REVERSE_SUBTRACT                = 0x800B;      // GL_FUNC_REVERSE_SUBTRACT
+const BLEND_EQUATION                       = 0x8009;      // GL_BLEND_EQUATION
+const BLEND_EQUATION_RGB                   = 0x8009;      // GL_BLEND_EQUATION_RGB   // (Same as BLEND_EQUATION)
+const BLEND_EQUATION_ALPHA                 = 0x883D;      // GL_BLEND_EQUATION_ALPHA
+const BLEND_DST_RGB                        = 0x80C8;      // GL_BLEND_DST_RGB
+const BLEND_SRC_RGB                        = 0x80C9;      // GL_BLEND_SRC_RGB
+const BLEND_DST_ALPHA                      = 0x80CA;      // GL_BLEND_DST_ALPHA
+const BLEND_SRC_ALPHA                      = 0x80CB;      // GL_BLEND_SRC_ALPHA
+const BLEND_COLOR                          = 0x8005;      // GL_BLEND_COLOR
+
+
+//----------------------------------------------------------------------------------
+// Types and Structures Definition
+//----------------------------------------------------------------------------------
+// Dynamic vertex buffers (position + texcoords + colors + indices arrays)
+struct VertexBuffer { // rlVertexBuffer
+    int elementCount;           // Number of elements in the buffer (QUADS)
+
+    float* vertices;            // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    float* texcoords;           // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    char* colors;               // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+
+    uint *indices               // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+    @if($defined(env::GRAPHICS_API_OPENGL_11) || $defined(env::GRAPHICS_API_OPENGL_33));
+    ushort *indices             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+    @if($defined(env::GRAPHICS_API_OPENGL_ES2));
+
+    uint vaoId;                 // OpenGL Vertex Array Object id
+    uint[4] vboId;              // OpenGL Vertex Buffer Objects id (4 types of vertex data)
+}
+
+// Draw call type
+// NOTE: Only texture changes register a new draw, other state-change-related elements are not
+// used at this moment (vaoId, shaderId, matrices), raylib just forces a batch draw call if any
+// of those state-change happens (this is done in core module)
+struct DrawCall {
+    int mode;                   // Drawing mode: LINES, TRIANGLES, QUADS
+    int vertexCount;            // Number of vertex of the draw
+    int vertexAlignment;        // Number of vertex required for index alignment (LINES, TRIANGLES)
+    //unsigned int vaoId;       // Vertex array id to be used on the draw -> Using RLGL.currentBatch->vertexBuffer.vaoId
+    //unsigned int shaderId;    // Shader id to be used on the draw -> Using RLGL.currentShaderId
+    uint textureId;             // Texture id to be used on the draw -> Use to create new draw call if changes
+
+    Matrix projection;          // Projection matrix for this draw -> Using RLGL.projection by default
+    Matrix modelview;           // Modelview matrix for this draw -> Using RLGL.modelview by default
+}
+
+// rlRenderBatch type
+struct RenderBatch {
+    int bufferCount;            // Number of vertex buffers (multi-buffering support)
+    int currentBuffer;          // Current buffer tracking in case of multi-buffering
+    VertexBuffer* vertexBuffer; // Dynamic buffer(s) for vertex data
+
+    DrawCall* draws;            // Draw calls array, depends on textureId
+    int drawCounter;            // Draw calls counter
+    float currentDepth;         // Current depth value for next draw
+}
+
+// OpenGL version
+def GlVersion = int;
+const OPENGL_11 = 1;           // OpenGL 1.1
+const OPENGL_21 = 2;           // OpenGL 2.1 (GLSL 120)
+const OPENGL_33 = 3;           // OpenGL 3.3 (GLSL 330)
+const OPENGL_43 = 4;           // OpenGL 4.3 (using GLSL 330)
+const OPENGL_ES_20 = 5;        // OpenGL ES 2.0 (GLSL 100)
+const OPENGL_ES_30 = 6;        // OpenGL ES 3.0 (GLSL 300 es)
+
+// INFO: use rl::TraceLogLevel instead
+// Trace log level
+// NOTE: Organized by priority level
+//def rlTraceLogLevel = int;
+//const RL_LOG_ALL     = 0;         // Display all logs
+//const RL_LOG_TRACE   = 1;         // Trace logging, intended for internal use only
+//const RL_LOG_DEBUG   = 2;         // Debug logging, used for internal debugging, it should be disabled on release builds
+//const RL_LOG_INFO    = 3;         // Info logging, used for program execution info
+//const RL_LOG_WARNING = 4;         // Warning logging, used on recoverable failures
+//const RL_LOG_ERROR   = 5;         // Error logging, used on unrecoverable failures
+//const RL_LOG_FATAL   = 6;         // Fatal logging, used to abort program: exit(EXIT_FAILURE)
+//const RL_LOG_NONE    = 7;         // Disable logging
+
+// INFO: use rl::PixelFormat instead
+// Texture pixel formats
+// NOTE: Support depends on OpenGL version
+//def rlPixelFormat = int;
+//const RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE    = 1;  // 8 bit per pixel (no alpha)
+//const RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA   = 2;  // 8*2 bpp (2 channels)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5       = 3;  // 16 bpp
+//const RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8       = 4;  // 24 bpp
+//const RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1     = 5;  // 16 bpp (1 bit alpha)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4     = 6;  // 16 bpp (4 bit alpha)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8     = 7;  // 32 bpp
+//const RL_PIXELFORMAT_UNCOMPRESSED_R32          = 8;  // 32 bpp (1 channel - float)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32    = 9;  // 32*3 bpp (3 channels - float)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10; // 32*4 bpp (4 channels - float)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R16          = 11; // 16 bpp (1 channel - half float)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16    = 12; // 16*3 bpp (3 channels - half float)
+//const RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 = 13; // 16*4 bpp (4 channels - half float)
+//const RL_PIXELFORMAT_COMPRESSED_DXT1_RGB       = 14; // 4 bpp (no alpha)
+//const RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA      = 15; // 4 bpp (1 bit alpha)
+//const RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA      = 16; // 8 bpp
+//const RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA      = 17; // 8 bpp
+//const RL_PIXELFORMAT_COMPRESSED_ETC1_RGB       = 18; // 4 bpp
+//const RL_PIXELFORMAT_COMPRESSED_ETC2_RGB       = 19; // 4 bpp
+//const RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA  = 20; // 8 bpp
+//const RL_PIXELFORMAT_COMPRESSED_PVRT_RGB       = 21; // 4 bpp
+//const RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA      = 22; // 4 bpp
+//const RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA  = 23; // 8 bpp
+//const RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA  = 24; // 2 bpp
+
+// INFO: use rl::TextureFilter instead
+// Texture parameters: filter mode
+// NOTE 1: Filtering considers mipmaps if available in the texture
+// NOTE 2: Filter is accordingly set for minification and magnification
+//def rlTextureFilter = int;
+//const RL_TEXTURE_FILTER_POINT     = 0;       // No filter, just pixel approximation
+//const RL_TEXTURE_FILTER_BILINEAR  = 1;       // Linear filtering
+//const RL_TEXTURE_FILTER_TRILINEAR = 2;       // Trilinear filtering (linear with mipmaps)
+//const RL_TEXTURE_FILTER_ANISOTROPIC_4X  = 3; // Anisotropic filtering 4x
+//const RL_TEXTURE_FILTER_ANISOTROPIC_8X  = 4; // Anisotropic filtering 8x
+//const RL_TEXTURE_FILTER_ANISOTROPIC_16X = 5; // Anisotropic filtering 16x
+
+// INFO: use rl::BlendMode instead
+// Color blending modes (pre-defined)
+//def rlBlendMode = int;
+//const RL_BLEND_ALPHA    = 0;              // Blend textures considering alpha (default)
+//const RL_BLEND_ADDITIVE = 1;              // Blend textures adding colors
+//const RL_BLEND_MULTIPLIED = 2;            // Blend textures multiplying colors
+//const RL_BLEND_ADD_COLORS = 3;            // Blend textures adding colors (alternative)
+//const RL_BLEND_SUBTRACT_COLORS = 4;       // Blend textures subtracting colors (alternative)
+//const RL_BLEND_ALPHA_PREMULTIPLY = 5;     // Blend premultiplied textures considering alpha
+//const RL_BLEND_CUSTOM = 6;                // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+//const RL_BLEND_CUSTOM_SEPARATE = 7;       // Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
+
+// INFO: use rl::ShaderLocationIndex instead
+// Shader location point type
+//def rlShaderLocationIndex = int;
+//const RL_SHADER_LOC_VERTEX_POSITION   = 0;  // Shader location: vertex attribute: position
+//const RL_SHADER_LOC_VERTEX_TEXCOORD01 = 1;  // Shader location: vertex attribute: texcoord01
+//const RL_SHADER_LOC_VERTEX_TEXCOORD02 = 2;  // Shader location: vertex attribute: texcoord02
+//const RL_SHADER_LOC_VERTEX_NORMAL     = 3;  // Shader location: vertex attribute: normal
+//const RL_SHADER_LOC_VERTEX_TANGENT    = 4;  // Shader location: vertex attribute: tangent
+//const RL_SHADER_LOC_VERTEX_COLOR      = 5;  // Shader location: vertex attribute: color
+//const RL_SHADER_LOC_MATRIX_MVP        = 6;  // Shader location: matrix uniform: model-view-projection
+//const RL_SHADER_LOC_MATRIX_VIEW       = 7;  // Shader location: matrix uniform: view (camera transform)
+//const RL_SHADER_LOC_MATRIX_PROJECTION = 8;  // Shader location: matrix uniform: projection
+//const RL_SHADER_LOC_MATRIX_MODEL      = 9;  // Shader location: matrix uniform: model (transform)
+//const RL_SHADER_LOC_MATRIX_NORMAL     = 10; // Shader location: matrix uniform: normal
+//const RL_SHADER_LOC_VECTOR_VIEW       = 11; // Shader location: vector uniform: view
+//const RL_SHADER_LOC_COLOR_DIFFUSE     = 12; // Shader location: vector uniform: diffuse color
+//const RL_SHADER_LOC_COLOR_SPECULAR    = 13; // Shader location: vector uniform: specular color
+//const RL_SHADER_LOC_COLOR_AMBIENT     = 14; // Shader location: vector uniform: ambient color
+//const RL_SHADER_LOC_MAP_ALBEDO        = 15; // Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)
+//const RL_SHADER_LOC_MAP_METALNESS     = 16; // Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)
+//const RL_SHADER_LOC_MAP_NORMAL        = 17; // Shader location: sampler2d texture: normal
+//const RL_SHADER_LOC_MAP_ROUGHNESS     = 18; // Shader location: sampler2d texture: roughness
+//const RL_SHADER_LOC_MAP_OCCLUSION     = 19; // Shader location: sampler2d texture: occlusion
+//const RL_SHADER_LOC_MAP_EMISSION      = 20; // Shader location: sampler2d texture: emission
+//const RL_SHADER_LOC_MAP_HEIGHT        = 21; // Shader location: sampler2d texture: height
+//const RL_SHADER_LOC_MAP_CUBEMAP       = 22; // Shader location: samplerCube texture: cubemap
+//const RL_SHADER_LOC_MAP_IRRADIANCE    = 23; // Shader location: samplerCube texture: irradiance
+//const RL_SHADER_LOC_MAP_PREFILTER     = 24; // Shader location: samplerCube texture: prefilter
+//const RL_SHADER_LOC_MAP_BRDF          = 25; // Shader location: sampler2d texture: brdf
+
+// INFO: use rl::ShaderUniformDataType instead
+// Shader uniform data type
+//def rlShaderUniformDataType = int;
+//const RL_SHADER_UNIFORM_FLOAT = 0;        // Shader uniform type: float
+//const RL_SHADER_UNIFORM_VEC2  = 1;        // Shader uniform type: vec2 (2 float)
+//const RL_SHADER_UNIFORM_VEC3  = 2;        // Shader uniform type: vec3 (3 float)
+//const RL_SHADER_UNIFORM_VEC4  = 3;        // Shader uniform type: vec4 (4 float)
+//const RL_SHADER_UNIFORM_INT   = 4;        // Shader uniform type: int
+//const RL_SHADER_UNIFORM_IVEC2 = 5;        // Shader uniform type: ivec2 (2 int)
+//const RL_SHADER_UNIFORM_IVEC3 = 6;        // Shader uniform type: ivec3 (3 int)
+//const RL_SHADER_UNIFORM_IVEC4 = 7;        // Shader uniform type: ivec4 (4 int)
+//const RL_SHADER_UNIFORM_SAMPLER2D = 8;    // Shader uniform type: sampler2d
+
+// INFO: use rl::ShaderAttributeDataType instead
+// Shader attribute data types
+//def rlShaderAttributeDataType = int;
+//const RL_SHADER_ATTRIB_FLOAT = 0;         // Shader attribute type: float
+//const RL_SHADER_ATTRIB_VEC2  = 1;         // Shader attribute type: vec2 (2 float)
+//const RL_SHADER_ATTRIB_VEC3  = 2;         // Shader attribute type: vec3 (3 float)
+//const RL_SHADER_ATTRIB_VEC4  = 3;         // Shader attribute type: vec4 (4 float)
+
+// Framebuffer attachment type
+// NOTE: By default up to 8 color channels defined, but it can be more
+def FramebufferAttachType = int;
+const ATTACHMENT_COLOR_CHANNEL0 = 0;       // Framebuffer attachment type: color 0
+const ATTACHMENT_COLOR_CHANNEL1 = 1;       // Framebuffer attachment type: color 1
+const ATTACHMENT_COLOR_CHANNEL2 = 2;       // Framebuffer attachment type: color 2
+const ATTACHMENT_COLOR_CHANNEL3 = 3;       // Framebuffer attachment type: color 3
+const ATTACHMENT_COLOR_CHANNEL4 = 4;       // Framebuffer attachment type: color 4
+const ATTACHMENT_COLOR_CHANNEL5 = 5;       // Framebuffer attachment type: color 5
+const ATTACHMENT_COLOR_CHANNEL6 = 6;       // Framebuffer attachment type: color 6
+const ATTACHMENT_COLOR_CHANNEL7 = 7;       // Framebuffer attachment type: color 7
+const ATTACHMENT_DEPTH = 100;              // Framebuffer attachment type: depth
+const ATTACHMENT_STENCIL = 200;            // Framebuffer attachment type: stencil
+
+// Framebuffer texture attachment type
+def FramebufferAttachTextureType = int;
+const ATTACHMENT_CUBEMAP_POSITIVE_X = 0;   // Framebuffer texture attachment type: cubemap, +X side
+const ATTACHMENT_CUBEMAP_NEGATIVE_X = 1;   // Framebuffer texture attachment type: cubemap, -X side
+const ATTACHMENT_CUBEMAP_POSITIVE_Y = 2;   // Framebuffer texture attachment type: cubemap, +Y side
+const ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3;   // Framebuffer texture attachment type: cubemap, -Y side
+const ATTACHMENT_CUBEMAP_POSITIVE_Z = 4;   // Framebuffer texture attachment type: cubemap, +Z side
+const ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5;   // Framebuffer texture attachment type: cubemap, -Z side
+const ATTACHMENT_TEXTURE2D = 100;          // Framebuffer texture attachment type: texture2d
+const ATTACHMENT_RENDERBUFFER = 200;       // Framebuffer texture attachment type: renderbuffer
+
+// Face culling mode
+def CullMode = int;
+const CULL_FACE_FRONT = 0;
+const CULL_FACE_BACK = 1;
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - Matrix operations
+//------------------------------------------------------------------------------------
+
+/**
+ * Choose the current matrix to be transformed
+ */
+fn void matrix_mode(int mode) @extern("rlMatrixMode");
+
+/**
+ * Push the current matrix to stack
+ */
+fn void push_matrix() @extern("rlPushMatrix");
+
+/**
+ * Pop latest inserted matrix from stack
+ */
+fn void pop_matrix() @extern("rlPopMatrix");
+
+/**
+ * Reset current matrix to identity matrix
+ */
+fn void load_identity() @extern("rlLoadIdentity");
+
+/**
+ * Multiply the current matrix by a translation matrix
+ */
+fn void translatef(float x, float y, float z) @extern("rlTranslatef");
+
+/**
+ * Multiply the current matrix by a rotation matrix
+ */
+fn void rotatef(float angle, float x, float y, float z) @extern("rlRotatef");
+
+/**
+ * Multiply the current matrix by a scaling matrix
+ */
+fn void scalef(float x, float y, float z) @extern("rlScalef");
+
+/**
+ * Multiply the current matrix by another matrix
+ */
+fn void mult_matrixf(float* matf) @extern("rlMultMatrixf");
+
+/**
+ * Multiply the current matrix by a perspective matrix generated by parameters
+ */
+fn void frustum(double left, double right, double bottom, double top, double znear, double zfar) @extern("rlFrustum");
+
+/**
+ * Multiply the current matrix by an orthographic matrix generated by parameters
+ */
+fn void ortho(double left, double right, double bottom, double top, double znear, double zfar) @extern("rlOrtho");
+
+/**
+ * Set the viewport area
+ */
+fn void viewport(int x, int y, int width, int height) @extern("rlViewport");
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - Vertex level operations
+//------------------------------------------------------------------------------------
+
+/**
+ * Initialize drawing mode (how to organize vertex)
+ */
+fn void begin(int mode) @extern("rlBegin");
+
+/**
+ * Finish vertex providing
+ */
+fn void end() @extern("rlEnd");
+
+/**
+ * Define one vertex (position) - 2 int
+ */
+fn void vertex2i(int x, int y) @extern("rlVertex2i");
+
+/**
+ * Define one vertex (position) - 2 float
+ */
+fn void vertex2f(float x, float y) @extern("rlVertex2f");
+
+/**
+ * Define one vertex (position) - 3 float
+ */
+fn void vertex3f(float x, float y, float z) @extern("rlVertex3f");
+
+/**
+ * Define one vertex (texture coordinate) - 2 float
+ */
+fn void tex_coord2f(float x, float y) @extern("rlTexCoord2f");
+
+/**
+ * Define one vertex (normal) - 3 float
+ */
+fn void normal3f(float x, float y, float z) @extern("rlNormal3f");
+
+/**
+ * Define one vertex (color) - 4 byte
+ */
+fn void color4ub(char r, char g, char b, char a) @extern("rlColor4ub");
+
+/**
+ * Define one vertex (color) - 3 float
+ */
+fn void color3f(float x, float y, float z) @extern("rlColor3f");
+
+/**
+ * Define one vertex (color) - 4 float
+ */
+fn void color4f(float x, float y, float z, float w) @extern("rlColor4f");
+
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - OpenGL style functions (common to 1.1, 3.3+, ES2)
+// NOTE: This functions are used to completely abstract raylib code from OpenGL layer,
+// some of them are direct wrappers over OpenGL calls, some others are custom
+//------------------------------------------------------------------------------------
+
+// Vertex buffers state
+
+/**
+ * Enable vertex array (VAO, if supported)
+ */
+fn bool enable_vertex_array(uint vaoId) @extern("rlEnableVertexArray");
+
+/**
+ * Disable vertex array (VAO, if supported)
+ */
+fn void disable_vertex_array() @extern("rlDisableVertexArray");
+
+/**
+ * Enable vertex buffer (VBO)
+ */
+fn void enable_vertex_buffer(uint id) @extern("rlEnableVertexBuffer");
+
+/**
+ * Disable vertex buffer (VBO)
+ */
+fn void disable_vertex_buffer() @extern("rlDisableVertexBuffer");
+
+/**
+ * Enable vertex buffer element (VBO element)
+ */
+fn void enable_vertex_buffer_element(uint id) @extern("rlEnableVertexBufferElement");
+
+/**
+ * Disable vertex buffer element (VBO element)
+ */
+fn void disable_vertex_buffer_element() @extern("rlDisableVertexBufferElement");
+
+/**
+ * Enable vertex attribute index
+ */
+fn void enable_vertex_attribute(uint index) @extern("rlEnableVertexAttribute");
+
+/**
+ * Disable vertex attribute index
+ */
+fn void disable_vertex_attribute(uint index) @extern("rlDisableVertexAttribute");
+
+/**
+ * Enable attribute state pointer
+ */
+fn void enable_state_pointer(int vertexAttribType, void *buffer) @extern("rlEnableStatePointer") @if($defined(GRAPHICS_API_OPENGL_11));
+
+/**
+ * Disable attribute state pointer
+ */
+fn void disable_state_pointer(int vertexAttribType) @extern("rlDisableStatePointer") @if($defined(GRAPHICS_API_OPENGL_11));
+
+// Textures state
+
+/**
+ * Select and active a texture slot
+ */
+fn void active_texture_slot(int slot) @extern("rlActiveTextureSlot");
+
+/**
+ * Enable texture
+ */
+fn void enable_texture(uint id) @extern("rlEnableTexture");
+
+/**
+ * Disable texture
+ */
+fn void disable_texture() @extern("rlDisableTexture");
+
+/**
+ * Enable texture cubemap
+ */
+fn void enable_texture_cubemap(uint id) @extern("rlEnableTextureCubemap");
+
+/**
+ * Disable texture cubemap
+ */
+fn void disable_texture_cubemap() @extern("rlDisableTextureCubemap");
+
+/**
+ * Set texture parameters (filter, wrap)
+ */
+fn void texture_parameters(uint id, int param, int value) @extern("rlTextureParameters");
+
+/**
+ * Set cubemap parameters (filter, wrap)
+ */
+fn void cubemap_parameters(uint id, int param, int value) @extern("rlCubemapParameters");
+
+// Shader state
+
+/**
+ * Enable shader program
+ */
+fn void enable_shader(uint id) @extern("rlEnableShader");
+
+/**
+ * Disable shader program
+ */
+fn void disable_shader() @extern("rlDisableShader");
+
+// Framebuffer state
+
+/**
+ * Enable render texture (fbo)
+ */
+fn void enable_framebuffer(uint id) @extern("rlEnableFramebuffer");
+
+/**
+ * Disable render texture (fbo), return to default framebuffer
+ */
+fn void disable_framebuffer() @extern("rlDisableFramebuffer");
+
+/**
+ * Activate multiple draw color buffers
+ */
+fn void active_draw_buffers(int count) @extern("rlActiveDrawBuffers");
+
+/**
+ * Blit active framebuffer to main framebuffer
+ */
+fn void blit_framebuffer(int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight, int bufferMask) @extern("rlBlitFramebuffer");
+
+// General render state
+
+/**
+ * Enable color blending
+ */
+fn void enable_color_blend() @extern("rlEnableColorBlend");
+
+/**
+ * Disable color blending
+ */
+fn void disable_color_blend() @extern("rlDisableColorBlend");
+
+/**
+ * Enable depth test
+ */
+fn void enable_depth_test() @extern("rlEnableDepthTest");
+
+/**
+ * Disable depth test
+ */
+fn void disable_depth_test() @extern("rlDisableDepthTest");
+
+/**
+ * Enable depth write
+ */
+fn void enable_depth_mask() @extern("rlEnableDepthMask");
+
+/**
+ * Disable depth write
+ */
+fn void disable_depth_mask() @extern("rlDisableDepthMask");
+
+/**
+ * Enable backface culling
+ */
+fn void enable_backface_culling() @extern("rlEnableBackfaceCulling");
+
+/**
+ * Disable backface culling
+ */
+fn void disable_backface_culling() @extern("rlDisableBackfaceCulling");
+
+/**
+ * Set face culling mode
+ */
+fn void set_cull_face(int mode) @extern("rlSetCullFace");
+
+/**
+ * Enable scissor test
+ */
+fn void enable_scissor_test() @extern("rlEnableScissorTest");
+
+/**
+ * Disable scissor test
+ */
+fn void disable_scissor_test() @extern("rlDisableScissorTest");
+
+/**
+ * Scissor test
+ */
+fn void scissor(int x, int y, int width, int height) @extern("rlScissor");
+
+/**
+ * Enable wire mode
+ */
+fn void enable_wire_mode() @extern("rlEnableWireMode");
+
+/**
+ * Enable point mode
+ */
+fn void enable_point_mode() @extern("rlEnablePointMode");
+
+/**
+ * Disable wire mode ( and point ) maybe rename
+ */
+fn void disable_wire_mode() @extern("rlDisableWireMode");
+
+/**
+ * Set the line drawing width
+ */
+fn void set_line_width(float width) @extern("rlSetLineWidth");
+
+/**
+ * Get the line drawing width
+ */
+fn float get_line_width() @extern("rlGetLineWidth");
+
+/**
+ * Enable line aliasing
+ */
+fn void enable_smooth_lines() @extern("rlEnableSmoothLines");
+
+/**
+ * Disable line aliasing
+ */
+fn void disable_smooth_lines() @extern("rlDisableSmoothLines");
+
+/**
+ * Enable stereo rendering
+ */
+fn void enable_stereo_render() @extern("rlEnableStereoRender");
+
+/**
+ * Disable stereo rendering
+ */
+fn void disable_stereo_render() @extern("rlDisableStereoRender");
+
+/**
+ * Check if stereo render is enabled
+ */
+fn bool is_stereo_render_enabled() @extern("rlIsStereoRenderEnabled");
+
+
+/**
+ * Clear color buffer with color
+ */
+fn void clear_color(char r, char g, char b, char a) @extern("rlClearColor");
+
+/**
+ * Clear used screen buffers (color and depth)
+ */
+fn void clear_screen_buffers() @extern("rlClearScreenBuffers");
+
+/**
+ * Check and log OpenGL error codes
+ */
+fn void check_errors() @extern("rlCheckErrors");
+
+/**
+ * Set blending mode
+ */
+fn void set_blend_mode(int mode) @extern("rlSetBlendMode");
+
+/**
+ * Set blending mode factor and equation (using OpenGL factors)
+ */
+fn void set_blend_factors(int glSrcFactor, int glDstFactor, int glEquation) @extern("rlSetBlendFactors");
+
+/**
+ * Set blending mode factors and equations separately (using OpenGL factors)
+ */
+fn void set_blend_factors_separate(int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha) @extern("rlSetBlendFactorsSeparate");
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - rlgl functionality
+//------------------------------------------------------------------------------------
+// rlgl initialization functions
+
+/**
+ * Initialize rlgl (buffers, shaders, textures, states)
+ */
+fn void gl_init(int width, int height) @extern("rlglInit");
+
+/**
+ * De-initialize rlgl (buffers, shaders, textures)
+ */
+fn void gl_close() @extern("rlglClose");
+
+/**
+ * Load OpenGL extensions (loader function required)
+ */
+fn void load_extensions(void *loader) @extern("rlLoadExtensions");
+
+/**
+ * Get current OpenGL version
+ */
+fn GlVersion get_version() @extern("rlGetVersion");
+
+/**
+ * Set current framebuffer width
+ */
+fn void set_framebuffer_width(int width) @extern("rlSetFramebufferWidth");
+
+/**
+ * Get default framebuffer width
+ */
+fn int get_framebuffer_width() @extern("rlGetFramebufferWidth");
+
+/**
+ * Set current framebuffer height
+ */
+fn void set_framebuffer_height(int height) @extern("rlSetFramebufferHeight");
+
+/**
+ * Get default framebuffer height
+ */
+fn int get_framebuffer_height() @extern("rlGetFramebufferHeight");
+
+
+/**
+ * Get default texture id
+ */
+fn uint get_texture_id_default() @extern("rlGetTextureIdDefault");
+
+/**
+ * Get default shader id
+ */
+fn uint get_shader_id_default() @extern("rlGetShaderIdDefault");
+
+/**
+ * Get default shader locations
+ */
+fn int *get_shader_locs_default() @extern("rlGetShaderLocsDefault");
+
+// Render batch management
+// NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode
+// but this render batch API is exposed in case of custom batches are required
+
+/**
+ * Load a render batch system
+ */
+fn RenderBatch load_render_batch(int numBuffers, int bufferElements) @extern("rlLoadRenderBatch");
+
+/**
+ * Unload render batch system
+ */
+fn void unload_render_batch(RenderBatch batch) @extern("rlUnloadRenderBatch");
+
+/**
+ * Draw render batch data (Update->Draw->Reset)
+ */
+fn void draw_render_batch(RenderBatch* batch) @extern("rlDrawRenderBatch");
+
+/**
+ * Set the active render batch for rlgl (NULL for default internal)
+ */
+fn void set_render_batch_active(RenderBatch* batch) @extern("rlSetRenderBatchActive");
+
+/**
+ * Update and draw internal render batch
+ */
+fn void draw_render_batch_active() @extern("rlDrawRenderBatchActive");
+
+/**
+ * Check internal buffer overflow for a given number of vertex
+ */
+fn bool check_render_batch_limit(int vCount) @extern("rlCheckRenderBatchLimit");
+
+
+/**
+ * Set current texture for render batch and check buffers limits
+ */
+fn void set_texture(uint id) @extern("rlSetTexture");
+
+//------------------------------------------------------------------------------------------------------------------------
+
+// Vertex buffers management
+
+/**
+ * Load vertex array (vao) if supported
+ */
+fn uint load_vertex_array() @extern("rlLoadVertexArray");
+
+/**
+ * Load a vertex buffer attribute
+ */
+fn uint load_vertex_buffer(void* buffer, int size, bool dynamic) @extern("rlLoadVertexBuffer");
+
+/**
+ * Load a new attributes element buffer
+ */
+fn uint load_vertex_buffer_element(void* buffer, int size, bool dynamic) @extern("rlLoadVertexBufferElement");
+
+/**
+ * Update GPU buffer with new data
+ */
+fn void update_vertex_buffer(uint bufferId, void *data, int dataSize, int offset) @extern("rlUpdateVertexBuffer");
+
+/**
+ * Update vertex buffer elements with new data
+ */
+fn void update_vertex_buffer_elements(uint id, void *data, int dataSize, int offset) @extern("rlUpdateVertexBufferElements");
+fn void unload_vertex_array(uint vaoId) @extern("rlUnloadVertexArray");
+fn void unload_vertex_buffer(uint vboId) @extern("rlUnloadVertexBuffer");
+fn void set_vertex_attribute(uint index, int compSize, int type, bool normalized, int stride, void *pointer) @extern("rlSetVertexAttribute");
+fn void set_vertex_attribute_divisor(uint index, int divisor) @extern("rlSetVertexAttributeDivisor");
+
+/**
+ * Set vertex attribute default value
+ */
+fn void set_vertex_attribute_default(int locIndex, void *value, int attribType, int count) @extern("rlSetVertexAttributeDefault");
+fn void draw_vertex_array(int offset, int count) @extern("rlDrawVertexArray");
+fn void draw_vertex_array_elements(int offset, int count, void *buffer) @extern("rlDrawVertexArrayElements");
+fn void draw_vertex_array_instanced(int offset, int count, int instances) @extern("rlDrawVertexArrayInstanced");
+fn void draw_vertex_array_elements_instanced(int offset, int count, void *buffer, int instances) @extern("rlDrawVertexArrayElementsInstanced");
+
+// Textures management
+
+/**
+ * Load texture in GPU
+ */
+fn uint load_texture(void *data, int width, int height, int format, int mipmapCount) @extern("rlLoadTexture");
+
+/**
+ * Load depth texture/renderbuffer (to be attached to fbo)
+ */
+fn uint load_texture_depth(int width, int height, bool useRenderBuffer) @extern("rlLoadTextureDepth");
+
+/**
+ * Load texture cubemap
+ */
+fn uint load_texture_cubemap(void *data, int size, int format) @extern("rlLoadTextureCubemap");
+
+/**
+ * Update GPU texture with new data
+ */
+fn void update_texture(uint id, int offsetX, int offsetY, int width, int height, int format, void *data) @extern("rlUpdateTexture");
+
+/**
+ * Get OpenGL internal formats
+ */
+fn void get_gl_texture_formats(int format, uint *glInternalFormat, uint *glFormat, uint *glType) @extern("rlGetGlTextureFormats");
+
+/**
+ * Get name string for pixel format
+ */
+fn ZString get_pixel_format_name(uint format) @extern("rlGetPixelFormatName");
+
+/**
+ * Unload texture from GPU memory
+ */
+fn void unload_texture(uint id) @extern("rlUnloadTexture");
+
+/**
+ * Generate mipmap data for selected texture
+ */
+fn void gen_texture_mipmaps(uint id, int width, int height, int format, int *mipmaps) @extern("rlGenTextureMipmaps");
+
+/**
+ * Read texture pixel data
+ */
+fn void *read_texture_pixels(uint id, int width, int height, int format) @extern("rlReadTexturePixels");
+
+/**
+ * Read screen pixel data (color buffer)
+ */
+fn char *read_screen_pixels(int width, int height) @extern("rlReadScreenPixels");
+
+// Framebuffer management (fbo)
+
+/**
+ * Load an empty framebuffer
+ */
+fn uint load_framebuffer(int width, int height) @extern("rlLoadFramebuffer");
+
+/**
+ * Attach texture/renderbuffer to a framebuffer
+ */
+fn void framebuffer_attach(uint fboId, uint texId, int attachType, int texType, int mipLevel) @extern("rlFramebufferAttach");
+
+/**
+ * Verify framebuffer is complete
+ */
+fn bool framebuffer_complete(uint id) @extern("rlFramebufferComplete");
+
+/**
+ * Delete framebuffer from GPU
+ */
+fn void unload_framebuffer(uint id) @extern("rlUnloadFramebuffer");
+
+// Shaders management
+
+/**
+ * Load shader from code strings
+ */
+fn uint load_shader_code(ZString vsCode, ZString fsCode) @extern("rlLoadShaderCode");
+
+/**
+ * Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+ */
+fn uint compile_shader(ZString shaderCode, int type) @extern("rlCompileShader");
+
+/**
+ * Load custom shader program
+ */
+fn uint load_shader_program(uint vShaderId, uint fShaderId) @extern("rlLoadShaderProgram");
+
+/**
+ * Unload shader program
+ */
+fn void unload_shader_program(uint id) @extern("rlUnloadShaderProgram");
+
+/**
+ * Get shader location uniform
+ */
+fn int get_location_uniform(uint shaderId, ZString uniformName) @extern("rlGetLocationUniform");
+
+/**
+ * Get shader location attribute
+ */
+fn int get_location_attrib(uint shaderId, ZString attribName) @extern("rlGetLocationAttrib");
+
+/**
+ * Set shader value uniform
+ */
+fn void set_uniform(int locIndex, void *value, int uniformType, int count) @extern("rlSetUniform");
+
+/**
+ * Set shader value matrix
+ */
+fn void set_uniform_matrix(int locIndex, Matrix mat) @extern("rlSetUniformMatrix");
+
+/**
+ * Set shader value sampler
+ */
+fn void set_uniform_sampler(int locIndex, uint textureId) @extern("rlSetUniformSampler");
+
+/**
+ * Set shader currently active (id and locations)
+ */
+fn void set_shader(uint id, int *locs) @extern("rlSetShader");
+
+// Compute shader management
+
+/**
+ * Load compute shader program
+ */
+fn uint load_compute_shader_program(uint shaderId) @extern("rlLoadComputeShaderProgram");
+
+/**
+ * Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+ */
+fn void compute_shader_dispatch(uint groupX, uint groupY, uint groupZ) @extern("rlComputeShaderDispatch");
+
+// Shader buffer storage object management (ssbo)
+
+/**
+ * Load shader storage buffer object (SSBO)
+ */
+fn uint load_shader_buffer(uint size, void *data, int usageHint) @extern("rlLoadShaderBuffer");
+
+/**
+ * Unload shader storage buffer object (SSBO)
+ */
+fn void unload_shader_buffer(uint ssboId) @extern("rlUnloadShaderBuffer");
+
+/**
+ * Update SSBO buffer data
+ */
+fn void update_shader_buffer(uint id, void *data, uint dataSize, uint offset) @extern("rlUpdateShaderBuffer");
+
+/**
+ * Bind SSBO buffer
+ */
+fn void bind_shader_buffer(uint id, uint index) @extern("rlBindShaderBuffer");
+
+/**
+ * Read SSBO buffer data (GPU->CPU)
+ */
+fn void read_shader_buffer(uint id, void *dest, uint count, uint offset) @extern("rlReadShaderBuffer");
+
+/**
+ * Copy SSBO data between buffers
+ */
+fn void copy_shader_buffer(uint destId, uint srcId, uint destOffset, uint srcOffset, uint count) @extern("rlCopyShaderBuffer");
+
+/**
+ * Get SSBO buffer size
+ */
+fn uint get_shader_buffer_size(uint id) @extern("rlGetShaderBufferSize");
+
+// Buffer management
+
+/**
+ * Bind image texture
+ */
+fn void bind_image_texture(uint id, uint index, int format, bool readonly) @extern("rlBindImageTexture");
+
+// Matrix state management
+
+/**
+ * Get internal modelview matrix
+ */
+fn Matrix get_matrix_modelview() @extern("rlGetMatrixModelview");
+
+/**
+ * Get internal projection matrix
+ */
+fn Matrix get_matrix_projection() @extern("rlGetMatrixProjection");
+
+/**
+ * Get internal accumulated transform matrix
+ */
+fn Matrix get_matrix_transform() @extern("rlGetMatrixTransform");
+
+/**
+ * Get internal projection matrix for stereo render (selected eye)
+ */
+fn Matrix get_matrix_projection_stereo(int eye) @extern("rlGetMatrixProjectionStereo");
+
+/**
+ * Get internal view offset matrix for stereo render (selected eye)
+ */
+fn Matrix get_matrix_view_offset_stereo(int eye) @extern("rlGetMatrixViewOffsetStereo");
+
+/**
+ * Set a custom projection matrix (replaces internal projection matrix)
+ */
+fn void set_matrix_projection(Matrix proj) @extern("rlSetMatrixProjection");
+
+/**
+ * Set a custom modelview matrix (replaces internal modelview matrix)
+ */
+fn void set_matrix_modelview(Matrix view) @extern("rlSetMatrixModelview");
+
+/**
+ * Set eyes projection matrices for stereo rendering
+ */
+fn void set_matrix_projection_stereo(Matrix right, Matrix left) @extern("rlSetMatrixProjectionStereo");
+
+/**
+ * Set eyes view offsets matrices for stereo rendering
+ */
+fn void set_matrix_view_offset_stereo(Matrix right, Matrix left) @extern("rlSetMatrixViewOffsetStereo");
+
+// Quick and dirty cube/quad buffers load->draw->unload
+
+/**
+ * Load and draw a cube
+ */
+fn void load_draw_cube() @extern("rlLoadDrawCube");
+
+/**
+ * Load and draw a quad
+ */
+fn void load_draw_quad() @extern("rlLoadDrawQuad");
+

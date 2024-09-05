@@ -4,11 +4,11 @@
   // Warnings used for all targets.
   "warnings": [ "no-unused" ],
   // Directories where C3 library files may be found.
-  "dependency-search-paths": [ "lib", ".." ],
+  "dependency-search-paths": [ ".." ],
   // Libraries to use for all targets.
   "dependencies": [ "raylib" ],
   // Authors, optionally with email.
-  "authors": [ "John Doe <john.doe@example.com>" ],
+  "authors": [ "NexushasTaken <nexushastaken@gmail.com" ],
   // Version using semantic versioning.
   "version": "0.1.0",
   // Sources compiled for all targets.
