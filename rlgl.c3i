@@ -1,3 +1,4 @@
+// vi: ts=4 sw=4 noet
 module rlgl::env;
 
 const GRAPHICS_API_OPENGL_11 @if($feature(GRAPHICS_API_OPENGL_11)) = true;
@@ -6,12 +7,12 @@ const GRAPHICS_API_OPENGL_ES2 @if($feature(GRAPHICS_API_OPENGL_ES2) || $feature(
 
 //// Security check in case no GRAPHICS_API_OPENGL_* defined
 const GRAPHICS_API_OPENGL_33
-  @if(!$defined(GRAPHICS_API_OPENGL_11) &&
-      !$defined(GRAPHICS_API_OPENGL_21) &&
-      !$defined(GRAPHICS_API_OPENGL_33) &&
-      !$defined(GRAPHICS_API_OPENGL_43) &&
-      !$defined(GRAPHICS_API_OPENGL_ES2) &&
-      !$defined(GRAPHICS_API_OPENGL_ES3)) = true;
+	@if(!$defined(GRAPHICS_API_OPENGL_11) &&
+		!$defined(GRAPHICS_API_OPENGL_21) &&
+		!$defined(GRAPHICS_API_OPENGL_33) &&
+		!$defined(GRAPHICS_API_OPENGL_43) &&
+		!$defined(GRAPHICS_API_OPENGL_ES2) &&
+		!$defined(GRAPHICS_API_OPENGL_ES3)) = true;
 
 
 module rlgl;
@@ -111,19 +112,19 @@ const BLEND_COLOR                          = 0x8005;      // GL_BLEND_COLOR
 //----------------------------------------------------------------------------------
 // Dynamic vertex buffers (position + texcoords + colors + indices arrays)
 struct VertexBuffer { // rlVertexBuffer
-    int elementCount;           // Number of elements in the buffer (QUADS)
+	int elementCount;           // Number of elements in the buffer (QUADS)
 
-    float* vertices;            // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-    float* texcoords;           // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
-    char* colors;               // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+	float* vertices;            // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+	float* texcoords;           // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+	char* colors;               // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
 
-    uint *indices               // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-    @if($defined(env::GRAPHICS_API_OPENGL_11) || $defined(env::GRAPHICS_API_OPENGL_33));
-    ushort *indices             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-    @if($defined(env::GRAPHICS_API_OPENGL_ES2));
+	uint *indices               // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+	@if($defined(env::GRAPHICS_API_OPENGL_11) || $defined(env::GRAPHICS_API_OPENGL_33));
+	ushort *indices             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+	@if($defined(env::GRAPHICS_API_OPENGL_ES2));
 
-    uint vaoId;                 // OpenGL Vertex Array Object id
-    uint[4] vboId;              // OpenGL Vertex Buffer Objects id (4 types of vertex data)
+	uint vaoId;                 // OpenGL Vertex Array Object id
+	uint[4] vboId;              // OpenGL Vertex Buffer Objects id (4 types of vertex data)
 }
 
 // Draw call type
@@ -131,26 +132,26 @@ struct VertexBuffer { // rlVertexBuffer
 // used at this moment (vaoId, shaderId, matrices), raylib just forces a batch draw call if any
 // of those state-change happens (this is done in core module)
 struct DrawCall {
-    int mode;                   // Drawing mode: LINES, TRIANGLES, QUADS
-    int vertexCount;            // Number of vertex of the draw
-    int vertexAlignment;        // Number of vertex required for index alignment (LINES, TRIANGLES)
-    //unsigned int vaoId;       // Vertex array id to be used on the draw -> Using RLGL.currentBatch->vertexBuffer.vaoId
-    //unsigned int shaderId;    // Shader id to be used on the draw -> Using RLGL.currentShaderId
-    uint textureId;             // Texture id to be used on the draw -> Use to create new draw call if changes
+	int mode;                   // Drawing mode: LINES, TRIANGLES, QUADS
+	int vertexCount;            // Number of vertex of the draw
+	int vertexAlignment;        // Number of vertex required for index alignment (LINES, TRIANGLES)
+	//unsigned int vaoId;       // Vertex array id to be used on the draw -> Using RLGL.currentBatch->vertexBuffer.vaoId
+	//unsigned int shaderId;    // Shader id to be used on the draw -> Using RLGL.currentShaderId
+	uint textureId;             // Texture id to be used on the draw -> Use to create new draw call if changes
 
-    Matrix projection;          // Projection matrix for this draw -> Using RLGL.projection by default
-    Matrix modelview;           // Modelview matrix for this draw -> Using RLGL.modelview by default
+	Matrix projection;          // Projection matrix for this draw -> Using RLGL.projection by default
+	Matrix modelview;           // Modelview matrix for this draw -> Using RLGL.modelview by default
 }
 
 // rlRenderBatch type
 struct RenderBatch {
-    int bufferCount;            // Number of vertex buffers (multi-buffering support)
-    int currentBuffer;          // Current buffer tracking in case of multi-buffering
-    VertexBuffer* vertexBuffer; // Dynamic buffer(s) for vertex data
+	int bufferCount;            // Number of vertex buffers (multi-buffering support)
+	int currentBuffer;          // Current buffer tracking in case of multi-buffering
+	VertexBuffer* vertexBuffer; // Dynamic buffer(s) for vertex data
 
-    DrawCall* draws;            // Draw calls array, depends on textureId
-    int drawCounter;            // Draw calls counter
-    float currentDepth;         // Current depth value for next draw
+	DrawCall* draws;            // Draw calls array, depends on textureId
+	int drawCounter;            // Draw calls counter
+	float currentDepth;         // Current depth value for next draw
 }
 
 // OpenGL version

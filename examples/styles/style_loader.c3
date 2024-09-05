@@ -1,3 +1,4 @@
+// vi: ts=4 sw=4 noet
 module style_loader;
 import rl;
 import rgui;

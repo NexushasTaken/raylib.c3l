@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -177,14 +177,14 @@ extern fn void draw_triangle_lines(Vector2 v1, Vector2 v2, Vector2 v3, Color col
  * Draw a triangle fan defined by points (first vertex is the center)
  */
 fn void draw_triangle_fan(List(<Vector2>) points, Color color) @inline {
-    __draw_triangle_fan(points.entries, (int)points.len(), color);
+	__draw_triangle_fan(points.entries, (int)points.len(), color);
 }
 
 /**
  * Draw a triangle strip defined by points
  */
 fn void draw_triangle_strip(List(<Vector2>) points, Color color) @inline {
-    __draw_triangle_strip(points.entries, (int)points.len(), color);
+	__draw_triangle_strip(points.entries, (int)points.len(), color);
 }
 
 /**
@@ -209,35 +209,35 @@ extern fn void draw_poly_lines_ex(Vector2 center, int sides, float radius, float
  * Draw spline: Linear, minimum 2 points
  */
 fn void draw_spline_linear(List(<Vector2>) points, float thick, Color color) @inline {
-    __draw_spline_linear(points.entries, (int)points.len(), thick, color);
+	__draw_spline_linear(points.entries, (int)points.len(), thick, color);
 }
 
 /**
  * Draw spline: B-Spline, minimum 4 points
  */
 fn void draw_spline_basis(List(<Vector2>) points, float thick, Color color) @inline {
-    __draw_spline_basis(points.entries, (int)points.len(), thick, color);
+	__draw_spline_basis(points.entries, (int)points.len(), thick, color);
 }
 
 /**
  * Draw spline: Catmull-Rom, minimum 4 points
  */
 fn void draw_spline_catmull_rom(List(<Vector2>) points, float thick, Color color) @inline {
-    __draw_spline_catmull_rom(points.entries, (int)points.len(), thick, color);
+	__draw_spline_catmull_rom(points.entries, (int)points.len(), thick, color);
 }
 
 /**
  * Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
  */
 fn void draw_spline_bezier_quadratic(List(<Vector2>) points, float thick, Color color) @inline {
-    __draw_spline_bezier_quadratic(points.entries, (int)points.len(), thick, color);
+	__draw_spline_bezier_quadratic(points.entries, (int)points.len(), thick, color);
 }
 
 /**
  * Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
  */
 fn void draw_spline_bezier_cubic(List(<Vector2>) points, float thick, Color color) @inline {
-    __draw_spline_bezier_cubic(points.entries, (int)points.len(), thick, color);
+	__draw_spline_bezier_cubic(points.entries, (int)points.len(), thick, color);
 }
 
 /**
@@ -330,7 +330,7 @@ extern fn bool check_collision_point_triangle(Vector2 point, Vector2 p1, Vector2
  * Check if point is within a polygon described by array of vertices
  */
 fn bool check_collision_point_poly(Vector2 point, List(<Vector2>) points) @inline {
-    return __check_collision_point_poly(point, points.entries, (int)points.len());
+	return __check_collision_point_poly(point, points.entries, (int)points.len());
 }
 
 /**

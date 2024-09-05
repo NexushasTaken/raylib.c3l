@@ -1,19 +1,5 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
-
-// Color convertion functions
-//------------------------------------------------------------------------------------
-// TODO: find a better way to convert char vector types to raylib Color type and vice versa? and think a better name...
-
-distinct Clr = char[<4>];
-
-fn Color Clr.to_color(&this) {
-  return Color { this.r, this.g, this.b, this.a };
-}
-
-fn Clr Color.to_clr(&this) {
-  return Clr { this.r, this.g, this.b, this.a };
-}
 
 // Color/pixel related functions
 //------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 import std::io;
@@ -126,7 +126,7 @@ extern fn void set_window_icon(Image image) @extern("SetWindowIcon");
  * Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
  */
 fn void set_window_icons(List(<Image>) images) @inline {
-    __set_window_icons(images.entries, (int)images.len());
+	__set_window_icons(images.entries, (int)images.len());
 }
 
 /**
@@ -426,16 +426,16 @@ extern fn bool is_shader_ready(Shader shader) @extern("IsShaderReady");
  * Get shader uniform location
  */
 fn int! get_shader_location(Shader shader, ZString uniform_name) @inline {
-    int loc = __get_shader_location(shader, uniform_name);
-    return loc == -1 ? SearchResult.MISSING? : loc;
+	int loc = __get_shader_location(shader, uniform_name);
+	return loc == -1 ? SearchResult.MISSING? : loc;
 }
 
 /**
  * Get shader attribute location
  */
 fn int! get_shader_location_attrib(Shader shader, ZString attrib_name) @inline {
-    int loc = __get_shader_location_attrib(shader, attrib_name);
-    return loc == -1 ? SearchResult.MISSING? : loc;
+	int loc = __get_shader_location_attrib(shader, attrib_name);
+	return loc == -1 ? SearchResult.MISSING? : loc;
 }
 
 /**
@@ -584,36 +584,36 @@ extern fn void set_trace_log_level(TraceLogLevel logLevel) @extern("SetTraceLogL
  * Compress data (DEFLATE algorithm), memory must be MemFree()
  */
 fn char[] compress_data(char[] data) @inline {
-    int size = 0;
-    char* comp_data = __compress_data(data.ptr, data.len, &size);
-    return comp_data[:(usz)size];
+	int size = 0;
+	char* comp_data = __compress_data(data.ptr, data.len, &size);
+	return comp_data[:(usz)size];
 }
 
 /**
  * Decompress data (DEFLATE algorithm), memory must be MemFree()
  */
 fn char[] decompress_data(char[] comp_data) @inline {
-    int size = 0;
-    char* decomp_data = __decompress_data(comp_data.ptr, comp_data.len, &size);
-    return decomp_data[:(usz)size];
+	int size = 0;
+	char* decomp_data = __decompress_data(comp_data.ptr, comp_data.len, &size);
+	return decomp_data[:(usz)size];
 }
 
 /**
  * Encode data to Base64 string, memory must be MemFree()
  */
 macro char[] encode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
-    int size = 0;
-    char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
-    return encoded_data[:(usz)size];
+	int size = 0;
+	char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
+	return encoded_data[:(usz)size];
 }
 
 /**
  * Decode Base64 string data, memory must be MemFree()
  */
 macro char[] decode_data_base64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
-    int size = 0;
-    char* decoded_data = __decode_data_base64(data.ptr, &size);
-    return decoded_data[:(usz)size];
+	int size = 0;
+	char* decoded_data = __decode_data_base64(data.ptr, &size);
+	return decoded_data[:(usz)size];
 }
 
 // Automation events functionality

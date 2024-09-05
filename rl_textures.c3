@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -64,9 +64,9 @@ extern fn bool export_image(Image image, ZString file_name) @extern("ExportImage
  * Export image to memory buffer
  */
 fn char[] export_image_to_memory(Image image, ZString file_type) @inline {
-    int len = 0;
-    char *ptr = __export_image_to_memory(image, file_type, &len);
-    return ptr[:len];
+	int len = 0;
+	char *ptr = __export_image_to_memory(image, file_type, &len);
+	return ptr[:len];
 }
 
 /**
@@ -269,32 +269,32 @@ extern fn void image_color_replace(Image* image, Color color, Color replace) @ex
  * Load color data from image as a Color array (RGBA - 32bit)
  */
 fn Color[] load_image_colors(Image image) @inline {
-    usz len = (usz)(image.width * image.height);
-    Color* ptr = __load_image_colors(image);
-    return ptr[:len];
+	usz len = (usz)(image.width * image.height);
+	Color* ptr = __load_image_colors(image);
+	return ptr[:len];
 }
 
 /**
  * Load colors palette from image as a Color array (RGBA - 32bit)
  */
 fn Color[] load_image_palette(Image image, int max_palette_size) @inline {
-    int len = 0;
-    Color* ptr = __load_image_palette(image, max_palette_size, &len);
-    return ptr[:len];
+	int len = 0;
+	Color* ptr = __load_image_palette(image, max_palette_size, &len);
+	return ptr[:len];
 }
 
 /**
  * Unload color data loaded with LoadImageColors()
  */
 fn void unload_image_colors(Color[] colors) @inline {
-    __unload_image_colors(colors.ptr);
+	__unload_image_colors(colors.ptr);
 }
 
 /**
  * Unload colors palette loaded with LoadImagePalette()
  */
 fn void unload_image_palette(Color[] colors) @inline {
-    __unload_image_palette(colors.ptr);
+	__unload_image_palette(colors.ptr);
 }
 
 /**

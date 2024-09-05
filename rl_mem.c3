@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_INTERNAL_MEMORY_MANAGEMENT));
 
 /**

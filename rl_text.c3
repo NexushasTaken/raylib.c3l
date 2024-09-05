@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -55,7 +55,7 @@ extern fn Image gen_image_font_atlas(GlyphInfo* glyphs, Rectangle **glyph_recs, 
  * Unload font chars info data (RAM)
  */
 fn void unload_font_data(List(<GlyphInfo>) glyphs) @inline {
-    __unload_font_data(glyphs.entries, (int)glyphs.len());
+	__unload_font_data(glyphs.entries, (int)glyphs.len());
 }
 
 /**

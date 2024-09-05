@@ -1,3 +1,4 @@
+// vi: ts=4 sw=4 noet
 //////////////////////////////////////////////////////////////////////////////////
 //                                                                              //
 // StyleAsCode exporter v1.2 - Style data exported as a values array            //

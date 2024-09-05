@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_TEXT_C_STRING_MANAGEMENT));
 
 // Text strings management functions (no UTF-8 strings, only byte chars)

@@ -1,3 +1,4 @@
+// vi: ts=4 sw=4 noet
 module rgui @if($feature(SUPPORT_RAYGUI));
 import rl;
 

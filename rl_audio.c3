@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ extern fn Wave load_wave(ZString file_name) @extern("LoadWave");
  * Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
  */
 fn Wave load_wave_from_memory(ZString file_type, char[] file_data) @inline {
-    return __load_wave_from_memory(file_type, file_data.ptr, (int)file_data.len);
+	return __load_wave_from_memory(file_type, file_data.ptr, (int)file_data.len);
 }
 
 /**

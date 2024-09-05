@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -33,7 +33,7 @@ extern fn void draw_triangle3d(Vector3 v1, Vector3 v2, Vector3 v3, Color color) 
  * Draw a triangle strip defined by points
  */
 fn void draw_triangle_strip3d(List(<Vector3>) points, Color color) @inline {
-    __draw_triangle_strip3d(points.entries, (int)points.len(), color);
+	__draw_triangle_strip3d(points.entries, (int)points.len(), color);
 }
 
 /**
@@ -302,9 +302,9 @@ extern fn Mesh gen_mesh_cubicmap(Image cubicmap, Vector3 cube_size) @extern("Gen
  * Load materials from model file
  */
 fn Material[] load_materials(ZString file_name) @inline {
-    int len = 0;
-    Material* ptr = __load_materials(file_name, &len);
-    return ptr[:len];
+	int len = 0;
+	Material* ptr = __load_materials(file_name, &len);
+	return ptr[:len];
 }
 
 /**
@@ -339,9 +339,9 @@ extern fn void set_model_mesh_material(Model* model, int mesh_id, int material_i
  * Load model animations from file
  */
 fn ModelAnimation[] load_model_animations(ZString file_name) @inline {
-    int len = 0;
-    ModelAnimation* ptr = __load_model_animations(file_name, &len);
-    return ptr[:len];
+	int len = 0;
+	ModelAnimation* ptr = __load_model_animations(file_name, &len);
+	return ptr[:len];
 }
 
 /**
@@ -358,7 +358,7 @@ extern fn void unload_model_animation(ModelAnimation anim) @extern("UnloadModelA
  * Unload animation array data
  */
 fn void unload_model_animations(ModelAnimation[] animations) @inline {
-    __unload_model_animations(animations.ptr, (int)animations.len);
+	__unload_model_animations(animations.ptr, (int)animations.len);
 }
 
 /**

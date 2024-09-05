@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_STANDARD_FILEIO));
 import std::io;
 
@@ -33,16 +33,16 @@ extern fn void set_save_file_text_callback(SaveFileTextCallback callback) @exter
  * Load file data as byte array (read)
  */
 fn char[] load_file_data(ZString file_name) @inline {
-    int len = 0;
-    char* ptr = __load_file_data(file_name, &len);
-    return ptr[:(usz)len];
+	int len = 0;
+	char* ptr = __load_file_data(file_name, &len);
+	return ptr[:(usz)len];
 }
 
 /**
  * Unload file data allocated by LoadFileData()
  */
 fn void unload_file_data(char[] data) @inline {
-    __unload_file_data(data.ptr);
+	__unload_file_data(data.ptr);
 }
 
 /**
@@ -55,15 +55,15 @@ extern fn bool save_file_data(ZString file_name, void* data, int data_size) @ext
  * Export data to code (.h), returns true on success
  */
 macro bool export_data_as_code(ZString file_name, char[] data) {
-    return __export_data_as_code(data.ptr, data.len, file_name);
+	return __export_data_as_code(data.ptr, data.len, file_name);
 }
 
 /**
  * Load text data from file (read), returns a '\0' terminated string
  */
 fn ZString! load_file_text(ZString file_name) @inline {
-    char* zstr = __load_file_text(file_name);
-    return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
+	char* zstr = __load_file_text(file_name);
+	return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
 }
 
 /**

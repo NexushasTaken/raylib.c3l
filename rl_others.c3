@@ -1,4 +1,4 @@
-// vi: ts=4 sw=4
+// vi: ts=4 sw=4 noet
 module rl;
 import std::math;
 
@@ -49,28 +49,37 @@ const RAYWHITE   = Color { 245, 245, 245, 255 };   // My own White (raylib logo)
 //----------------------------------------------------------------------------------
 
 // Vector2, 2 components
-struct Vector2 {
-	float x;                // Vector x component
-	float y;                // Vector y component
-}
+def Vector2 = vector::Vec2f;
+//struct Vector2 {
+//	float x;                // Vector x component
+//	float y;                // Vector y component
+//}
 
 // Vector3, 3 components
-struct Vector3 {
-	float x;                // Vector x component
-	float y;                // Vector y component
-	float z;                // Vector z component
-}
+def Vector3 = vector::Vec3f;
+//struct Vector3 {
+//	float x;                // Vector x component
+//	float y;                // Vector y component
+//	float z;                // Vector z component
+//}
 
 // Vector4, 4 components
-struct Vector4 {
+def Vector4 = vector::Vec4f;
+//struct Vector4 {
+//	float x;                // Vector x component
+//	float y;                // Vector y component
+//	float z;                // Vector z component
+//	float w;                // Vector w component
+//}
+
+// Quaternion, 4 components (Vector4 alias)
+//def Quaternion = quaternion::Quaternion(<float>);
+struct Quaternion {
 	float x;                // Vector x component
 	float y;                // Vector y component
 	float z;                // Vector z component
 	float w;                // Vector w component
 }
-
-// Quaternion, 4 components (Vector4 alias)
-def Quaternion = Vector4;
 
 // Matrix, 4x4 components, column major, OpenGL style, right-handed
 struct Matrix {
@@ -81,12 +90,13 @@ struct Matrix {
 }
 
 // Color, 4 components, R8G8B8A8 (32bit)
-struct Color {
-	char r;        // Color red value
-	char g;        // Color green value
-	char b;        // Color blue value
-	char a;        // Color alpha value
-}
+def Color = char[<4>];
+//struct Color {
+//	char r;        // Color red value
+//	char g;        // Color green value
+//	char b;        // Color blue value
+//	char a;        // Color alpha value
+//}
 
 // Rectangle, 4 components
 struct Rectangle {
