@@ -647,7 +647,7 @@ extern fn int panel(rl::Rectangle bounds, ZString text) @extern("GuiPanel");
  * @param [&inout] active
  */
 fn int tab_bar(rl::Rectangle bounds, List(<ZString>) text, int* active) @inline {
-  return rgui::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
+	return rgui::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
 }
 
 /**
