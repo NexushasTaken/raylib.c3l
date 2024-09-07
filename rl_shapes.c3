@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -348,4 +347,3 @@ extern fn bool check_collision_point_line(Vector2 point, Vector2 p1, Vector2 p2,
  * Get collision rectangle for two rectangles collision
  */
 extern fn Rectangle get_collision_rec(Rectangle rec1, Rectangle rec2) @extern("GetCollisionRec");
-

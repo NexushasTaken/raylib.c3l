@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -133,4 +132,3 @@ extern fn GlyphInfo get_glyph_info(Font font, int codepoint) @extern("GetGlyphIn
  * Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
  */
 extern fn Rectangle get_glyph_atlas_rec(Font font, int codepoint) @extern("GetGlyphAtlasRec");
-

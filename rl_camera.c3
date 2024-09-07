@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -14,4 +13,3 @@ extern fn void Camera.update_camera(Camera* camera, CameraMode mode) @extern("Up
  * Update camera movement/rotation
  */
 extern fn void update_camera_pro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @extern("UpdateCameraPro");
-

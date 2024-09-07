@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_STANDARD_FILEIO));
 import std::io;
 
@@ -76,4 +75,3 @@ extern fn void unload_file_text(ZString text) @extern("UnloadFileText");
  */
 extern fn bool save_file_text(ZString file_name, ZString text) @extern("SaveFileText");
 //------------------------------------------------------------------
-

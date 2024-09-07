@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_TEXT_C_STRING_MANAGEMENT));
 
 // Text strings management functions (no UTF-8 strings, only byte chars)
@@ -79,4 +78,3 @@ extern fn ZString text_to_pascal(ZString text) @extern("TextToPascal");
  * Get integer value from text (negative values not supported)
  */
 extern fn int text_to_integer(ZString text) @extern("TextToInteger");
-

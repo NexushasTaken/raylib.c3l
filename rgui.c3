@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 /*******************************************************************************************
 *
 *   raygui v4.0 - A simple and easy-to-use immediate-mode gui library
@@ -1104,4 +1103,3 @@ enum GuiIconName : int {
 // TODO: find a way to make this work
 //$assert((int)GuiIconName.ICON_NONE == 0);
 //$assert((int)GuiIconName.ICON_255 == 255);
-

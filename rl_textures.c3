@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -495,4 +494,3 @@ extern fn void draw_texture_pro(Texture2D texture, Rectangle source, Rectangle d
  * Draws a texture (or part of it) that stretches or shrinks nicely
  */
 extern fn void draw_texture_n_patch(Texture2D texture, NPatchInfo n_patch_info, Rectangle dest, Vector2 origin, float rotation, Color tint) @extern("DrawTextureNPatch");
-

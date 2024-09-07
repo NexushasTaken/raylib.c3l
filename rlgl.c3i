@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rlgl::env;
 
 const GRAPHICS_API_OPENGL_11 @if($feature(GRAPHICS_API_OPENGL_11)) = true;
@@ -1079,4 +1078,3 @@ fn void load_draw_cube() @extern("rlLoadDrawCube");
  * Load and draw a quad
  */
 fn void load_draw_quad() @extern("rlLoadDrawQuad");
-

@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -364,4 +363,3 @@ extern fn void attach_audio_mixed_processor(AudioCallback processor) @extern("At
  * Detach audio stream processor from the entire audio pipeline
  */
 extern fn void detach_audio_mixed_processor(AudioCallback processor) @extern("DetachAudioMixedProcessor");
-

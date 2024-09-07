@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_RANDOM_GENERATION));
 
 // Random values generation functions
@@ -41,4 +40,3 @@ fn int[] load_random_sequence(uint count, int min, int max) @inline {
 fn void unload_random_sequence(int[] sequence) @inline {
 	return __unload_random_sequence(sequence.ptr);
 }
-

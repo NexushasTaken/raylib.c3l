@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::math::vector;
 
@@ -28,4 +27,3 @@ fn vector::Vec3f Vector3.to_vecf(&this) @inline {
 fn vector::Vec4f Vector4.to_vecf(&this) @inline {
 	return vector::Vec4f { this.x, this.y, this.z, this.w };
 }
-

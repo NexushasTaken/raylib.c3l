@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rgui @if($feature(SUPPORT_RAYGUI));
 import rl;
 
@@ -11,4 +10,3 @@ extern fn int __gui_text_box(rl::Rectangle bounds, char* text, int text_size, bo
 // Advance controls set
 extern fn int __gui_list_view_ex(rl::Rectangle bounds, char** text, int count, int *scroll_index, int *active, int *focus) @extern("GuiListViewEx") @private;
 extern fn int __gui_text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char *text, int text_max_size, bool *secret_view_active) @extern("GuiTextInputBox") @private;
-

@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 // Color/pixel related functions
@@ -78,4 +77,3 @@ extern fn void set_pixel_color(void* dst_ptr, Color color, PixelFormat format) @
  * Get pixel data size in bytes for certain format
  */
 extern fn int get_pixel_data_size(int width, int height, PixelFormat format) @extern("GetPixelDataSize");
-

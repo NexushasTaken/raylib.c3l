@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_FILE_SYSTEM_FUNCTIONS));
 
 // File system functions
@@ -103,4 +102,3 @@ extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFi
  * Get file modification time (last write time)
  */
 extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime");
-

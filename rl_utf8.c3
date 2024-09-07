@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl @if($feature(SUPPORT_TEXT_CODEPOINTS_MANAGEMENT));
 
 // Text codepoints management functions (unicode characters)
@@ -48,4 +47,3 @@ extern fn int get_codepoint_previous(ZString text, int *codepoint_size) @extern(
  * Encode one codepoint into UTF-8 byte array (array length returned as parameter)
  */
 extern fn ZString codepoint_to_utf8(int codepoint, int *utf8_size) @extern("CodepointToUTF8");
-

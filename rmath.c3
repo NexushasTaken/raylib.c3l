@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::math; // Required for: math::sin(), math::cos(), tan(), math::atan2(), math::sqrt(), floor(), math::min(), math::max(), fabs()
 
@@ -1960,4 +1959,3 @@ fn bool quaternion_equals(Quaternion p, Quaternion q) {
 
 	return result;
 }
-

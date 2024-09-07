@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 import std::io;
@@ -658,4 +657,3 @@ extern fn void stop_automation_event_recording() @extern("StopAutomationEventRec
  * Play a recorded automation event
  */
 extern fn void play_automation_event(AutomationEvent event) @extern("PlayAutomationEvent");
-

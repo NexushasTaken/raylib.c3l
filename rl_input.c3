@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -257,4 +256,3 @@ extern fn Vector2 get_gesture_pinch_vector() @extern("GetGesturePinchVector");
  * Get gesture pinch angle
  */
 extern fn float get_gesture_pinch_angle() @extern("GetGesturePinchAngle");
-

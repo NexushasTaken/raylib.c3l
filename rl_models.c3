@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 import std::collections;
 
@@ -408,4 +407,3 @@ extern fn RayCollision get_ray_collision_triangle(Ray ray, Vector3 p1, Vector3 p
  * Get collision info between ray and quad
  */
 extern fn RayCollision get_ray_collision_quad(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) @extern("GetRayCollisionQuad");
-

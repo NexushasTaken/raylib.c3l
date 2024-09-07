@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 module rl;
 
 //------------------------------------------------------------------------------------
@@ -71,4 +70,3 @@ extern fn Color* __load_image_palette(Image image, int max_palette_size, int *co
 extern fn void __unload_image_colors(Color* colors) @extern("UnloadImageColors") @private;
 extern fn void __unload_image_palette(Color* colors) @extern("UnloadImagePalette") @private;
 //------------------------------------------------------------------------------------
-
