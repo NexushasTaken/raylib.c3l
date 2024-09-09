@@ -136,7 +136,7 @@ fn int main()
 	//--------------------------------------------------------------------------------------
 
 	// Main game loop
-	while (!exitWindow)	// Detect window close button or ESC key
+	while (!exitWindow) // Detect window close button or ESC key
 	{
 		// Update
 		//----------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ fn int main()
 
 			if ((droppedFiles.count > 0) && rl::is_file_extension((ZString)droppedFiles.paths[0], ".rgs")) { rgui::load_style((ZString)droppedFiles.paths[0]); }
 
-			rl::unload_dropped_files(droppedFiles);	// Clear internal buffers
+			rl::unload_dropped_files(droppedFiles); // Clear internal buffers
 		}
 
 		//alpha -= 0.002f;
@@ -173,7 +173,7 @@ fn int main()
 
 			switch (visualStyleActive)
 			{
-				case 0: break;	  // Default style
+				case 0: break; // Default style
 				case 1: style_jungle::load_style(); break;
 				case 2: style_lavanda::load_style(); break;
 				case 3: style_dark::load_style(); break;
@@ -191,8 +191,8 @@ fn int main()
 
 		// Draw
 		//----------------------------------------------------------------------------------
-		rl::begin_drawing();
-
+		rl::@drawing()
+		{
 			rl::clear_background(rl::get_color(rgui::get_style(rgui::DEFAULT, rgui::BACKGROUND_COLOR)));
 
 			// raygui: controls drawing
@@ -267,8 +267,8 @@ fn int main()
 
 			rgui::color_bar_alpha(Rectangle { 320, 490, 200, 30 }, null, &alphaValue);
 
-			rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_TOP);   // WARNING: Word-wrap does not work as expected in case of no-top alignment
-			rgui::set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_WORD);			// WARNING: If wrap mode enabled, text editing is not supported
+			rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_TOP); // WARNING: Word-wrap does not work as expected in case of no-top alignment
+			rgui::set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_WORD);          // WARNING: If wrap mode enabled, text editing is not supported
 			if (rgui::text_box(Rectangle { 678, 25, 258, 492 }, textBoxMultiText, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
 			rgui::set_style(rgui::DEFAULT, rgui::TEXT_WRAP_MODE, rgui::TEXT_WRAP_NONE);
 			rgui::set_style(rgui::DEFAULT, rgui::TEXT_ALIGNMENT_VERTICAL, rgui::TEXT_ALIGN_MIDDLE);
@@ -325,14 +325,13 @@ fn int main()
 				}
 			}
 			//----------------------------------------------------------------------------------
-
-		rl::end_drawing();
+		};
 		//----------------------------------------------------------------------------------
 	}
 
 	// De-Initialization
 	//--------------------------------------------------------------------------------------
-	rl::close_window();		// Close window and OpenGL context
+	rl::close_window(); // Close window and OpenGL context
 	//--------------------------------------------------------------------------------------
 
 	return 0;

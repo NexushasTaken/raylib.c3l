@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 /*
     WELCOME raylib EXAMPLES CONTRIBUTOR!
 
@@ -78,47 +77,45 @@ import rl;
 //------------------------------------------------------------------------------------
 fn int main(String[] args)
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int SCREEN_WIDTH = 800;
-    const int SCREEN_HEIGHT = 450;
+	// Initialization
+	//--------------------------------------------------------------------------------------
+	int screenWidth = 800;
+	int screenHeight = 450;
 
-    rl::init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - basic window");
+	rl::init_window(screenWidth, screenHeight, "raylib [core] example - basic window");
 
-    // TODO: Load resources / Initialize variables at this point
+	// TODO: Load resources / Initialize variables at this point
 
-    rl::set_target_fps(60);
-    //--------------------------------------------------------------------------------------
+	rl::set_target_fps(60);
+	//--------------------------------------------------------------------------------------
 
-    // Main game loop
-    while (!rl::window_should_close())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update variables / Implement example logic at this point
-        //----------------------------------------------------------------------------------
+	// Main game loop
+	while (!rl::window_should_close())    // Detect window close button or ESC key
+	{
+		// Update
+		//----------------------------------------------------------------------------------
+		// TODO: Update variables / Implement example logic at this point
+		//----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        rl::begin_drawing();
+		// Draw
+		//----------------------------------------------------------------------------------
+		rl::@drawing() {
+			rl::clear_background(rl::RAYWHITE);
 
-            rl::clear_background(rl::RAYWHITE);
+			// TODO: Draw everything that requires to be drawn at this point:
 
-            // TODO: Draw everything that requires to be drawn at this point:
+			rl::draw_text("Congrats! You created your first window!", 190, 200, 20, rl::LIGHTGRAY);  // Example
+		};
+		//----------------------------------------------------------------------------------
+	}
 
-            rl::draw_text("Congrats! You created your first window!", 190, 200, 20, rl::LIGHTGRAY);  // Example
+	// De-Initialization
+	//--------------------------------------------------------------------------------------
 
-        rl::end_drawing();
-        //----------------------------------------------------------------------------------
-    }
+	// TODO: Unload all loaded resources at this point
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
+	rl::close_window();        // Close window and OpenGL context
+	//--------------------------------------------------------------------------------------
 
-    // TODO: Unload all loaded resources at this point
-
-    rl::close_window();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-
-    return 0;
+	return 0;
 }

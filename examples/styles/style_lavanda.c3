@@ -20,22 +20,22 @@ const LAVANDA_STYLE_PROPS_COUNT = 16;
 
 // Custom style name: Lavanda
 rgui::GuiStyleProp[LAVANDA_STYLE_PROPS_COUNT] properties = {
-    { 0, 0, (int)0xab9bd3ff },    // DEFAULT_BORDER_COLOR_NORMAL 
-    { 0, 1, (int)0x3e4350ff },    // DEFAULT_BASE_COLOR_NORMAL 
-    { 0, 2, (int)0xdadaf4ff },    // DEFAULT_TEXT_COLOR_NORMAL 
-    { 0, 3, (int)0xee84a0ff },    // DEFAULT_BORDER_COLOR_FOCUSED 
-    { 0, 4, (int)0xf4b7c7ff },    // DEFAULT_BASE_COLOR_FOCUSED 
-    { 0, 5, (int)0xb7657bff },    // DEFAULT_TEXT_COLOR_FOCUSED 
-    { 0, 6, (int)0xd5c8dbff },    // DEFAULT_BORDER_COLOR_PRESSED 
-    { 0, 7, (int)0x966ec0ff },    // DEFAULT_BASE_COLOR_PRESSED 
-    { 0, 8, (int)0xd7ccf7ff },    // DEFAULT_TEXT_COLOR_PRESSED 
-    { 0, 9, (int)0x8fa2bdff },    // DEFAULT_BORDER_COLOR_DISABLED 
-    { 0, 10, (int)0x6b798dff },    // DEFAULT_BASE_COLOR_DISABLED 
-    { 0, 11, (int)0x8292a9ff },    // DEFAULT_TEXT_COLOR_DISABLED 
-    { 0, 16, (int)0x00000010 },    // DEFAULT_TEXT_SIZE 
-    { 0, 18, (int)0x84adb7ff },    // DEFAULT_LINE_COLOR 
-    { 0, 19, (int)0x5b5b81ff },    // DEFAULT_BACKGROUND_COLOR 
-    { 0, 20, (int)0x00000018 },    // DEFAULT_TEXT_LINE_SPACING 
+    { 0, 0, (int)0xab9bd3ff },    // DEFAULT_BORDER_COLOR_NORMAL
+    { 0, 1, (int)0x3e4350ff },    // DEFAULT_BASE_COLOR_NORMAL
+    { 0, 2, (int)0xdadaf4ff },    // DEFAULT_TEXT_COLOR_NORMAL
+    { 0, 3, (int)0xee84a0ff },    // DEFAULT_BORDER_COLOR_FOCUSED
+    { 0, 4, (int)0xf4b7c7ff },    // DEFAULT_BASE_COLOR_FOCUSED
+    { 0, 5, (int)0xb7657bff },    // DEFAULT_TEXT_COLOR_FOCUSED
+    { 0, 6, (int)0xd5c8dbff },    // DEFAULT_BORDER_COLOR_PRESSED
+    { 0, 7, (int)0x966ec0ff },    // DEFAULT_BASE_COLOR_PRESSED
+    { 0, 8, (int)0xd7ccf7ff },    // DEFAULT_TEXT_COLOR_PRESSED
+    { 0, 9, (int)0x8fa2bdff },    // DEFAULT_BORDER_COLOR_DISABLED
+    { 0, 10, (int)0x6b798dff },    // DEFAULT_BASE_COLOR_DISABLED
+    { 0, 11, (int)0x8292a9ff },    // DEFAULT_TEXT_COLOR_DISABLED
+    { 0, 16, (int)0x00000010 },    // DEFAULT_TEXT_SIZE
+    { 0, 18, (int)0x84adb7ff },    // DEFAULT_LINE_COLOR
+    { 0, 19, (int)0x5b5b81ff },    // DEFAULT_BACKGROUND_COLOR
+    { 0, 20, (int)0x00000018 },    // DEFAULT_TEXT_LINE_SPACING
 };
 
 // WARNING: This style uses a custom font: "Cartridge.ttf" (size: 16, spacing: 1)
@@ -567,7 +567,7 @@ rl::GlyphInfo[189] font_chars = {
 // Style loading function: Lavanda
 fn void load_style()
 {
-    rl::Image im_font = { null, 512, 256, 1, rl::PixelFormat.UNCOMPRESSED_GRAY_ALPHA };
+    rl::Image im_font = { null, 512, 256, 1, rl::PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA };
     rl::Font font = {
         .base_size = 16,
         .glyph_count = 189

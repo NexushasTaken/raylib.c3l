@@ -21,20 +21,20 @@ const BLUISH_STYLE_PROPS_COUNT = 14;
 // TODO: explicitly casting these hex values will cause truncation.
 // Custom style name: bluish
 rgui::GuiStyleProp[BLUISH_STYLE_PROPS_COUNT] properties = {
-    { 0, 0, (int)0x5ca6a6ff },    // DEFAULT_BORDER_COLOR_NORMAL 
-    { 0, 1, (int)0xb4e8f3ff },    // DEFAULT_BASE_COLOR_NORMAL 
-    { 0, 2, (int)0x447e77ff },    // DEFAULT_TEXT_COLOR_NORMAL 
-    { 0, 3, (int)0x5f8792ff },    // DEFAULT_BORDER_COLOR_FOCUSED 
-    { 0, 4, (int)0xcdeff7ff },    // DEFAULT_BASE_COLOR_FOCUSED 
-    { 0, 5, (int)0x4c6c74ff },    // DEFAULT_TEXT_COLOR_FOCUSED 
-    { 0, 6, (int)0x3b5b5fff },    // DEFAULT_BORDER_COLOR_PRESSED 
-    { 0, 7, (int)0xeaffffff },    // DEFAULT_BASE_COLOR_PRESSED 
-    { 0, 8, (int)0x275057ff },    // DEFAULT_TEXT_COLOR_PRESSED 
-    { 0, 9, (int)0x96aaacff },    // DEFAULT_BORDER_COLOR_DISABLED 
-    { 0, 10, (int)0xc8d7d9ff },    // DEFAULT_BASE_COLOR_DISABLED 
-    { 0, 11, (int)0x8c9c9eff },    // DEFAULT_TEXT_COLOR_DISABLED 
-    { 0, 18, (int)0x84adb7ff },    // DEFAULT_LINE_COLOR 
-    { 0, 19, (int)0xe8eef1ff },    // DEFAULT_BACKGROUND_COLOR 
+    { 0, 0, (int)0x5ca6a6ff },    // DEFAULT_BORDER_COLOR_NORMAL
+    { 0, 1, (int)0xb4e8f3ff },    // DEFAULT_BASE_COLOR_NORMAL
+    { 0, 2, (int)0x447e77ff },    // DEFAULT_TEXT_COLOR_NORMAL
+    { 0, 3, (int)0x5f8792ff },    // DEFAULT_BORDER_COLOR_FOCUSED
+    { 0, 4, (int)0xcdeff7ff },    // DEFAULT_BASE_COLOR_FOCUSED
+    { 0, 5, (int)0x4c6c74ff },    // DEFAULT_TEXT_COLOR_FOCUSED
+    { 0, 6, (int)0x3b5b5fff },    // DEFAULT_BORDER_COLOR_PRESSED
+    { 0, 7, (int)0xeaffffff },    // DEFAULT_BASE_COLOR_PRESSED
+    { 0, 8, (int)0x275057ff },    // DEFAULT_TEXT_COLOR_PRESSED
+    { 0, 9, (int)0x96aaacff },    // DEFAULT_BORDER_COLOR_DISABLED
+    { 0, 10, (int)0xc8d7d9ff },    // DEFAULT_BASE_COLOR_DISABLED
+    { 0, 11, (int)0x8c9c9eff },    // DEFAULT_TEXT_COLOR_DISABLED
+    { 0, 18, (int)0x84adb7ff },    // DEFAULT_LINE_COLOR
+    { 0, 19, (int)0xe8eef1ff },    // DEFAULT_BACKGROUND_COLOR
 };
 
 // WARNING: This style uses a custom font:  (size: 10, spacing: 1)
@@ -319,7 +319,7 @@ rl::GlyphInfo[95] font_chars = {
 // Style loading function: bluish
 fn void load_style() @inline
 {
-    rl::Image im_font = { null, 256, 256, 1, rl::PixelFormat.UNCOMPRESSED_GRAY_ALPHA };
+    rl::Image im_font = { null, 256, 256, 1, rl::PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA };
     rl::Font font = {
         .base_size = 10,
         .glyph_count = 95

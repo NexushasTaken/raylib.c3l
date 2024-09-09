@@ -20,22 +20,22 @@ const CYBER_STYLE_PROPS_COUNT = 16;
 
 // Custom style name: cyber
 GuiStyleProp[CYBER_STYLE_PROPS_COUNT] properties = {
-    { 0, 0, (int)0x2f7486ff },    // DEFAULT_BORDER_COLOR_NORMAL 
-    { 0, 1, (int)0x024658ff },    // DEFAULT_BASE_COLOR_NORMAL 
-    { 0, 2, (int)0x51bfd3ff },    // DEFAULT_TEXT_COLOR_NORMAL 
-    { 0, 3, (int)0x82cde0ff },    // DEFAULT_BORDER_COLOR_FOCUSED 
-    { 0, 4, (int)0x3299b4ff },    // DEFAULT_BASE_COLOR_FOCUSED 
-    { 0, 5, (int)0xb6e1eaff },    // DEFAULT_TEXT_COLOR_FOCUSED 
-    { 0, 6, (int)0xeb7630ff },    // DEFAULT_BORDER_COLOR_PRESSED 
-    { 0, 7, (int)0xffbc51ff },    // DEFAULT_BASE_COLOR_PRESSED 
-    { 0, 8, (int)0xd86f36ff },    // DEFAULT_TEXT_COLOR_PRESSED 
-    { 0, 9, (int)0x134b5aff },    // DEFAULT_BORDER_COLOR_DISABLED 
-    { 0, 10, (int)0x02313dff },    // DEFAULT_BASE_COLOR_DISABLED 
-    { 0, 11, (int)0x17505fff },    // DEFAULT_TEXT_COLOR_DISABLED 
-    { 0, 16, (int)0x0000000e },    // DEFAULT_TEXT_SIZE 
-    { 0, 17, (int)0x00000000 },    // DEFAULT_TEXT_SPACING 
-    { 0, 18, (int)0x81c0d0ff },    // DEFAULT_LINE_COLOR 
-    { 0, 19, (int)0x00222bff },    // DEFAULT_BACKGROUND_COLOR 
+    { 0, 0, (int)0x2f7486ff },    // DEFAULT_BORDER_COLOR_NORMAL
+    { 0, 1, (int)0x024658ff },    // DEFAULT_BASE_COLOR_NORMAL
+    { 0, 2, (int)0x51bfd3ff },    // DEFAULT_TEXT_COLOR_NORMAL
+    { 0, 3, (int)0x82cde0ff },    // DEFAULT_BORDER_COLOR_FOCUSED
+    { 0, 4, (int)0x3299b4ff },    // DEFAULT_BASE_COLOR_FOCUSED
+    { 0, 5, (int)0xb6e1eaff },    // DEFAULT_TEXT_COLOR_FOCUSED
+    { 0, 6, (int)0xeb7630ff },    // DEFAULT_BORDER_COLOR_PRESSED
+    { 0, 7, (int)0xffbc51ff },    // DEFAULT_BASE_COLOR_PRESSED
+    { 0, 8, (int)0xd86f36ff },    // DEFAULT_TEXT_COLOR_PRESSED
+    { 0, 9, (int)0x134b5aff },    // DEFAULT_BORDER_COLOR_DISABLED
+    { 0, 10, (int)0x02313dff },    // DEFAULT_BASE_COLOR_DISABLED
+    { 0, 11, (int)0x17505fff },    // DEFAULT_TEXT_COLOR_DISABLED
+    { 0, 16, (int)0x0000000e },    // DEFAULT_TEXT_SIZE
+    { 0, 17, (int)0x00000000 },    // DEFAULT_TEXT_SPACING
+    { 0, 18, (int)0x81c0d0ff },    // DEFAULT_LINE_COLOR
+    { 0, 19, (int)0x00222bff },    // DEFAULT_BACKGROUND_COLOR
 };
 
 // WARNING: This style uses a custom font:  (size: 14, spacing: 0)
@@ -304,7 +304,7 @@ rl::GlyphInfo[95] font_chars = {
 // Style loading function: cyber
 fn void load_style()
 {
-    rl::Image im_font = { null, 256, 256, 1, rl::PixelFormat.UNCOMPRESSED_GRAY_ALPHA };
+    rl::Image im_font = { null, 256, 256, 1, rl::PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA };
     rl::Font font = {
         .base_size = 14,
         .glyph_count = 95

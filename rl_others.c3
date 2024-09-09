@@ -48,28 +48,25 @@ const RAYWHITE   = Color { 245, 245, 245, 255 };   // My own White (raylib logo)
 //----------------------------------------------------------------------------------
 
 // Vector2, 2 components
-def Vector2 = vector::Vec2f;
-//struct Vector2 {
-//	float x;                // Vector x component
-//	float y;                // Vector y component
-//}
+struct Vector2 {
+	float x;                // Vector x component
+	float y;                // Vector y component
+}
 
 // Vector3, 3 components
-def Vector3 = vector::Vec3f;
-//struct Vector3 {
-//	float x;                // Vector x component
-//	float y;                // Vector y component
-//	float z;                // Vector z component
-//}
+struct Vector3 {
+	float x;                // Vector x component
+	float y;                // Vector y component
+	float z;                // Vector z component
+}
 
 // Vector4, 4 components
-def Vector4 = vector::Vec4f;
-//struct Vector4 {
-//	float x;                // Vector x component
-//	float y;                // Vector y component
-//	float z;                // Vector z component
-//	float w;                // Vector w component
-//}
+struct Vector4 {
+	float x;                // Vector x component
+	float y;                // Vector y component
+	float z;                // Vector z component
+	float w;                // Vector w component
+}
 
 // Quaternion, 4 components (Vector4 alias)
 //def Quaternion = quaternion::Quaternion(<float>);
@@ -89,13 +86,12 @@ struct Matrix {
 }
 
 // Color, 4 components, R8G8B8A8 (32bit)
-def Color = char[<4>];
-//struct Color {
-//	char r;        // Color red value
-//	char g;        // Color green value
-//	char b;        // Color blue value
-//	char a;        // Color alpha value
-//}
+struct Color {
+	char r;        // Color red value
+	char g;        // Color green value
+	char b;        // Color blue value
+	char a;        // Color alpha value
+}
 
 // Rectangle, 4 components
 struct Rectangle {
@@ -170,17 +166,17 @@ struct Font {
 
 // Camera, defines position/orientation in 3d space
 struct Camera3D {
-	Vector3 position;       // Camera position
-	Vector3 target;         // Camera target it looks-at
-	Vector3 up;             // Camera up vector (rotation over its axis)
-	float fovy;             // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
-	int projection;         // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+	Vector3 position; // Camera position
+	Vector3 target;   // Camera target it looks-at
+	Vector3 up;       // Camera up vector (rotation over its axis)
+	float fovy;       // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+	int projection;   // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
 def Camera = Camera3D;    // Camera type fallback, defaults to Camera3D
 
 // Camera2D, defines position/orientation in 2d space
-struct Camera2D {
+struct Camera2D @packed {
 	Vector2 offset;         // Camera offset (displacement from target)
 	Vector2 target;         // Camera target (rotation and zoom origin)
 	float rotation;         // Camera rotation in degrees
@@ -234,9 +230,9 @@ struct Material {
 
 // Transform, vertex transformation data
 struct Transform {
-	Vector3 translation;    // Translation
-	Quaternion rotation;    // Rotation
-	Vector3 scale;          // Scale
+	Vector3 translation; // Translation
+	Quaternion rotation;      // Rotation
+	Vector3 scale;       // Scale
 }
 
 // Bone, skeletal animation bone
@@ -271,13 +267,13 @@ struct ModelAnimation {
 }
 
 // Ray, ray for raycasting
-struct Ray {
+struct Ray @packed {
 	Vector3 position;  // Ray position (origin)
 	Vector3 direction; // Ray direction
 }
 
 // RayCollision, ray hit information
-struct RayCollision {
+struct RayCollision @packed {
 	bool hit;       // Did the ray hit something?
 	float distance; // Distance to the nearest hit
 	Vector3 point;  // Point of the nearest hit
@@ -285,7 +281,7 @@ struct RayCollision {
 }
 
 // BoundingBox
-struct BoundingBox {
+struct BoundingBox @packed {
 	Vector3 min; // Minimum vertex box-corner
 	Vector3 max; // Maximum vertex box-corner
 }
@@ -360,7 +356,7 @@ struct VrStereoConfig {
 struct FilePathList {
 	uint capacity;        // Filepaths max entries
 	uint count;           // Filepaths entries count
-	char** paths;         // Filepaths entries
+	ZString* paths;         // Filepaths entries
 }
 
 // Automation event

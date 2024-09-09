@@ -102,3 +102,16 @@ extern fn void unload_dropped_files(FilePathList files) @extern("UnloadDroppedFi
  * Get file modification time (last write time)
  */
 extern fn long get_file_mod_time(ZString file_name) @extern("GetFileModTime");
+
+
+// FilePathList iterator
+/**
+ * @require self.paths != null && i < self.count
+ */
+fn ZString FilePathList.get(&self, usz i) @operator([]) {
+    return (ZString)self.paths[i];
+}
+
+fn uint FilePathList.len(&self) @operator(len) {
+    return self.count;
+}

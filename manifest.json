@@ -1,117 +1,24 @@
 {
   "provides" : "raylib",
   "targets" : {
-    "freebsd-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
+    "macos-x64" : {
       "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "linux-aarch64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "linux-riscv32" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "linux-riscv64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "linux-x86" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "linux-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
+      "linked-libraries" : ["raylib", "Cocoa.framework", "OpenGL.framework", "CoreVideo.framework", "GLUT.framework", "IOKit.framework", "c"]
     },
     "macos-aarch64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
       "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
+      "linked-libraries" : ["raylib", "Cocoa.framework", "OpenGL.framework", "CoreVideo.framework", "GLUT.framework", "IOKit.framework", "c"]
     },
-    "macos-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
+    "linux-x64" : {
       "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "netbsd-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "openbsd-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "wasm32" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "wasm64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
-    },
-    "windows-aarch64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
+      "linked-libraries" : ["raylib", "GLESv2", "glfw", "c"]
     },
     "windows-x64" : {
-      // Extra flags to the linker for this target:
-      "link-args" : [],
-      // C3 libraries this target depends on:
-      "dependencies" : [],
-      // The external libraries to link for this target:
-      "linked-libraries" : [ "raylib" ],
+      "linked-libraries" : ["raylib", "opengl32", "kernel32", "user32", "gdi32", "winmm", "winspool", "comdlg32", "advapi32", "shell32", "ole32", "oleaut32", "uuid", "odbc32", "odbccp32"],
+      "wincrt": "none"
     },
+    "wasm32" : {
+      "linked-libraries" : ["raylib"]
+    }
   }
 }

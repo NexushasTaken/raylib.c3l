@@ -60,11 +60,11 @@ fn int main(String[] args)
 			.zoom = 1.0f,
 		};
 
-	rl::set_target_fps(60);				   // Set our game to run at 60 frames-per-second
+	rl::set_target_fps(60);                 // Set our game to run at 60 frames-per-second
 	//--------------------------------------------------------------------------------------
 
 	// Main game loop
-	while (!rl::window_should_close())		// Detect window close button or ESC key
+	while (!rl::window_should_close())      // Detect window close button or ESC key
 	{
 		// Update
 		//----------------------------------------------------------------------------------
@@ -99,12 +99,12 @@ fn int main(String[] args)
 
 		// Draw
 		//----------------------------------------------------------------------------------
-		rl::begin_drawing();
-
+		rl::@drawing()
+		{
 			rl::clear_background(rl::RAYWHITE);
 
-			rl::begin_mode2d(camera);
-
+			rl::@mode2d(camera)
+			{
 				rl::draw_rectangle(-6000, 320, 13000, 8000, rl::DARKGRAY);
 
 				for (int i = 0; i < MAX_BUILDINGS; i++) { rl::draw_rectangle_rec(buildings[i], buildColors[i]); }
@@ -113,8 +113,7 @@ fn int main(String[] args)
 
 				rl::draw_line((int)camera.target.x, -SCREEN_HEIGHT*10, (int)camera.target.x, SCREEN_HEIGHT*10, rl::GREEN);
 				rl::draw_line(-SCREEN_WIDTH*10, (int)camera.target.y, SCREEN_WIDTH*10, (int)camera.target.y, rl::GREEN);
-
-			rl::end_mode2d();
+			};
 
 			rl::draw_text("SCREEN AREA", 640, 10, 20, rl::RED);
 
@@ -131,14 +130,13 @@ fn int main(String[] args)
 			rl::draw_text("- Mouse Wheel to Zoom in-out", 40, 60, 10, rl::DARKGRAY);
 			rl::draw_text("- A / S to Rotate", 40, 80, 10, rl::DARKGRAY);
 			rl::draw_text("- R to reset Zoom and Rotation", 40, 100, 10, rl::DARKGRAY);
-
-		rl::end_drawing();
+		};
 		//----------------------------------------------------------------------------------
 	}
 
 	// De-Initialization
 	//--------------------------------------------------------------------------------------
-	rl::close_window();		// Close window and OpenGL context
+	rl::close_window(); // Close window and OpenGL context
 	//--------------------------------------------------------------------------------------
 
 	return 0;
