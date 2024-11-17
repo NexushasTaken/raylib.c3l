@@ -1,4 +1,4 @@
-/*******************************************************************************************
+/******************************************************************************************
 *
 *   raygui v4.0 - A simple and easy-to-use immediate-mode gui library
 *
@@ -310,7 +310,6 @@
 *
 **********************************************************************************************/
 module rgui @if($feature(SUPPORT_RAYGUI));
-import std::collections;
 import rl;
 
 const RAYGUI_VERSION_MAJOR = 4;
@@ -325,9 +324,9 @@ const RAYGUI_VERSION = "4.0";
 // Style property
 // NOTE: Used when exporting style as code for convenience
 struct GuiStyleProp {
-	ushort control_id;  // Control identifier
-	ushort property_id; // Property identifier
-	int property_value; // Property value
+    ushort control_id;  // Control identifier
+    ushort property_id; // Property identifier
+    int property_value; // Property value
 }
 
 // Gui control state
@@ -485,135 +484,135 @@ const SCROLLBAR_RIGHT_SIDE = 1;
 // Global gui state control functions
 //------------------------------------------------------------------------------------
 
-/**
- * Enable gui controls (global state)
- */
+<*
+ Enable gui controls (global state)
+*>
 extern fn void enable() @extern("GuiEnable");
 
-/**
- * Disable gui controls (global state)
- */
+<*
+ Disable gui controls (global state)
+*>
 extern fn void disable() @extern("GuiDisable");
 
-/**
- * Lock gui controls (global state)
- */
+<*
+ Lock gui controls (global state)
+*>
 extern fn void lock() @extern("GuiLock");
 
-/**
- * Unlock gui controls (global state)
- */
+<*
+ Unlock gui controls (global state)
+*>
 extern fn void unlock() @extern("GuiUnlock");
 
-/**
- * Check if gui is locked (global state)
- */
+<*
+ Check if gui is locked (global state)
+*>
 extern fn bool is_locked() @extern("GuiIsLocked");
 
-/**
- * Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
- * @require alpha >= 0.0f && alpha <= 1.0f
- */
+<*
+ Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
+ @require alpha >= 0.0f && alpha <= 1.0f
+*>
 extern fn void set_alpha(float alpha) @extern("GuiSetAlpha");
 
-/**
- * Set gui state (global state)
- */
+<*
+ Set gui state (global state)
+*>
 extern fn void set_state(GuiState state) @extern("GuiSetState");
 
-/**
- * Get gui state (global state)
- */
+<*
+ Get gui state (global state)
+*>
 extern fn int get_state() @extern("GuiGetState");
 
 //------------------------------------------------------------------------------------
 // Font set/get functions
 //------------------------------------------------------------------------------------
 
-/**
- * Set gui custom font (global state)
- */
+<*
+ Set gui custom font (global state)
+*>
 extern fn void set_font(rl::Font font) @extern("GuiSetFont");
 
-/**
- * Get gui custom font (global state)
- */
+<*
+ Get gui custom font (global state)
+*>
 extern fn Font get_font() @extern("GuiGetFont");
 
 //------------------------------------------------------------------------------------
 // Style set/get functions
 //------------------------------------------------------------------------------------
 
-/**
- * Set one style property
- */
+<*
+ Set one style property
+*>
 extern fn void set_style(int control, int property, int value) @extern("GuiSetStyle");
 
-/**
- * Get one style property
- */
+<*
+ Get one style property
+*>
 extern fn int get_style(int control, int property) @extern("GuiGetStyle");
 
 //------------------------------------------------------------------------------------
 // Styles loading functions
 //------------------------------------------------------------------------------------
 
-/**
- * Load style file over global style variable (.rgs)
- */
+<*
+ Load style file over global style variable (.rgs)
+*>
 extern fn void load_style(ZString file_name) @extern("GuiLoadStyle");
 
-/**
- * Load style default over global style
- */
+<*
+ Load style default over global style
+*>
 extern fn void load_style_default() @extern("GuiLoadStyleDefault");
 
 //------------------------------------------------------------------------------------
 // Tooltips management functions
 //------------------------------------------------------------------------------------
 
-/**
- * Enable gui tooltips (global state)
- */
+<*
+ Enable gui tooltips (global state)
+*>
 extern fn void enable_tooltip() @extern("GuiEnableTooltip");
 
-/**
- * Disable gui tooltips (global state)
- */
+<*
+ Disable gui tooltips (global state)
+*>
 extern fn void disable_tooltip() @extern("GuiDisableTooltip");
 
-/**
- * Set tooltip string
- */
+<*
+ Set tooltip string
+*>
 extern fn void set_tooltip(ZString tooltip) @extern("GuiSetTooltip");
 
 //------------------------------------------------------------------------------------
 // Icons functionality
 //------------------------------------------------------------------------------------
 
-/**
- * Get text with icon id prepended (if supported)
- */
+<*
+ Get text with icon id prepended (if supported)
+*>
 extern fn ZString icon_text(GuiIconName icon_id, ZString text) @extern("GuiIconText");
 
-/**
- * Set default icon drawing size
- */
+<*
+ Set default icon drawing size
+*>
 extern fn void set_icon_scale(int scale) @extern("GuiSetIconScale") @if(!$feature(RAYGUI_NO_ICONS));
 
-/**
- * Get raygui icons data pointer
- */
+<*
+ Get raygui icons data pointer
+*>
 extern fn uint* get_icons() @extern("GuiGetIcons") @if(!$feature(RAYGUI_NO_ICONS));
 
-/**
- * Load raygui icons file (.rgi) into internal icons data
- */
+<*
+ Load raygui icons file (.rgi) into internal icons data
+*>
 extern fn char** load_icons(ZString file_name, bool load_icons_name) @extern("GuiLoadIcons") @if(!$feature(RAYGUI_NO_ICONS));
 
-/**
- * Draw icon using pixel size at specified position
- */
+<*
+ Draw icon using pixel size at specified position
+*>
 extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @extern("GuiDrawIcon") @if(!$feature(RAYGUI_NO_ICONS));
 
 //------------------------------------------------------------------------------------
@@ -622,219 +621,221 @@ extern fn void draw_icon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_si
 // Container/separator controls, useful for controls organization
 //------------------------------------------------------------------------------------
 
-/**
- * Window Box control, shows a window that can be closed
- */
+<*
+ Window Box control, shows a window that can be closed
+*>
 extern fn int window_box(rl::Rectangle bounds, ZString title) @extern("GuiWindowBox");
 
-/**
- * Group Box control with text name
- */
+<*
+ Group Box control with text name
+*>
 extern fn int group_box(rl::Rectangle bounds, ZString text) @extern("GuiGroupBox");
 
-/**
- * Line separator control, could contain text
- */
+<*
+ Line separator control, could contain text
+*>
 extern fn int line(rl::Rectangle bounds, ZString text) @extern("GuiLine");
 
-/**
- * Panel control, useful to group controls
- */
+<*
+ Panel control, useful to group controls
+*>
 extern fn int panel(rl::Rectangle bounds, ZString text) @extern("GuiPanel");
 
-/**
- * Tab Bar control, returns TAB to be closed or -1
- * @param [&inout] active
- */
-fn int tab_bar(rl::Rectangle bounds, List(<ZString>) text, int* active) @inline {
-	return rgui::__gui_tab_bar(bounds, text.entries, (int)text.len(), active);
+<*
+ Tab Bar control, returns TAB to be closed or -1
+ @require text.len <= int.max
+ @param [&inout] active
+*>
+fn int tab_bar(rl::Rectangle bounds, ZString[] text, int* active) @inline {
+  return rgui::__gui_tab_bar(bounds, text.ptr, (int)text.len, active);
 }
 
-/**
- * Scroll Panel control
- * @param [inout] scroll
- * @param [&inout] view
- */
+<*
+ Scroll Panel control
+ @param [inout] scroll
+ @param [&inout] view
+*>
 extern fn int scroll_panel(rl::Rectangle bounds, ZString text, rl::Rectangle content, rl::Vector2* scroll, rl::Rectangle* view) @extern("GuiScrollPanel");
 
 //------------------------------------------------------------------------------------
 // Basic controls set
 //------------------------------------------------------------------------------------
 
-/**
- * Label control, shows text
- */
+<*
+ Label control, shows text
+*>
 extern fn int label(rl::Rectangle bounds, ZString text) @extern("GuiLabel");
 
-/**
- * Button control, returns true when clicked
- */
+<*
+ Button control, returns true when clicked
+*>
 extern fn int button(rl::Rectangle bounds, ZString text) @extern("GuiButton");
 
-/**
- * Label button control, show true when clicked
- */
+<*
+ Label button control, show true when clicked
+*>
 extern fn int label_button(rl::Rectangle bounds, ZString text) @extern("GuiLabelButton");
 
-/**
- * Toggle Button control, returns true when active
- * @param [&inout] active
- */
+<*
+ Toggle Button control, returns true when active
+ @param [&inout] active
+*>
 extern fn int toggle(rl::Rectangle bounds, ZString text, bool* active) @extern("GuiToggle");
 
-/**
- * Toggle Group control, returns active toggle index
- * @param [&inout] active
- */
+<*
+ Toggle Group control, returns active toggle index
+ @param [&inout] active
+*>
 extern fn int toggle_group(rl::Rectangle bounds, ZString text, int* active) @extern("GuiToggleGroup");
 
-/**
- * Toggle Slider control, returns true when clicked
- * @param [&inout] active
- */
+<*
+ Toggle Slider control, returns true when clicked
+ @param [&inout] active
+*>
 extern fn int toggle_slider(rl::Rectangle bounds, ZString text, int* active) @extern("GuiToggleSlider");
 
-/**
- * Check Box control, returns true when active
- * @param [&inout] checked
- */
+<*
+ Check Box control, returns true when active
+ @param [&inout] checked
+*>
 extern fn int check_box(rl::Rectangle bounds, ZString text, bool* checked) @extern("GuiCheckBox");
 
-/**
- * Combo Box control, returns selected item index
- * @param [&inout] active
- */
+<*
+ Combo Box control, returns selected item index
+ @param [&inout] active
+*>
 extern fn int combo_box(rl::Rectangle bounds, ZString text, int* active) @extern("GuiComboBox");
 
-/**
- * Dropdown Box control, returns selected item
- * @param [&inout] active
- */
+<*
+ Dropdown Box control, returns selected item
+ @param [&inout] active
+*>
 extern fn int dropdown_box(rl::Rectangle bounds, ZString text, int* active, bool edit_mode) @extern("GuiDropdownBox");
 
-/**
- * Spinner control, returns selected value
- * @param [&inout] value
- */
+<*
+ Spinner control, returns selected value
+ @param [&inout] value
+*>
 extern fn int spinner(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @extern("GuiSpinner");
 
-/**
- * Value Box control, updates input text with numbers
- * @param [&inout] value
- */
+<*
+ Value Box control, updates input text with numbers
+ @param [&inout] value
+*>
 extern fn int value_box(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @extern("GuiValueBox");
 
 // TODO: find a better type for param 'text' 
-/**
- * Text Box control, updates input text
- */
+<*
+ Text Box control, updates input text
+*>
 fn int text_box(rl::Rectangle bounds, char[] text, bool edit_mode) @inline {
-	return rgui::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
+    return rgui::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
 }
 
-/**
- * Slider control, returns selected value
- * @param [&inout] value
- */
+<*
+ Slider control, returns selected value
+ @param [&inout] value
+*>
 extern fn int slider(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiSlider");
 
-/**
- * Slider Bar control, returns selected value
- * @param [&inout] value
- */
+<*
+ Slider Bar control, returns selected value
+ @param [&inout] value
+*>
 extern fn int slider_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiSliderBar");
 
-/**
- * Progress Bar control, shows current progress value
- * @param [&inout] value
- */
+<*
+ Progress Bar control, shows current progress value
+ @param [&inout] value
+*>
 extern fn int progress_bar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @extern("GuiProgressBar");
 
-/**
- * Status Bar control, shows info text
- */
+<*
+ Status Bar control, shows info text
+*>
 extern fn int status_bar(rl::Rectangle bounds, ZString text) @extern("GuiStatusBar");
 
-/**
- * Dummy control for placeholders
- */
+<*
+ Dummy control for placeholders
+*>
 extern fn int dummy_rec(rl::Rectangle bounds, ZString text) @extern("GuiDummyRec");
 
-/**
- * Grid control, returns mouse cell position
- * @param [out] mouse_cell
- */
+<*
+ Grid control, returns mouse cell position
+ @param [out] mouse_cell
+*>
 extern fn int grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, rl::Vector2* mouse_cell) @extern("GuiGrid");
 
 //------------------------------------------------------------------------------------
 // Advance controls set
 //------------------------------------------------------------------------------------
 
-/**
- * List View control, returns selected list item index
- * @param [&inout] scroll_index
- * @param [&inout] active
- */
+<*
+ List View control, returns selected list item index
+ @param [&inout] scroll_index
+ @param [&inout] active
+*>
 extern fn int list_view(rl::Rectangle bounds, ZString text, int* scroll_index, int* active) @extern("GuiListView");
 
-/**
- * List View with extended parameters
- * @param [&inout] scroll_index
- * @param [&inout] active
- * @param [&inout] focus
- */
-fn int list_view_ex(rl::Rectangle bounds, List(<ZString>) text, int* scroll_index, int* active, int* focus) @inline {
-	return rgui::__gui_list_view_ex(bounds, text.entries, (int)text.len(), scroll_index, active, focus);
+<*
+ List View with extended parameters
+ @require text.len <= int.max
+ @param [&inout] scroll_index
+ @param [&inout] active
+ @param [&inout] focus
+*>
+fn int list_view_ex(rl::Rectangle bounds, ZString[] text, int* scroll_index, int* active, int* focus) @inline {
+    return rgui::__gui_list_view_ex(bounds, text.ptr, (int)text.len, scroll_index, active, focus);
 }
 
-/**
- * Message Box control, displays a message
- */
+<*
+ Message Box control, displays a message
+*>
 extern fn int message_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons) @extern("GuiMessageBox");
 
 // TODO: find a better type for param 'text'
-/**
- * Text Input Box control, ask for text, supports secret
- * @param [in] secret_view_active
- */
+<*
+ Text Input Box control, ask for text, supports secret
+ @param [in] secret_view_active
+*>
 fn int text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char[] text, bool* secret_view_active) @inline {
-	return rgui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
+    return rgui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
 }
 
-/**
- * Color Picker control (multiple color controls)
- * @param [inout] color
- */
+<*
+ Color Picker control (multiple color controls)
+ @param [inout] color
+*>
 extern fn int color_picker(rl::Rectangle bounds, ZString text, Color* color) @extern("GuiColorPicker");
 
-/**
- * Color Panel control
- * @param [&inout] color
- */
+<*
+ Color Panel control
+ @param [&inout] color
+*>
 extern fn int color_panel(rl::Rectangle bounds, ZString text, Color* color) @extern("GuiColorPanel");
 
-/**
- * Color Bar Alpha control
- * @param [&inout] alpha
- */
+<*
+ Color Bar Alpha control
+ @param [&inout] alpha
+*>
 extern fn int color_bar_alpha(rl::Rectangle bounds, ZString text, float* alpha) @extern("GuiColorBarAlpha");
 
-/**
- * Color Bar Hue control
- * @param [&inout] value
- */
+<*
+ Color Bar Hue control
+ @param [&inout] value
+*>
 extern fn int color_bar_hue(rl::Rectangle bounds, ZString text, float* value) @extern("GuiColorBarHue");
 
-/**
- * Color Picker control that avoids conversion to RGB on each call (multiple color controls)
- * @param [&inout] color_hsv
- */
+<*
+ Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+ @param [&inout] color_hsv
+*>
 extern fn int color_picker_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @extern("GuiColorPickerHSV");
 
-/**
- * Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
- * @param [&inout] color_hsv
- */
+<*
+ Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
+ @param [&inout] color_hsv
+*>
 extern fn int color_panel_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @extern("GuiColorPanelHSV");
 
 //----------------------------------------------------------------------------------------------------------
@@ -842,262 +843,262 @@ extern fn int color_panel_hsv(rl::Rectangle bounds, ZString text, rl::Vector3* c
 module rgui @if(!$feature(RAYGUI_NO_ICONS) && !$feature(RAYGUI_CUSTOM_ICONS));
 
 enum GuiIconName : int {
-	ICON_NONE,
-	ICON_FOLDER_FILE_OPEN,
-	ICON_FILE_SAVE_CLASSIC,
-	ICON_FOLDER_OPEN,
-	ICON_FOLDER_SAVE,
-	ICON_FILE_OPEN,
-	ICON_FILE_SAVE,
-	ICON_FILE_EXPORT,
-	ICON_FILE_ADD,
-	ICON_FILE_DELETE,
-	ICON_FILETYPE_TEXT,
-	ICON_FILETYPE_AUDIO,
-	ICON_FILETYPE_IMAGE,
-	ICON_FILETYPE_PLAY,
-	ICON_FILETYPE_VIDEO,
-	ICON_FILETYPE_INFO,
-	ICON_FILE_COPY,
-	ICON_FILE_CUT,
-	ICON_FILE_PASTE,
-	ICON_CURSOR_HAND,
-	ICON_CURSOR_POINTER,
-	ICON_CURSOR_CLASSIC,
-	ICON_PENCIL,
-	ICON_PENCIL_BIG,
-	ICON_BRUSH_CLASSIC,
-	ICON_BRUSH_PAINTER,
-	ICON_WATER_DROP,
-	ICON_COLOR_PICKER,
-	ICON_RUBBER,
-	ICON_COLOR_BUCKET,
-	ICON_TEXT_T,
-	ICON_TEXT_A,
-	ICON_SCALE,
-	ICON_RESIZE,
-	ICON_FILTER_POINT,
-	ICON_FILTER_BILINEAR,
-	ICON_CROP,
-	ICON_CROP_ALPHA,
-	ICON_SQUARE_TOGGLE,
-	ICON_SYMMETRY,
-	ICON_SYMMETRY_HORIZONTAL,
-	ICON_SYMMETRY_VERTICAL,
-	ICON_LENS,
-	ICON_LENS_BIG,
-	ICON_EYE_ON,
-	ICON_EYE_OFF,
-	ICON_FILTER_TOP,
-	ICON_FILTER,
-	ICON_TARGET_POINT,
-	ICON_TARGET_SMALL,
-	ICON_TARGET_BIG,
-	ICON_TARGET_MOVE,
-	ICON_CURSOR_MOVE,
-	ICON_CURSOR_SCALE,
-	ICON_CURSOR_SCALE_RIGHT,
-	ICON_CURSOR_SCALE_LEFT,
-	ICON_UNDO,
-	ICON_REDO,
-	ICON_REREDO,
-	ICON_MUTATE,
-	ICON_ROTATE,
-	ICON_REPEAT,
-	ICON_SHUFFLE,
-	ICON_EMPTYBOX,
-	ICON_TARGET,
-	ICON_TARGET_SMALL_FILL,
-	ICON_TARGET_BIG_FILL,
-	ICON_TARGET_MOVE_FILL,
-	ICON_CURSOR_MOVE_FILL,
-	ICON_CURSOR_SCALE_FILL,
-	ICON_CURSOR_SCALE_RIGHT_FILL,
-	ICON_CURSOR_SCALE_LEFT_FILL,
-	ICON_UNDO_FILL,
-	ICON_REDO_FILL,
-	ICON_REREDO_FILL,
-	ICON_MUTATE_FILL,
-	ICON_ROTATE_FILL,
-	ICON_REPEAT_FILL,
-	ICON_SHUFFLE_FILL,
-	ICON_EMPTYBOX_SMALL,
-	ICON_BOX,
-	ICON_BOX_TOP,
-	ICON_BOX_TOP_RIGHT,
-	ICON_BOX_RIGHT,
-	ICON_BOX_BOTTOM_RIGHT,
-	ICON_BOX_BOTTOM,
-	ICON_BOX_BOTTOM_LEFT,
-	ICON_BOX_LEFT,
-	ICON_BOX_TOP_LEFT,
-	ICON_BOX_CENTER,
-	ICON_BOX_CIRCLE_MASK,
-	ICON_POT,
-	ICON_ALPHA_MULTIPLY,
-	ICON_ALPHA_CLEAR,
-	ICON_DITHERING,
-	ICON_MIPMAPS,
-	ICON_BOX_GRID,
-	ICON_GRID,
-	ICON_BOX_CORNERS_SMALL,
-	ICON_BOX_CORNERS_BIG,
-	ICON_FOUR_BOXES,
-	ICON_GRID_FILL,
-	ICON_BOX_MULTISIZE,
-	ICON_ZOOM_SMALL,
-	ICON_ZOOM_MEDIUM,
-	ICON_ZOOM_BIG,
-	ICON_ZOOM_ALL,
-	ICON_ZOOM_CENTER,
-	ICON_BOX_DOTS_SMALL,
-	ICON_BOX_DOTS_BIG,
-	ICON_BOX_CONCENTRIC,
-	ICON_BOX_GRID_BIG,
-	ICON_OK_TICK,
-	ICON_CROSS,
-	ICON_ARROW_LEFT,
-	ICON_ARROW_RIGHT,
-	ICON_ARROW_DOWN,
-	ICON_ARROW_UP,
-	ICON_ARROW_LEFT_FILL,
-	ICON_ARROW_RIGHT_FILL,
-	ICON_ARROW_DOWN_FILL,
-	ICON_ARROW_UP_FILL,
-	ICON_AUDIO,
-	ICON_FX,
-	ICON_WAVE,
-	ICON_WAVE_SINUS,
-	ICON_WAVE_SQUARE,
-	ICON_WAVE_TRIANGULAR,
-	ICON_CROSS_SMALL,
-	ICON_PLAYER_PREVIOUS,
-	ICON_PLAYER_PLAY_BACK,
-	ICON_PLAYER_PLAY,
-	ICON_PLAYER_PAUSE,
-	ICON_PLAYER_STOP,
-	ICON_PLAYER_NEXT,
-	ICON_PLAYER_RECORD,
-	ICON_MAGNET,
-	ICON_LOCK_CLOSE,
-	ICON_LOCK_OPEN,
-	ICON_CLOCK,
-	ICON_TOOLS,
-	ICON_GEAR,
-	ICON_GEAR_BIG,
-	ICON_BIN,
-	ICON_HAND_POINTER,
-	ICON_LASER,
-	ICON_COIN,
-	ICON_EXPLOSION,
-	ICON_1UP,
-	ICON_PLAYER,
-	ICON_PLAYER_JUMP,
-	ICON_KEY,
-	ICON_DEMON,
-	ICON_TEXT_POPUP,
-	ICON_GEAR_EX,
-	ICON_CRACK,
-	ICON_CRACK_POINTS,
-	ICON_STAR,
-	ICON_DOOR,
-	ICON_EXIT,
-	ICON_MODE_2D,
-	ICON_MODE_3D,
-	ICON_CUBE,
-	ICON_CUBE_FACE_TOP,
-	ICON_CUBE_FACE_LEFT,
-	ICON_CUBE_FACE_FRONT,
-	ICON_CUBE_FACE_BOTTOM,
-	ICON_CUBE_FACE_RIGHT,
-	ICON_CUBE_FACE_BACK,
-	ICON_CAMERA,
-	ICON_SPECIAL,
-	ICON_LINK_NET,
-	ICON_LINK_BOXES,
-	ICON_LINK_MULTI,
-	ICON_LINK,
-	ICON_LINK_BROKE,
-	ICON_TEXT_NOTES,
-	ICON_NOTEBOOK,
-	ICON_SUITCASE,
-	ICON_SUITCASE_ZIP,
-	ICON_MAILBOX,
-	ICON_MONITOR,
-	ICON_PRINTER,
-	ICON_PHOTO_CAMERA,
-	ICON_PHOTO_CAMERA_FLASH,
-	ICON_HOUSE,
-	ICON_HEART,
-	ICON_CORNER,
-	ICON_VERTICAL_BARS,
-	ICON_VERTICAL_BARS_FILL,
-	ICON_LIFE_BARS,
-	ICON_INFO,
-	ICON_CROSSLINE,
-	ICON_HELP,
-	ICON_FILETYPE_ALPHA,
-	ICON_FILETYPE_HOME,
-	ICON_LAYERS_VISIBLE,
-	ICON_LAYERS,
-	ICON_WINDOW,
-	ICON_HIDPI,
-	ICON_FILETYPE_BINARY,
-	ICON_HEX,
-	ICON_SHIELD,
-	ICON_FILE_NEW,
-	ICON_FOLDER_ADD,
-	ICON_ALARM,
-	ICON_CPU,
-	ICON_ROM,
-	ICON_STEP_OVER,
-	ICON_STEP_INTO,
-	ICON_STEP_OUT,
-	ICON_RESTART,
-	ICON_BREAKPOINT_ON,
-	ICON_BREAKPOINT_OFF,
-	ICON_BURGER_MENU,
-	ICON_CASE_SENSITIVE,
-	ICON_REG_EXP,
-	ICON_FOLDER,
-	ICON_FILE,
-	ICON_SAND_TIMER,
-	ICON_220,
-	ICON_221,
-	ICON_222,
-	ICON_223,
-	ICON_224,
-	ICON_225,
-	ICON_226,
-	ICON_227,
-	ICON_228,
-	ICON_229,
-	ICON_230,
-	ICON_231,
-	ICON_232,
-	ICON_233,
-	ICON_234,
-	ICON_235,
-	ICON_236,
-	ICON_237,
-	ICON_238,
-	ICON_239,
-	ICON_240,
-	ICON_241,
-	ICON_242,
-	ICON_243,
-	ICON_244,
-	ICON_245,
-	ICON_246,
-	ICON_247,
-	ICON_248,
-	ICON_249,
-	ICON_250,
-	ICON_251,
-	ICON_252,
-	ICON_253,
-	ICON_254,
-	ICON_255,
+    ICON_NONE,
+    ICON_FOLDER_FILE_OPEN,
+    ICON_FILE_SAVE_CLASSIC,
+    ICON_FOLDER_OPEN,
+    ICON_FOLDER_SAVE,
+    ICON_FILE_OPEN,
+    ICON_FILE_SAVE,
+    ICON_FILE_EXPORT,
+    ICON_FILE_ADD,
+    ICON_FILE_DELETE,
+    ICON_FILETYPE_TEXT,
+    ICON_FILETYPE_AUDIO,
+    ICON_FILETYPE_IMAGE,
+    ICON_FILETYPE_PLAY,
+    ICON_FILETYPE_VIDEO,
+    ICON_FILETYPE_INFO,
+    ICON_FILE_COPY,
+    ICON_FILE_CUT,
+    ICON_FILE_PASTE,
+    ICON_CURSOR_HAND,
+    ICON_CURSOR_POINTER,
+    ICON_CURSOR_CLASSIC,
+    ICON_PENCIL,
+    ICON_PENCIL_BIG,
+    ICON_BRUSH_CLASSIC,
+    ICON_BRUSH_PAINTER,
+    ICON_WATER_DROP,
+    ICON_COLOR_PICKER,
+    ICON_RUBBER,
+    ICON_COLOR_BUCKET,
+    ICON_TEXT_T,
+    ICON_TEXT_A,
+    ICON_SCALE,
+    ICON_RESIZE,
+    ICON_FILTER_POINT,
+    ICON_FILTER_BILINEAR,
+    ICON_CROP,
+    ICON_CROP_ALPHA,
+    ICON_SQUARE_TOGGLE,
+    ICON_SYMMETRY,
+    ICON_SYMMETRY_HORIZONTAL,
+    ICON_SYMMETRY_VERTICAL,
+    ICON_LENS,
+    ICON_LENS_BIG,
+    ICON_EYE_ON,
+    ICON_EYE_OFF,
+    ICON_FILTER_TOP,
+    ICON_FILTER,
+    ICON_TARGET_POINT,
+    ICON_TARGET_SMALL,
+    ICON_TARGET_BIG,
+    ICON_TARGET_MOVE,
+    ICON_CURSOR_MOVE,
+    ICON_CURSOR_SCALE,
+    ICON_CURSOR_SCALE_RIGHT,
+    ICON_CURSOR_SCALE_LEFT,
+    ICON_UNDO,
+    ICON_REDO,
+    ICON_REREDO,
+    ICON_MUTATE,
+    ICON_ROTATE,
+    ICON_REPEAT,
+    ICON_SHUFFLE,
+    ICON_EMPTYBOX,
+    ICON_TARGET,
+    ICON_TARGET_SMALL_FILL,
+    ICON_TARGET_BIG_FILL,
+    ICON_TARGET_MOVE_FILL,
+    ICON_CURSOR_MOVE_FILL,
+    ICON_CURSOR_SCALE_FILL,
+    ICON_CURSOR_SCALE_RIGHT_FILL,
+    ICON_CURSOR_SCALE_LEFT_FILL,
+    ICON_UNDO_FILL,
+    ICON_REDO_FILL,
+    ICON_REREDO_FILL,
+    ICON_MUTATE_FILL,
+    ICON_ROTATE_FILL,
+    ICON_REPEAT_FILL,
+    ICON_SHUFFLE_FILL,
+    ICON_EMPTYBOX_SMALL,
+    ICON_BOX,
+    ICON_BOX_TOP,
+    ICON_BOX_TOP_RIGHT,
+    ICON_BOX_RIGHT,
+    ICON_BOX_BOTTOM_RIGHT,
+    ICON_BOX_BOTTOM,
+    ICON_BOX_BOTTOM_LEFT,
+    ICON_BOX_LEFT,
+    ICON_BOX_TOP_LEFT,
+    ICON_BOX_CENTER,
+    ICON_BOX_CIRCLE_MASK,
+    ICON_POT,
+    ICON_ALPHA_MULTIPLY,
+    ICON_ALPHA_CLEAR,
+    ICON_DITHERING,
+    ICON_MIPMAPS,
+    ICON_BOX_GRID,
+    ICON_GRID,
+    ICON_BOX_CORNERS_SMALL,
+    ICON_BOX_CORNERS_BIG,
+    ICON_FOUR_BOXES,
+    ICON_GRID_FILL,
+    ICON_BOX_MULTISIZE,
+    ICON_ZOOM_SMALL,
+    ICON_ZOOM_MEDIUM,
+    ICON_ZOOM_BIG,
+    ICON_ZOOM_ALL,
+    ICON_ZOOM_CENTER,
+    ICON_BOX_DOTS_SMALL,
+    ICON_BOX_DOTS_BIG,
+    ICON_BOX_CONCENTRIC,
+    ICON_BOX_GRID_BIG,
+    ICON_OK_TICK,
+    ICON_CROSS,
+    ICON_ARROW_LEFT,
+    ICON_ARROW_RIGHT,
+    ICON_ARROW_DOWN,
+    ICON_ARROW_UP,
+    ICON_ARROW_LEFT_FILL,
+    ICON_ARROW_RIGHT_FILL,
+    ICON_ARROW_DOWN_FILL,
+    ICON_ARROW_UP_FILL,
+    ICON_AUDIO,
+    ICON_FX,
+    ICON_WAVE,
+    ICON_WAVE_SINUS,
+    ICON_WAVE_SQUARE,
+    ICON_WAVE_TRIANGULAR,
+    ICON_CROSS_SMALL,
+    ICON_PLAYER_PREVIOUS,
+    ICON_PLAYER_PLAY_BACK,
+    ICON_PLAYER_PLAY,
+    ICON_PLAYER_PAUSE,
+    ICON_PLAYER_STOP,
+    ICON_PLAYER_NEXT,
+    ICON_PLAYER_RECORD,
+    ICON_MAGNET,
+    ICON_LOCK_CLOSE,
+    ICON_LOCK_OPEN,
+    ICON_CLOCK,
+    ICON_TOOLS,
+    ICON_GEAR,
+    ICON_GEAR_BIG,
+    ICON_BIN,
+    ICON_HAND_POINTER,
+    ICON_LASER,
+    ICON_COIN,
+    ICON_EXPLOSION,
+    ICON_1UP,
+    ICON_PLAYER,
+    ICON_PLAYER_JUMP,
+    ICON_KEY,
+    ICON_DEMON,
+    ICON_TEXT_POPUP,
+    ICON_GEAR_EX,
+    ICON_CRACK,
+    ICON_CRACK_POINTS,
+    ICON_STAR,
+    ICON_DOOR,
+    ICON_EXIT,
+    ICON_MODE_2D,
+    ICON_MODE_3D,
+    ICON_CUBE,
+    ICON_CUBE_FACE_TOP,
+    ICON_CUBE_FACE_LEFT,
+    ICON_CUBE_FACE_FRONT,
+    ICON_CUBE_FACE_BOTTOM,
+    ICON_CUBE_FACE_RIGHT,
+    ICON_CUBE_FACE_BACK,
+    ICON_CAMERA,
+    ICON_SPECIAL,
+    ICON_LINK_NET,
+    ICON_LINK_BOXES,
+    ICON_LINK_MULTI,
+    ICON_LINK,
+    ICON_LINK_BROKE,
+    ICON_TEXT_NOTES,
+    ICON_NOTEBOOK,
+    ICON_SUITCASE,
+    ICON_SUITCASE_ZIP,
+    ICON_MAILBOX,
+    ICON_MONITOR,
+    ICON_PRINTER,
+    ICON_PHOTO_CAMERA,
+    ICON_PHOTO_CAMERA_FLASH,
+    ICON_HOUSE,
+    ICON_HEART,
+    ICON_CORNER,
+    ICON_VERTICAL_BARS,
+    ICON_VERTICAL_BARS_FILL,
+    ICON_LIFE_BARS,
+    ICON_INFO,
+    ICON_CROSSLINE,
+    ICON_HELP,
+    ICON_FILETYPE_ALPHA,
+    ICON_FILETYPE_HOME,
+    ICON_LAYERS_VISIBLE,
+    ICON_LAYERS,
+    ICON_WINDOW,
+    ICON_HIDPI,
+    ICON_FILETYPE_BINARY,
+    ICON_HEX,
+    ICON_SHIELD,
+    ICON_FILE_NEW,
+    ICON_FOLDER_ADD,
+    ICON_ALARM,
+    ICON_CPU,
+    ICON_ROM,
+    ICON_STEP_OVER,
+    ICON_STEP_INTO,
+    ICON_STEP_OUT,
+    ICON_RESTART,
+    ICON_BREAKPOINT_ON,
+    ICON_BREAKPOINT_OFF,
+    ICON_BURGER_MENU,
+    ICON_CASE_SENSITIVE,
+    ICON_REG_EXP,
+    ICON_FOLDER,
+    ICON_FILE,
+    ICON_SAND_TIMER,
+    ICON_220,
+    ICON_221,
+    ICON_222,
+    ICON_223,
+    ICON_224,
+    ICON_225,
+    ICON_226,
+    ICON_227,
+    ICON_228,
+    ICON_229,
+    ICON_230,
+    ICON_231,
+    ICON_232,
+    ICON_233,
+    ICON_234,
+    ICON_235,
+    ICON_236,
+    ICON_237,
+    ICON_238,
+    ICON_239,
+    ICON_240,
+    ICON_241,
+    ICON_242,
+    ICON_243,
+    ICON_244,
+    ICON_245,
+    ICON_246,
+    ICON_247,
+    ICON_248,
+    ICON_249,
+    ICON_250,
+    ICON_251,
+    ICON_252,
+    ICON_253,
+    ICON_254,
+    ICON_255,
 }
 
 // TODO: find a way to make this work

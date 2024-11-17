@@ -1,4 +1,3 @@
-// vi: ts=4 sw=4 noet
 /*******************************************************************************************
 *
 *   raylib [core] example - 2D Camera system
@@ -13,7 +12,6 @@
 ********************************************************************************************/
 
 module core_2d_camera;
-import std::math::random;
 import rl;
 
 const MAX_BUILDINGS = 100;
@@ -28,7 +26,7 @@ fn int main(String[] args)
 	const int SCREEN_WIDTH = 800;
 	const int SCREEN_HEIGHT = 450;
 
-	rl::init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - 2d camera");
+	rl::initWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - 2d camera");
 
 	rl::Rectangle player = { 400, 280, 40, 40 };
 	rl::Rectangle[MAX_BUILDINGS] buildings;
@@ -36,21 +34,20 @@ fn int main(String[] args)
 
 	int spacing = 0;
 
-    foreach (i, &building : buildings)
-	{
-		building.width = (float)rl::get_random_value(50, 200);
-		building.height = (float)rl::get_random_value(100, 800);
+	foreach (i, &building : buildings) {
+		building.width = (float)rl::getRandomValue(50, 200);
+		building.height = (float)rl::getRandomValue(100, 800);
 		building.y = SCREEN_HEIGHT - 130.0f - building.height;
 		building.x = -6000.0f + spacing;
 
 		spacing += (int)building.width;
 
 		buildColors[i] = Color {
-                (char)rl::get_random_value(200, 240),
-                (char)rl::get_random_value(200, 240),
-                (char)rl::get_random_value(200, 250),
-                255
-            };
+				(char)rl::getRandomValue(200, 240),
+				(char)rl::getRandomValue(200, 240),
+				(char)rl::getRandomValue(200, 250),
+				255
+			};
 	}
 
 	rl::Camera2D camera = {
@@ -60,37 +57,37 @@ fn int main(String[] args)
 			.zoom = 1.0f,
 		};
 
-	rl::set_target_fps(60);                 // Set our game to run at 60 frames-per-second
+	rl::setTargetFPS(60);                   // Set our game to run at 60 frames-per-second
 	//--------------------------------------------------------------------------------------
 
 	// Main game loop
-	while (!rl::window_should_close())      // Detect window close button or ESC key
+	while (!rl::windowShouldClose())        // Detect window close button or ESC key
 	{
 		// Update
 		//----------------------------------------------------------------------------------
 		// Player movement
-		if (rl::is_key_down(rl::KEY_RIGHT)) { player.x += 2; }
-		else if (rl::is_key_down(rl::KEY_LEFT)) { player.x -= 2; }
+		if (rl::isKeyDown(rl::KEY_RIGHT)) { player.x += 2; }
+		else if (rl::isKeyDown(rl::KEY_LEFT)) { player.x -= 2; }
 
 		// Camera target follows player
 		camera.target = Vector2 { player.x + 20, player.y + 20 };
 
 		// Camera rotation controls
-		if (rl::is_key_down(rl::KEY_A)) { camera.rotation--; }
-		else if (rl::is_key_down(rl::KEY_S)) { camera.rotation++; }
+		if (rl::isKeyDown(rl::KEY_A)) { camera.rotation--; }
+		else if (rl::isKeyDown(rl::KEY_S)) { camera.rotation++; }
 
 		// Limit camera rotation to 80 degrees (-40 to 40)
 		if (camera.rotation > 40) { camera.rotation = 40; }
 		else if (camera.rotation < -40) { camera.rotation = -40; }
 
 		// Camera zoom controls
-		camera.zoom += ((float)rl::get_mouse_wheel_move()*0.05f);
+		camera.zoom += ((float)rl::getMouseWheelMove()*0.05f);
 
 		if (camera.zoom > 3.0f) { camera.zoom = 3.0f; }
 		else if (camera.zoom < 0.1f) { camera.zoom = 0.1f; }
 
 		// Camera reset (zoom and rotation)
-		if (rl::is_key_pressed(rl::KEY_R))
+		if (rl::isKeyPressed(rl::KEY_R))
 		{
 			camera.zoom = 1.0f;
 			camera.rotation = 0.0f;
@@ -99,44 +96,42 @@ fn int main(String[] args)
 
 		// Draw
 		//----------------------------------------------------------------------------------
-		rl::@drawing()
-		{
-			rl::clear_background(rl::RAYWHITE);
+		rl::@drawing() {
+			rl::clearBackground(rl::RAYWHITE);
 
-			rl::@mode2d(camera)
-			{
-				rl::draw_rectangle(-6000, 320, 13000, 8000, rl::DARKGRAY);
+			rl::@mode2D(camera) {
+				rl::drawRectangle(-6000, 320, 13000, 8000, rl::DARKGRAY);
 
-				for (int i = 0; i < MAX_BUILDINGS; i++) { rl::draw_rectangle_rec(buildings[i], buildColors[i]); }
+				for (int i = 0; i < MAX_BUILDINGS; i++) { rl::drawRectangleRec(buildings[i], buildColors[i]); }
 
-				rl::draw_rectangle_rec(player, rl::RED);
+				rl::drawRectangleRec(player, rl::RED);
 
-				rl::draw_line((int)camera.target.x, -SCREEN_HEIGHT*10, (int)camera.target.x, SCREEN_HEIGHT*10, rl::GREEN);
-				rl::draw_line(-SCREEN_WIDTH*10, (int)camera.target.y, SCREEN_WIDTH*10, (int)camera.target.y, rl::GREEN);
+				rl::drawLine((int)camera.target.x, -SCREEN_HEIGHT*10, (int)camera.target.x, SCREEN_HEIGHT*10, rl::GREEN);
+				rl::drawLine(-SCREEN_WIDTH*10, (int)camera.target.y, SCREEN_WIDTH*10, (int)camera.target.y, rl::GREEN);
 			};
 
-			rl::draw_text("SCREEN AREA", 640, 10, 20, rl::RED);
+			rl::drawText("SCREEN AREA", 640, 10, 20, rl::RED);
 
-			rl::draw_rectangle(0, 0, SCREEN_WIDTH, 5, rl::RED);
-			rl::draw_rectangle(0, 5, 5, SCREEN_HEIGHT - 10, rl::RED);
-			rl::draw_rectangle(SCREEN_WIDTH - 5, 5, 5, SCREEN_HEIGHT - 10, rl::RED);
-			rl::draw_rectangle(0, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5, rl::RED);
+			rl::drawRectangle(0, 0, SCREEN_WIDTH, 5, rl::RED);
+			rl::drawRectangle(0, 5, 5, SCREEN_HEIGHT - 10, rl::RED);
+			rl::drawRectangle(SCREEN_WIDTH - 5, 5, 5, SCREEN_HEIGHT - 10, rl::RED);
+			rl::drawRectangle(0, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5, rl::RED);
 
-			rl::draw_rectangle( 10, 10, 250, 113, rl::fade(rl::SKYBLUE, 0.5f));
-			rl::draw_rectangle_lines( 10, 10, 250, 113, rl::BLUE);
+			rl::drawRectangle( 10, 10, 250, 113, rl::fade(rl::SKYBLUE, 0.5f));
+			rl::drawRectangleLines( 10, 10, 250, 113, rl::BLUE);
 
-			rl::draw_text("Free 2d camera controls:", 20, 20, 10, rl::BLACK);
-			rl::draw_text("- Right/Left to move Offset", 40, 40, 10, rl::DARKGRAY);
-			rl::draw_text("- Mouse Wheel to Zoom in-out", 40, 60, 10, rl::DARKGRAY);
-			rl::draw_text("- A / S to Rotate", 40, 80, 10, rl::DARKGRAY);
-			rl::draw_text("- R to reset Zoom and Rotation", 40, 100, 10, rl::DARKGRAY);
+			rl::drawText("Free 2d camera controls:", 20, 20, 10, rl::BLACK);
+			rl::drawText("- Right/Left to move Offset", 40, 40, 10, rl::DARKGRAY);
+			rl::drawText("- Mouse Wheel to Zoom in-out", 40, 60, 10, rl::DARKGRAY);
+			rl::drawText("- A / S to Rotate", 40, 80, 10, rl::DARKGRAY);
+			rl::drawText("- R to reset Zoom and Rotation", 40, 100, 10, rl::DARKGRAY);
 		};
 		//----------------------------------------------------------------------------------
 	}
 
 	// De-Initialization
 	//--------------------------------------------------------------------------------------
-	rl::close_window(); // Close window and OpenGL context
+	rl::closeWindow();        // Close window and OpenGL context
 	//--------------------------------------------------------------------------------------
 
 	return 0;

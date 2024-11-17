@@ -71,6 +71,7 @@
 
 module examples_template;
 import rl;
+import std::math::vector;
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -79,18 +80,18 @@ fn int main(String[] args)
 {
 	// Initialization
 	//--------------------------------------------------------------------------------------
-	int screenWidth = 800;
-	int screenHeight = 450;
+	const int SCREEN_WIDTH = 800;
+	const int SCREEN_HEIGHT = 450;
 
-	rl::init_window(screenWidth, screenHeight, "raylib [core] example - basic window");
+	rl::initWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - basic window");
 
 	// TODO: Load resources / Initialize variables at this point
 
-	rl::set_target_fps(60);
+	rl::setTargetFPS(60);
 	//--------------------------------------------------------------------------------------
 
 	// Main game loop
-	while (!rl::window_should_close())    // Detect window close button or ESC key
+	while (!rl::windowShouldClose())    // Detect window close button or ESC key
 	{
 		// Update
 		//----------------------------------------------------------------------------------
@@ -100,11 +101,11 @@ fn int main(String[] args)
 		// Draw
 		//----------------------------------------------------------------------------------
 		rl::@drawing() {
-			rl::clear_background(rl::RAYWHITE);
+			rl::clearBackground(rl::RAYWHITE);
 
 			// TODO: Draw everything that requires to be drawn at this point:
 
-			rl::draw_text("Congrats! You created your first window!", 190, 200, 20, rl::LIGHTGRAY);  // Example
+			rl::drawText("Congrats! You created your first window!", 190, 200, 20, rl::LIGHTGRAY);  // Example
 		};
 		//----------------------------------------------------------------------------------
 	}
@@ -114,7 +115,7 @@ fn int main(String[] args)
 
 	// TODO: Unload all loaded resources at this point
 
-	rl::close_window();        // Close window and OpenGL context
+	rl::closeWindow();        // Close window and OpenGL context
 	//--------------------------------------------------------------------------------------
 
 	return 0;

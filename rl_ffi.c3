@@ -47,6 +47,7 @@ extern fn void __unload_model_animations(ModelAnimation* animations, int anim_co
 
 // rshapes.c3
 //------------------------------------------------------------------------------------
+extern fn void __draw_line_strip(Vector2* points, int point_count, Color color) @extern("DrawLineStrip");
 extern fn void __draw_triangle_fan(Vector2* points, int point_count, Color color) @extern("DrawTriangleFan") @private;
 extern fn void __draw_triangle_strip(Vector2* points, int point_count, Color color) @extern("DrawTriangleStrip") @private;
 extern fn void __draw_spline_linear(Vector2* points, int point_count, float thick, Color color) @extern("DrawSplineLinear") @private;
