@@ -18,41 +18,53 @@ def Quaternionf = quaternion::Quaternion(<float>);
 // Module Functions Definition - Utils math
 //----------------------------------------------------------------------------------
 
-// Clamp float value
+<*
+ Clamp float value
+*>
 fn float clamp(float value, float min, float max) @inline {
 	return value.clamp(min, max);
 }
 
-// Calculate linear interpolation between two floats
+<*
+ Calculate linear interpolation between two floats
+*>
 fn float lerp(float start, float end, float amount) {
-	float result = start + amount*(end - start);
+	float result = start + amount * (end - start);
 
 	return result;
 }
 
-// Normalize input value within input range
+<*
+ Normalize input value within input range
+*>
 fn float normalize(float value, float start, float end) {
 	float result = (value - start)/(end - start);
 
 	return result;
 }
 
-// Remap input value within input range to output range
+<*
+ Remap input value within input range to output range
+*>
 fn float remap(float value, float inputStart, float inputEnd, float outputStart, float outputEnd) {
 	float result = (value - inputStart)/(inputEnd - inputStart)*(outputEnd - outputStart) + outputStart;
 
 	return result;
 }
 
-// Wrap input value from min to max
+<*
+ Wrap input value from min to max
+*>
 fn float wrap(float value, float min, float max) {
 	float result = value - (max - min)*math::floor((value - min)/(max - min));
 
 	return result;
 }
 
-// Check whether two given floats are almost equal
-fn bool float_equals(float x, float y) {
+<*
+ Check whether two given floats are almost equal
+*>
+fn bool floatEquals(float x, float y) {
 	bool result = (math::abs(x - y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(x), math::abs(y))));
 
 	return result;
@@ -62,86 +74,110 @@ fn bool float_equals(float x, float y) {
 // Module Functions Definition - Vector2 math
 //----------------------------------------------------------------------------------
 
-// Vector with components value 0.0f
-fn Vector2 vector2_zero() @inline {
+<*
+ Vector with components value 0.0f
+*>
+fn Vector2 vector2Zero() @inline {
 	Vector2 result = { 0.0f, 0.0f };
 
 	return result;
 }
 
-// Vector with components value 1.0f
-fn Vector2 vector2_one() @inline {
+<*
+ Vector with components value 1.0f
+*>
+fn Vector2 vector2One() @inline {
 	Vector2 result = { 1.0f, 1.0f };
 
 	return result;
 }
 
-// Add two vectors (v1 + v2)
-fn Vector2 vector2_add(Vector2 v1, Vector2 v2) {
+<*
+ Add two vectors (v1 + v2)
+*>
+fn Vector2 vector2Add(Vector2 v1, Vector2 v2) {
 	Vector2 result = { v1.x + v2.x, v1.y + v2.y };
 
 	return result;
 }
 
-// Add vector and float value
-fn Vector2 vector2_add_value(Vector2 v, float add) {
+<*
+ Add vector and float value
+*>
+fn Vector2 vector2AddValue(Vector2 v, float add) {
 	Vector2 result = { v.x + add, v.y + add };
 
 	return result;
 }
 
-// Subtract two vectors (v1 - v2)
-fn Vector2 vector2_subtract(Vector2 v1, Vector2 v2) {
+<*
+ Subtract two vectors (v1 - v2)
+*>
+fn Vector2 vector2Subtract(Vector2 v1, Vector2 v2) {
 	Vector2 result = { v1.x - v2.x, v1.y - v2.y };
 
 	return result;
 }
 
-// Subtract vector by float value
-fn Vector2 vector2_subtract_value(Vector2 v, float sub) {
+<*
+ Subtract vector by float value
+*>
+fn Vector2 vector2SubtractValue(Vector2 v, float sub) {
 	Vector2 result = { v.x - sub, v.y - sub };
 
 	return result;
 }
 
-// Calculate vector length
-fn float vector2_length(Vector2 v) {
+<*
+ Calculate vector length
+*>
+fn float vector2Length(Vector2 v) {
 	float result = math::sqrt((v.x*v.x) + (v.y*v.y));
 
 	return result;
 }
 
-// Calculate vector square length
-fn float vector2_length_sqr(Vector2 v) {
+<*
+ Calculate vector square length
+*>
+fn float vector2LengthSqr(Vector2 v) {
 	float result = (v.x*v.x) + (v.y*v.y);
 
 	return result;
 }
 
-// Calculate two vectors dot product
-fn float vector2_dot_product(Vector2 v1, Vector2 v2) {
+<*
+ Calculate two vectors dot product
+*>
+fn float vector2DotProduct(Vector2 v1, Vector2 v2) {
 	float result = (v1.x*v2.x + v1.y*v2.y);
 
 	return result;
 }
 
-// Calculate distance between two vectors
-fn float vector2_distance(Vector2 v1, Vector2 v2) {
+<*
+ Calculate distance between two vectors
+*>
+fn float vector2Distance(Vector2 v1, Vector2 v2) {
 	float result = math::sqrt((v1.x - v2.x)*(v1.x - v2.x) + (v1.y - v2.y)*(v1.y - v2.y));
 
 	return result;
 }
 
-// Calculate square distance between two vectors
-fn float vector2_distance_sqr(Vector2 v1, Vector2 v2) {
+<*
+ Calculate square distance between two vectors
+*>
+fn float vector2DistanceSqr(Vector2 v1, Vector2 v2) {
 	float result = ((v1.x - v2.x)*(v1.x - v2.x) + (v1.y - v2.y)*(v1.y - v2.y));
 
 	return result;
 }
 
-// Calculate angle between two vectors
-// NOTE: Angle is calculated from origin point (0, 0)
-fn float vector2_angle(Vector2 v1, Vector2 v2) {
+<*
+ Calculate angle between two vectors
+ NOTE: Angle is calculated from origin point (0, 0)
+*>
+fn float vector2Angle(Vector2 v1, Vector2 v2) {
 	float result = 0.0f;
 
 	float dot = v1.x*v2.x + v1.y*v2.y;
@@ -152,10 +188,12 @@ fn float vector2_angle(Vector2 v1, Vector2 v2) {
 	return result;
 }
 
-// Calculate angle defined by a two vectors line
-// NOTE: Parameters need to be normalized
-// Current implementation should be aligned with glm::angle
-fn float vector2_line_angle(Vector2 start, Vector2 end) {
+<*
+ Calculate angle defined by a two vectors line
+ NOTE: Parameters need to be normalized
+ Current implementation should be aligned with glm::angle
+*>
+fn float vector2LineAngle(Vector2 start, Vector2 end) {
 	float result = 0.0f;
 
 	// TODO(10/9/2023): Currently angles move clockwise, determine if this is wanted behavior
@@ -164,36 +202,46 @@ fn float vector2_line_angle(Vector2 start, Vector2 end) {
 	return result;
 }
 
-// Scale vector (multiply by value)
-fn Vector2 vector2_scale(Vector2 v, float scale) {
+<*
+ Scale vector (multiply by value)
+*>
+fn Vector2 vector2Scale(Vector2 v, float scale) {
 	Vector2 result = { v.x*scale, v.y*scale };
 
 	return result;
 }
 
-// Multiply vector by vector
-fn Vector2 vector2_multiply(Vector2 v1, Vector2 v2) {
+<*
+ Multiply vector by vector
+*>
+fn Vector2 vector2Multiply(Vector2 v1, Vector2 v2) {
 	Vector2 result = { v1.x*v2.x, v1.y*v2.y };
 
 	return result;
 }
 
-// Negate vector
-fn Vector2 vector2_negate(Vector2 v) {
+<*
+ Negate vector
+*>
+fn Vector2 vector2Negate(Vector2 v) {
 	Vector2 result = { -v.x, -v.y };
 
 	return result;
 }
 
-// Divide vector by vector
-fn Vector2 vector2_divide(Vector2 v1, Vector2 v2) {
+<*
+ Divide vector by vector
+*>
+fn Vector2 vector2Divide(Vector2 v1, Vector2 v2) {
 	Vector2 result = { v1.x/v2.x, v1.y/v2.y };
 
 	return result;
 }
 
-// Normalize provided vector
-fn Vector2 vector2_normalize(Vector2 v) {
+<*
+ Normalize provided vector
+*>
+fn Vector2 vector2Normalize(Vector2 v) {
 	Vector2 result;
 	float length = math::sqrt((v.x*v.x) + (v.y*v.y));
 
@@ -207,8 +255,10 @@ fn Vector2 vector2_normalize(Vector2 v) {
 	return result;
 }
 
-// Transforms a Vector2 by a given Matrix
-fn Vector2 vector2_transform(Vector2 v, Matrix mat) {
+<*
+ Transforms a Vector2 by a given Matrix
+*>
+fn Vector2 vector2Transform(Vector2 v, Matrix mat) {
 	Vector2 result;
 
 	float x = v.x;
@@ -221,8 +271,10 @@ fn Vector2 vector2_transform(Vector2 v, Matrix mat) {
 	return result;
 }
 
-// Calculate linear interpolation between two vectors
-fn Vector2 vector2_lerp(Vector2 v1, Vector2 v2, float amount) {
+<*
+ Calculate linear interpolation between two vectors
+*>
+fn Vector2 vector2Lerp(Vector2 v1, Vector2 v2, float amount) {
 	Vector2 result;
 
 	result.x = v1.x + amount*(v2.x - v1.x);
@@ -231,8 +283,10 @@ fn Vector2 vector2_lerp(Vector2 v1, Vector2 v2, float amount) {
 	return result;
 }
 
-// Calculate reflected vector to normal
-fn Vector2 vector2_reflect(Vector2 v, Vector2 normal) {
+<*
+ Calculate reflected vector to normal
+*>
+fn Vector2 vector2Reflect(Vector2 v, Vector2 normal) {
 	Vector2 result;
 
 	float dotProduct = (v.x*normal.x + v.y*normal.y); // Dot product
@@ -243,8 +297,10 @@ fn Vector2 vector2_reflect(Vector2 v, Vector2 normal) {
 	return result;
 }
 
-// Rotate vector by angle
-fn Vector2 vector2_rotate(Vector2 v, float angle) {
+<*
+ Rotate vector by angle
+*>
+fn Vector2 vector2Rotate(Vector2 v, float angle) {
 	Vector2 result;
 
 	float cosres = math::cos(angle);
@@ -256,8 +312,10 @@ fn Vector2 vector2_rotate(Vector2 v, float angle) {
 	return result;
 }
 
-// Move Vector towards target
-fn Vector2 vector2_move_towards(Vector2 v, Vector2 target, float maxDistance) {
+<*
+ Move Vector towards target
+*>
+fn Vector2 vector2MoveTowards(Vector2 v, Vector2 target, float maxDistance) {
 	Vector2 result;
 
 	float dx = target.x - v.x;
@@ -274,16 +332,20 @@ fn Vector2 vector2_move_towards(Vector2 v, Vector2 target, float maxDistance) {
 	return result;
 }
 
-// Invert the given vector
-fn Vector2 vector2_invert(Vector2 v) {
+<*
+ Invert the given vector
+*>
+fn Vector2 vector2Invert(Vector2 v) {
 	Vector2 result = { 1.0f/v.x, 1.0f/v.y };
 
 	return result;
 }
 
-// Clamp the components of the vector between
-// min and max values specified by the given vectors
-fn Vector2 vector2_clamp(Vector2 v, Vector2 min, Vector2 max) {
+<*
+ Clamp the components of the vector between
+ min and max values specified by the given vectors
+*>
+fn Vector2 vector2Clamp(Vector2 v, Vector2 min, Vector2 max) {
 	Vector2 result;
 
 	result.x = math::min(max.x, math::max(min.x, v.x));
@@ -292,8 +354,10 @@ fn Vector2 vector2_clamp(Vector2 v, Vector2 min, Vector2 max) {
 	return result;
 }
 
-// Clamp the magnitude of the vector between two min and max values
-fn Vector2 vector2_clamp_value(Vector2 v, float min, float max) {
+<*
+ Clamp the magnitude of the vector between two min and max values
+*>
+fn Vector2 vector2ClampValue(Vector2 v, float min, float max) {
 	Vector2 result = v;
 
 	float length = (v.x*v.x) + (v.y*v.y);
@@ -318,8 +382,10 @@ fn Vector2 vector2_clamp_value(Vector2 v, float min, float max) {
 	return result;
 }
 
-// Check whether two given vectors are almost equal
-fn bool vector2_equals(Vector2 p, Vector2 q) {
+<*
+ Check whether two given vectors are almost equal
+*>
+fn bool vector2Equals(Vector2 p, Vector2 q) {
 	bool result = ((math::abs(p.x - q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
 				  ((math::abs(p.y - q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y)))));
 
@@ -330,71 +396,91 @@ fn bool vector2_equals(Vector2 p, Vector2 q) {
 // Module Functions Definition - Vector3 math
 //----------------------------------------------------------------------------------
 
-// Vector with components value 0.0f
-fn Vector3 vector3_zero() {
+<*
+ Vector with components value 0.0f
+*>
+fn Vector3 vector3Zero() {
 	Vector3 result = { 0.0f, 0.0f, 0.0f };
 
 	return result;
 }
 
-// Vector with components value 1.0f
-fn Vector3 vector3_one() {
+<*
+ Vector with components value 1.0f
+*>
+fn Vector3 vector3One() {
 	Vector3 result = { 1.0f, 1.0f, 1.0f };
 
 	return result;
 }
 
-// Add two vectors
-fn Vector3 vector3_add(Vector3 v1, Vector3 v2) {
+<*
+ Add two vectors
+*>
+fn Vector3 vector3Add(Vector3 v1, Vector3 v2) {
 	Vector3 result = { v1.x + v2.x, v1.y + v2.y, v1.z + v2.z };
 
 	return result;
 }
 
-// Add vector and float value
-fn Vector3 vector3_add_value(Vector3 v, float add) {
+<*
+ Add vector and float value
+*>
+fn Vector3 vector3AddValue(Vector3 v, float add) {
 	Vector3 result = { v.x + add, v.y + add, v.z + add };
 
 	return result;
 }
 
-// Subtract two vectors
-fn Vector3 vector3_subtract(Vector3 v1, Vector3 v2) {
+<*
+ Subtract two vectors
+*>
+fn Vector3 vector3Subtract(Vector3 v1, Vector3 v2) {
 	Vector3 result = { v1.x - v2.x, v1.y - v2.y, v1.z - v2.z };
 
 	return result;
 }
 
-// Subtract vector by float value
-fn Vector3 vector3_subtract_value(Vector3 v, float sub) {
+<*
+ Subtract vector by float value
+*>
+fn Vector3 vector3SubtractValue(Vector3 v, float sub) {
 	Vector3 result = { v.x - sub, v.y - sub, v.z - sub };
 
 	return result;
 }
 
-// Multiply vector by scalar
-fn Vector3 vector3_scale(Vector3 v, float scalar) {
+<*
+ Multiply vector by scalar
+*>
+fn Vector3 vector3Scale(Vector3 v, float scalar) {
 	Vector3 result = { v.x*scalar, v.y*scalar, v.z*scalar };
 
 	return result;
 }
 
-// Multiply vector by vector
-fn Vector3 vector3_multiply(Vector3 v1, Vector3 v2) {
+<*
+ Multiply vector by vector
+*>
+fn Vector3 vector3Multiply(Vector3 v1, Vector3 v2) {
 	Vector3 result = { v1.x*v2.x, v1.y*v2.y, v1.z*v2.z };
 
 	return result;
 }
 
-// Calculate two vectors cross product
-fn Vector3 vector3_cross_product(Vector3 v1, Vector3 v2) {
+<*
+ Calculate two vectors cross product
+*>
+fn Vector3 vector3CrossProduct(Vector3 v1, Vector3 v2) {
 	Vector3 result = { v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x };
 
 	return result;
 }
 
-// Calculate one vector perpendicular vector
-fn Vector3 vector3_perpendicular(Vector3 v) {
+<*
+ Calculate one vector perpendicular vector
+*>
+fn Vector3 vector3Perpendicular(Vector3 v) {
 	Vector3 result;
 
 	float min = (float) math::abs(v.x);
@@ -421,29 +507,37 @@ fn Vector3 vector3_perpendicular(Vector3 v) {
 	return result;
 }
 
-// Calculate vector length
-fn float vector3_length(Vector3 v) {
+<*
+ Calculate vector length
+*>
+fn float vector3Length(Vector3 v) {
 	float result = math::sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
 
 	return result;
 }
 
-// Calculate vector square length
-fn float vector3_length_sqr(Vector3 v) {
+<*
+ Calculate vector square length
+*>
+fn float vector3LengthSqr(Vector3 v) {
 	float result = v.x*v.x + v.y*v.y + v.z*v.z;
 
 	return result;
 }
 
-// Calculate two vectors dot product
-fn float vector3_dot_product(Vector3 v1, Vector3 v2) {
+<*
+ Calculate two vectors dot product
+*>
+fn float vector3DotProduct(Vector3 v1, Vector3 v2) {
 	float result = (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z);
 
 	return result;
 }
 
-// Calculate distance between two vectors
-fn float vector3_distance(Vector3 v1, Vector3 v2) {
+<*
+ Calculate distance between two vectors
+*>
+fn float vector3Distance(Vector3 v1, Vector3 v2) {
 	float result = 0.0f;
 
 	float dx = v2.x - v1.x;
@@ -454,8 +548,10 @@ fn float vector3_distance(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Calculate square distance between two vectors
-fn float vector3_distance_sqr(Vector3 v1, Vector3 v2) {
+<*
+ Calculate square distance between two vectors
+*>
+fn float vector3DistanceSqr(Vector3 v1, Vector3 v2) {
 	float result = 0.0f;
 
 	float dx = v2.x - v1.x;
@@ -466,8 +562,10 @@ fn float vector3_distance_sqr(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Calculate angle between two vectors
-fn float vector3_angle(Vector3 v1, Vector3 v2) {
+<*
+ Calculate angle between two vectors
+*>
+fn float vector3Angle(Vector3 v1, Vector3 v2) {
 	float result = 0.0f;
 
 	Vector3 cross = { v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x };
@@ -478,22 +576,28 @@ fn float vector3_angle(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Negate provided vector (invert direction)
-fn Vector3 vector3_negate(Vector3 v) {
+<*
+ Negate provided vector (invert direction)
+*>
+fn Vector3 vector3Negate(Vector3 v) {
 	Vector3 result = { -v.x, -v.y, -v.z };
 
 	return result;
 }
 
-// Divide vector by vector
-fn Vector3 vector3_divide(Vector3 v1, Vector3 v2) {
+<*
+ Divide vector by vector
+*>
+fn Vector3 vector3Divide(Vector3 v1, Vector3 v2) {
 	Vector3 result = { v1.x/v2.x, v1.y/v2.y, v1.z/v2.z };
 
 	return result;
 }
 
-// Normalize provided vector
-fn Vector3 vector3_normalize(Vector3 v) {
+<*
+ Normalize provided vector
+*>
+fn Vector3 vector3Normalize(Vector3 v) {
 	Vector3 result = v;
 
 	float length = math::sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
@@ -509,8 +613,10 @@ fn Vector3 vector3_normalize(Vector3 v) {
 	return result;
 }
 
-//Calculate the projection of the vector v1 on to v2
-fn Vector3 vector3_project(Vector3 v1, Vector3 v2) {
+<*
+ Calculate the projection of the vector v1 on to v2
+*>
+fn Vector3 vector3Project(Vector3 v1, Vector3 v2) {
 	Vector3 result;
 
 	float v1dv2 = (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z);
@@ -525,8 +631,10 @@ fn Vector3 vector3_project(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-//Calculate the rejection of the vector v1 on to v2
-fn Vector3 vector3_reject(Vector3 v1, Vector3 v2) {
+<*
+ Calculate the rejection of the vector v1 on to v2
+*>
+fn Vector3 vector3Reject(Vector3 v1, Vector3 v2) {
 	Vector3 result;
 
 	float v1dv2 = (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z);
@@ -543,8 +651,10 @@ fn Vector3 vector3_reject(Vector3 v1, Vector3 v2) {
 
 // Orthonormalize provided vectors
 // Makes vectors normalized and orthogonal to each other
-// Gram-Schmidt function implementation
-fn void vector3_ortho_normalize(Vector3 *v1, Vector3 *v2) {
+<*
+ Gram-Schmidt function implementation
+*>
+fn void vector3OrthoNormalize(Vector3 *v1, Vector3 *v2) {
 	float length = 0.0f;
 	float ilength = 0.0f;
 
@@ -577,8 +687,10 @@ fn void vector3_ortho_normalize(Vector3 *v1, Vector3 *v2) {
 	*v2 = vn2;
 }
 
-// Transforms a Vector3 by a given Matrix
-fn Vector3 vector3_transform(Vector3 v, Matrix mat) {
+<*
+ Transforms a Vector3 by a given Matrix
+*>
+fn Vector3 vector3Transform(Vector3 v, Matrix mat) {
 	Vector3 result;
 
 	float x = v.x;
@@ -592,8 +704,10 @@ fn Vector3 vector3_transform(Vector3 v, Matrix mat) {
 	return result;
 }
 
-// Transform a vector by quaternion rotation
-fn Vector3 vector3_rotate_by_quaternion(Vector3 v, Quaternion q) {
+<*
+ Transform a vector by quaternion rotation
+*>
+fn Vector3 vector3RotateByQuaternion(Vector3 v, Quaternion q) {
 	Vector3 result;
 
 	result.x = v.x*(q.x*q.x + q.w*q.w - q.y*q.y - q.z*q.z) + v.y*(2*q.x*q.y - 2*q.w*q.z) + v.z*(2*q.x*q.z + 2*q.w*q.y);
@@ -603,8 +717,10 @@ fn Vector3 vector3_rotate_by_quaternion(Vector3 v, Quaternion q) {
 	return result;
 }
 
-// Rotates a vector around an axis
-fn Vector3 vector3_rotate_by_axis_angle(Vector3 v, Vector3 axis, float angle) {
+<*
+ Rotates a vector around an axis
+*>
+fn Vector3 vector3RotateByAxisAngle(Vector3 v, Vector3 axis, float angle) {
 	// Using Euler-Rodrigues Formula
 	// Ref.: https://en.wikipedia.org/w/index.php?title=Euler%E2%80%93Rodrigues_formula
 
@@ -654,8 +770,10 @@ fn Vector3 vector3_rotate_by_axis_angle(Vector3 v, Vector3 axis, float angle) {
 	return result;
 }
 
-// Calculate linear interpolation between two vectors
-fn Vector3 vector3_lerp(Vector3 v1, Vector3 v2, float amount) {
+<*
+ Calculate linear interpolation between two vectors
+*>
+fn Vector3 vector3Lerp(Vector3 v1, Vector3 v2, float amount) {
 	Vector3 result;
 
 	result.x = v1.x + amount*(v2.x - v1.x);
@@ -665,8 +783,10 @@ fn Vector3 vector3_lerp(Vector3 v1, Vector3 v2, float amount) {
 	return result;
 }
 
-// Calculate reflected vector to normal
-fn Vector3 vector3_reflect(Vector3 v, Vector3 normal) {
+<*
+ Calculate reflected vector to normal
+*>
+fn Vector3 vector3Reflect(Vector3 v, Vector3 normal) {
 	Vector3 result;
 
 	// I is the original vector
@@ -682,8 +802,10 @@ fn Vector3 vector3_reflect(Vector3 v, Vector3 normal) {
 	return result;
 }
 
-// Get min value for each pair of components
-fn Vector3 vector3_min(Vector3 v1, Vector3 v2) {
+<*
+ Get min value for each pair of components
+*>
+fn Vector3 vector3Min(Vector3 v1, Vector3 v2) {
 	Vector3 result;
 
 	result.x = math::min(v1.x, v2.x);
@@ -693,8 +815,10 @@ fn Vector3 vector3_min(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Get max value for each pair of components
-fn Vector3 vector3_max(Vector3 v1, Vector3 v2) {
+<*
+ Get max value for each pair of components
+*>
+fn Vector3 vector3Max(Vector3 v1, Vector3 v2) {
 	Vector3 result;
 
 	result.x = math::max(v1.x, v2.x);
@@ -705,8 +829,10 @@ fn Vector3 vector3_max(Vector3 v1, Vector3 v2) {
 }
 
 // Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
-// NOTE: Assumes P is on the plane of the triangle
-fn Vector3 vector3_barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) {
+<*
+ NOTE: Assumes P is on the plane of the triangle
+*>
+fn Vector3 vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) {
 	Vector3 result;
 
 	Vector3 v0 = { b.x - a.x, b.y - a.y, b.z - a.z };   // vector3_Subtract(b, a)
@@ -728,8 +854,10 @@ fn Vector3 vector3_barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) {
 }
 
 // Projects a Vector3 from screen space into object space
-// NOTE: We are avoiding calling other raymath functions despite available
-fn Vector3 vector3_unproject(Vector3 source, Matrix projection, Matrix view) {
+<*
+ NOTE: We are avoiding calling other raymath functions despite available
+*>
+fn Vector3 vector3Unproject(Vector3 source, Matrix projection, Matrix view) {
 	Vector3 result;
 
 	// Calculate unprojected matrix (multiply view matrix by projection matrix) and invert it
@@ -822,37 +950,20 @@ fn Vector3 vector3_unproject(Vector3 source, Matrix projection, Matrix view) {
 	return result;
 }
 
-// Get Vector3 as float array
-fn vector::Vec3 vector3_to_vec3(Vector3 v) { // counterpart to Vector3ToFloatV
-	vector::Vec3 buffer;
-
-	buffer.x = v.x;
-	buffer.y = v.y;
-	buffer.z = v.z;
-
-	return buffer;
-}
-
-fn vector::Vec3f vector3_to_vec3f(Vector3 v) { // counterpart to Vector3ToFloatV
-	vector::Vec3f buffer;
-
-	buffer.x = v.x;
-	buffer.y = v.y;
-	buffer.z = v.z;
-
-	return buffer;
-}
-
-// Invert the given vector
-fn Vector3 vector3_invert(Vector3 v) {
+<*
+ Invert the given vector
+*>
+fn Vector3 vector3Invert(Vector3 v) {
 	Vector3 result = { 1.0f/v.x, 1.0f/v.y, 1.0f/v.z };
 
 	return result;
 }
 
 // Clamp the components of the vector between
-// min and max values specified by the given vectors
-fn Vector3 vector3_clamp(Vector3 v, Vector3 min, Vector3 max) {
+<*
+ min and max values specified by the given vectors
+*>
+fn Vector3 vector3Clamp(Vector3 v, Vector3 min, Vector3 max) {
 	Vector3 result;
 
 	result.x = math::min(max.x, math::max(min.x, v.x));
@@ -862,8 +973,10 @@ fn Vector3 vector3_clamp(Vector3 v, Vector3 min, Vector3 max) {
 	return result;
 }
 
-// Clamp the magnitude of the vector between two values
-fn Vector3 vector3_clamp_value(Vector3 v, float min, float max) {
+<*
+ Clamp the magnitude of the vector between two values
+*>
+fn Vector3 vector3ClampValue(Vector3 v, float min, float max) {
 	Vector3 result = v;
 
 	float length = (v.x*v.x) + (v.y*v.y) + (v.z*v.z);
@@ -890,8 +1003,10 @@ fn Vector3 vector3_clamp_value(Vector3 v, float min, float max) {
 	return result;
 }
 
-// Check whether two given vectors are almost equal
-fn bool vector3_equals(Vector3 p, Vector3 q) {
+<*
+ Check whether two given vectors are almost equal
+*>
+fn bool vector3Equals(Vector3 p, Vector3 q) {
 	bool result = ((math::abs(p.x - q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
 				 ((math::abs(p.y - q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
 				 ((math::abs(p.z - q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z)))));
@@ -899,12 +1014,14 @@ fn bool vector3_equals(Vector3 p, Vector3 q) {
 	return result;
 }
 
-// Compute the direction of a refracted ray
-// v: normalized direction of the incoming ray
-// n: normalized normal vector of the interface of two optical media
-// r: ratio of the refractive index of the medium from where the ray comes
-//	to the refractive index of the medium on the other side of the surface
-fn Vector3 vector3_refract(Vector3 v, Vector3 n, float r) {
+<*
+ Compute the direction of a refracted ray
+ v: normalized direction of the incoming ray
+ n: normalized normal vector of the interface of two optical media
+ r: ratio of the refractive index of the medium from where the ray comes
+ to the refractive index of the medium on the other side of the surface
+*>
+fn Vector3 vector3Refract(Vector3 v, Vector3 n, float r) {
 	Vector3 result;
 
 	float dot = v.x*n.x + v.y*n.y + v.z*n.z;
@@ -927,8 +1044,10 @@ fn Vector3 vector3_refract(Vector3 v, Vector3 n, float r) {
 // Module Functions Definition - Matrix math
 //----------------------------------------------------------------------------------
 
-// Compute matrix determinant
-fn float matrix_determinant(Matrix mat) {
+<*
+ Compute matrix determinant
+*>
+fn float matrixDeterminant(Matrix mat) {
 	float result = 0.0f;
 
 	// Cache the matrix values (speed optimization)
@@ -959,15 +1078,19 @@ fn float matrix_determinant(Matrix mat) {
 	return result;
 }
 
-// Get the trace of the matrix (sum of the values along the diagonal)
-fn float matrix_trace(Matrix mat) {
+<*
+ Get the trace of the matrix (sum of the values along the diagonal)
+*>
+fn float matrixTrace(Matrix mat) {
 	float result = (mat.m0 + mat.m5 + mat.m10 + mat.m15);
 
 	return result;
 }
 
-// Transposes provided matrix
-fn Matrix matrix_transpose(Matrix mat) {
+<*
+ Transposes provided matrix
+*>
+fn Matrix matrixTranspose(Matrix mat) {
 	Matrix result;
 
 	result.m0 = mat.m0;
@@ -990,8 +1113,10 @@ fn Matrix matrix_transpose(Matrix mat) {
 	return result;
 }
 
-// Invert provided matrix
-fn Matrix matrix_invert(Matrix mat) {
+<*
+ Invert provided matrix
+*>
+fn Matrix matrixInvert(Matrix mat) {
 	Matrix result;
 
 	// Cache the matrix values (speed optimization)
@@ -1048,18 +1173,22 @@ fn Matrix matrix_invert(Matrix mat) {
 	return result;
 }
 
-// Get identity matrix
-fn Matrix matrix_identity() {
+<*
+ Get identity matrix
+*>
+fn Matrix matrixIdentity() @inline {
 	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f };
+	                  0.0f, 1.0f, 0.0f, 0.0f,
+	                  0.0f, 0.0f, 1.0f, 0.0f,
+	                  0.0f, 0.0f, 0.0f, 1.0f };
 
 	return result;
 }
 
-// Add two matrices
-fn Matrix matrix_add(Matrix left, Matrix right) {
+<*
+ Add two matrices
+*>
+fn Matrix matrixAdd(Matrix left, Matrix right) {
 	Matrix result;
 
 	result.m0 = left.m0 + right.m0;
@@ -1082,8 +1211,10 @@ fn Matrix matrix_add(Matrix left, Matrix right) {
 	return result;
 }
 
-// Subtract two matrices (left - right)
-fn Matrix matrix_subtract(Matrix left, Matrix right) {
+<*
+ Subtract two matrices (left - right)
+*>
+fn Matrix matrixSubtract(Matrix left, Matrix right) {
 	Matrix result;
 
 	result.m0 = left.m0 - right.m0;
@@ -1106,9 +1237,11 @@ fn Matrix matrix_subtract(Matrix left, Matrix right) {
 	return result;
 }
 
-// Get two matrix multiplication
-// NOTE: When multiplying matrices... the order matters!
-fn Matrix matrix_multiply(Matrix left, Matrix right) {
+<*
+ Get two matrix multiplication
+ NOTE: When multiplying matrices... the order matters!
+*>
+fn Matrix matrixMultiply(Matrix left, Matrix right) {
 	Matrix result;
 
 	result.m0 = left.m0*right.m0 + left.m1*right.m4 + left.m2*right.m8 + left.m3*right.m12;
@@ -1131,19 +1264,23 @@ fn Matrix matrix_multiply(Matrix left, Matrix right) {
 	return result;
 }
 
-// Get translation matrix
-fn Matrix matrix_translate(float x, float y, float z) {
+<*
+ Get translation matrix
+*>
+fn Matrix matrixTranslate(float x, float y, float z) {
 	Matrix result = { 1.0f, 0.0f, 0.0f, x,
-					  0.0f, 1.0f, 0.0f, y,
-					  0.0f, 0.0f, 1.0f, z,
-					  0.0f, 0.0f, 0.0f, 1.0f };
+	                  0.0f, 1.0f, 0.0f, y,
+	                  0.0f, 0.0f, 1.0f, z,
+	                  0.0f, 0.0f, 0.0f, 1.0f };
 
 	return result;
 }
 
-// Create rotation matrix from axis and angle
-// NOTE: Angle should be provided in radians
-fn Matrix matrix_rotate(Vector3 axis, float angle) {
+<*
+ Create rotation matrix from axis and angle
+ NOTE: Angle should be provided in radians
+*>
+fn Matrix matrixRotate(Vector3 axis, float angle) {
 	Matrix result;
 
 	float x = axis.x;
@@ -1187,13 +1324,12 @@ fn Matrix matrix_rotate(Vector3 axis, float angle) {
 	return result;
 }
 
-// Get x-rotation matrix
-// NOTE: Angle must be provided in radians
-fn Matrix matrix_rotate_x(float angle) {
-	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f }; // MatrixIdentity()
+<*
+ Get x-rotation matrix
+ NOTE: Angle must be provided in radians
+*>
+fn Matrix matrixRotateX(float angle) {
+	Matrix result = matrixIdentity();
 
 	float cosres = math::cos(angle);
 	float sinres = math::sin(angle);
@@ -1206,13 +1342,12 @@ fn Matrix matrix_rotate_x(float angle) {
 	return result;
 }
 
-// Get y-rotation matrix
-// NOTE: Angle must be provided in radians
-fn Matrix matrix_rotate_y(float angle) {
-	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f }; // MatrixIdentity()
+<*
+ Get y-rotation matrix
+ NOTE: Angle must be provided in radians
+*>
+fn Matrix matrixRotateY(float angle) {
+	Matrix result = matrixIdentity();
 
 	float cosres = math::cos(angle);
 	float sinres = math::sin(angle);
@@ -1225,13 +1360,12 @@ fn Matrix matrix_rotate_y(float angle) {
 	return result;
 }
 
-// Get z-rotation matrix
-// NOTE: Angle must be provided in radians
-fn Matrix matrix_rotate_z(float angle) {
-	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f }; // MatrixIdentity()
+<*
+ Get z-rotation matrix
+ NOTE: Angle must be provided in radians
+*>
+fn Matrix matrixRotateZ(float angle) {
+	Matrix result = matrixIdentity();
 
 	float cosres = math::cos(angle);
 	float sinres = math::sin(angle);
@@ -1245,13 +1379,12 @@ fn Matrix matrix_rotate_z(float angle) {
 }
 
 
-// Get xyz-rotation matrix
-// NOTE: Angle must be provided in radians
-fn Matrix matrix_rotate_x_y_z(Vector3 angle) {
-	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f }; // MatrixIdentity()
+<*
+ Get xyz-rotation matrix
+ NOTE: Angle must be provided in radians
+*>
+fn Matrix matrixRotateXYZ(Vector3 angle) {
+	Matrix result = matrixIdentity();
 
 	float cosz = math::cos(-angle.z);
 	float sinz = math::sin(-angle.z);
@@ -1275,9 +1408,11 @@ fn Matrix matrix_rotate_x_y_z(Vector3 angle) {
 	return result;
 }
 
-// Get zyx-rotation matrix
-// NOTE: Angle must be provided in radians
-fn Matrix matrix_rotate_z_y_x(Vector3 angle) {
+<*
+ Get zyx-rotation matrix
+ NOTE: Angle must be provided in radians
+*>
+fn Matrix matrixRotateZYX(Vector3 angle) {
 	Matrix result;
 
 	float cz = math::cos(angle.z);
@@ -1310,18 +1445,22 @@ fn Matrix matrix_rotate_z_y_x(Vector3 angle) {
 	return result;
 }
 
-// Get scaling matrix
-fn Matrix matrix_scale(float x, float y, float z) {
-	Matrix result = { x, 0.0f, 0.0f, 0.0f,
-					  0.0f, y, 0.0f, 0.0f,
-					  0.0f, 0.0f, z, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f };
+<*
+ Get scaling matrix
+*>
+fn Matrix matrixScale(float x, float y, float z) {
+	Matrix result = { x,    0.0f, 0.0f, 0.0f,
+	                  0.0f,    y, 0.0f, 0.0f,
+	                  0.0f, 0.0f,    z, 0.0f,
+	                  0.0f, 0.0f, 0.0f, 1.0f };
 
 	return result;
 }
 
-// Get perspective projection matrix
-fn Matrix matrix_frustum(double left, double right, double bottom, double top, double near, double far) {
+<*
+ Get perspective projection matrix
+*>
+fn Matrix matrixFrustum(double left, double right, double bottom, double top, double near, double far) {
 	Matrix result;
 
 	float rl = (float)(right - left);
@@ -1351,9 +1490,11 @@ fn Matrix matrix_frustum(double left, double right, double bottom, double top, d
 	return result;
 }
 
-// Get perspective projection matrix
-// NOTE: Fovy angle must be provided in radians
-fn Matrix matrix_perspective(double fovY, double aspect, double nearPlane, double farPlane) {
+<*
+ Get perspective projection matrix
+ NOTE: Fovy angle must be provided in radians
+*>
+fn Matrix matrixPerspective(double fovY, double aspect, double nearPlane, double farPlane) {
 	Matrix result;
 
 	double top = nearPlane*math::tan(fovY*0.5);
@@ -1377,8 +1518,10 @@ fn Matrix matrix_perspective(double fovY, double aspect, double nearPlane, doubl
 	return result;
 }
 
-// Get orthographic projection matrix
-fn Matrix matrix_ortho(double left, double right, double bottom, double top, double nearPlane, double farPlane) {
+<*
+ Get orthographic projection matrix
+*>
+fn Matrix matrixOrtho(double left, double right, double bottom, double top, double nearPlane, double farPlane) {
 	Matrix result;
 
 	float rl = (float)(right - left);
@@ -1405,8 +1548,10 @@ fn Matrix matrix_ortho(double left, double right, double bottom, double top, dou
 	return result;
 }
 
-// Get camera look-at matrix (view matrix)
-fn Matrix matrix_look_at(Vector3 eye, Vector3 target, Vector3 up) {
+<*
+ Get camera look-at matrix (view matrix)
+*>
+fn Matrix matrixLookAt(Vector3 eye, Vector3 target, Vector3 up) {
 	Matrix result;
 
 	float length = 0.0f;
@@ -1459,8 +1604,10 @@ fn Matrix matrix_look_at(Vector3 eye, Vector3 target, Vector3 up) {
 	return result;
 }
 
-// Get float array of matrix data
-fn Float16 matrix_to_float_v(Matrix mat) {
+<*
+ Get float array of matrix data
+*>
+fn Float16 matrixToFloatV(Matrix mat) {
 	Float16 result;
 
 	result[0] = mat.m0;
@@ -1487,56 +1634,70 @@ fn Float16 matrix_to_float_v(Matrix mat) {
 // Module Functions Definition - Quaternion math
 //----------------------------------------------------------------------------------
 
-fn Quaternionf quaternion_to_quatf(Quaternion q) {
+fn Quaternionf quaternionToQuatf(Quaternion q) {
 	Quaternionf result = { q.x, q.y, q.z, q.w };
 
 	return result;
 }
 
-// Add two quaternions
-fn Quaternion quaternion_add(Quaternion q1, Quaternion q2) {
+<*
+ Add two quaternions
+*>
+fn Quaternion quaternionAdd(Quaternion q1, Quaternion q2) {
 	Quaternion result = {q1.x + q2.x, q1.y + q2.y, q1.z + q2.z, q1.w + q2.w};
 
 	return result;
 }
 
-// Add quaternion and float value
-fn Quaternion quaternion_add_value(Quaternion q, float add) {
+<*
+ Add quaternion and float value
+*>
+fn Quaternion quaternionAddValue(Quaternion q, float add) {
 	Quaternion result = {q.x + add, q.y + add, q.z + add, q.w + add};
 
 	return result;
 }
 
-// Subtract two quaternions
-fn Quaternion quaternion_subtract(Quaternion q1, Quaternion q2) {
+<*
+ Subtract two quaternions
+*>
+fn Quaternion quaternionSubtract(Quaternion q1, Quaternion q2) {
 	Quaternion result = {q1.x - q2.x, q1.y - q2.y, q1.z - q2.z, q1.w - q2.w};
 
 	return result;
 }
 
-// Subtract quaternion and float value
-fn Quaternion quaternion_subtract_value(Quaternion q, float sub) {
+<*
+ Subtract quaternion and float value
+*>
+fn Quaternion quaternionSubtractValue(Quaternion q, float sub) {
 	Quaternion result = {q.x - sub, q.y - sub, q.z - sub, q.w - sub};
 
 	return result;
 }
 
-// Get identity quaternion
-fn Quaternion quaternion_identity() {
+<*
+ Get identity quaternion
+*>
+fn Quaternion quaternionIdentity() {
 	Quaternion result = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	return result;
 }
 
-// Computes the length of a quaternion
-fn float quaternion_length(Quaternion q) {
+<*
+ Computes the length of a quaternion
+*>
+fn float quaternionLength(Quaternion q) {
 	float result = math::sqrt(q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w);
 
 	return result;
 }
 
-// Normalize provided quaternion
-fn Quaternion quaternion_normalize(Quaternion q) {
+<*
+ Normalize provided quaternion
+*>
+fn Quaternion quaternionNormalize(Quaternion q) {
 	Quaternion result;
 
 	float length = math::sqrt(q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w);
@@ -1551,8 +1712,10 @@ fn Quaternion quaternion_normalize(Quaternion q) {
 	return result;
 }
 
-// Invert provided quaternion
-fn Quaternion quaternion_invert(Quaternion q) {
+<*
+ Invert provided quaternion
+*>
+fn Quaternion quaternionInvert(Quaternion q) {
 	Quaternion result = q;
 
 	float lengthSq = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
@@ -1570,8 +1733,10 @@ fn Quaternion quaternion_invert(Quaternion q) {
 	return result;
 }
 
-// Calculate two quaternion multiplication
-fn Quaternion quaternion_multiply(Quaternion q1, Quaternion q2) {
+<*
+ Calculate two quaternion multiplication
+*>
+fn Quaternion quaternionMultiply(Quaternion q1, Quaternion q2) {
 	Quaternion result;
 
 	float qax = q1.x;
@@ -1591,8 +1756,10 @@ fn Quaternion quaternion_multiply(Quaternion q1, Quaternion q2) {
 	return result;
 }
 
-// Scale quaternion by float value
-fn Quaternion quaternion_scale(Quaternion q, float mul) {
+<*
+ Scale quaternion by float value
+*>
+fn Quaternion quaternionScale(Quaternion q, float mul) {
 	Quaternion result;
 
 	result.x = q.x*mul;
@@ -1603,15 +1770,19 @@ fn Quaternion quaternion_scale(Quaternion q, float mul) {
 	return result;
 }
 
-// Divide two quaternions
-fn Quaternion quaternion_divide(Quaternion q1, Quaternion q2) {
+<*
+ Divide two quaternions
+*>
+fn Quaternion quaternionDivide(Quaternion q1, Quaternion q2) {
 	Quaternion result = { q1.x/q2.x, q1.y/q2.y, q1.z/q2.z, q1.w/q2.w };
 
 	return result;
 }
 
-// Calculate linear interpolation between two quaternions
-fn Quaternion quaternion_lerp(Quaternion q1, Quaternion q2, float amount) {
+<*
+ Calculate linear interpolation between two quaternions
+*>
+fn Quaternion quaternionLerp(Quaternion q1, Quaternion q2, float amount) {
 	Quaternion result;
 
 	result.x = q1.x + amount*(q2.x - q1.x);
@@ -1622,8 +1793,10 @@ fn Quaternion quaternion_lerp(Quaternion q1, Quaternion q2, float amount) {
 	return result;
 }
 
-// Calculate slerp-optimized interpolation between two quaternions
-fn Quaternion quaternion_nlerp(Quaternion q1, Quaternion q2, float amount) {
+<*
+ Calculate slerp-optimized interpolation between two quaternions
+*>
+fn Quaternion quaternionNlerp(Quaternion q1, Quaternion q2, float amount) {
 	Quaternion result;
 
 	// QuaternionLerp(q1, q2, amount)
@@ -1646,8 +1819,10 @@ fn Quaternion quaternion_nlerp(Quaternion q1, Quaternion q2, float amount) {
 	return result;
 }
 
-// Calculates spherical linear interpolation between two quaternions
-fn Quaternion quaternion_slerp(Quaternion q1, Quaternion q2, float amount) {
+<*
+ Calculates spherical linear interpolation between two quaternions
+*>
+fn Quaternion quaternionSlerp(Quaternion q1, Quaternion q2, float amount) {
 	Quaternion result;
 
 	float cosHalfTheta = q1.x*q2.x + q1.y*q2.y + q1.z*q2.z + q1.w*q2.w;
@@ -1659,7 +1834,7 @@ fn Quaternion quaternion_slerp(Quaternion q1, Quaternion q2, float amount) {
 	}
 
 	if (math::abs(cosHalfTheta) >= 1.0f) { result = q1; }
-	else if (cosHalfTheta > 0.95f) { result = quaternion_nlerp(q1, q2, amount); }
+	else if (cosHalfTheta > 0.95f) { result = quaternionNlerp(q1, q2, amount); }
 	else
 	{
 		float halfTheta = math::acos(cosHalfTheta);
@@ -1687,8 +1862,10 @@ fn Quaternion quaternion_slerp(Quaternion q1, Quaternion q2, float amount) {
 	return result;
 }
 
-// Calculate quaternion based on the rotation from one vector to another
-fn Quaternion quaternion_fromvector3_to_vector3(Vector3 from, Vector3 to) {
+<*
+ Calculate quaternion based on the rotation from one vector to another
+*>
+fn Quaternion quaternionFromvector3ToVector3(Vector3 from, Vector3 to) {
 	Quaternion result;
 
 	float cos2Theta = (from.x*to.x + from.y*to.y + from.z*to.z);	// vector3_DotProduct(from, to)
@@ -1714,8 +1891,10 @@ fn Quaternion quaternion_fromvector3_to_vector3(Vector3 from, Vector3 to) {
 	return result;
 }
 
-// Get a quaternion for a given rotation matrix
-fn Quaternion quaternion_from_matrix(Matrix mat) {
+<*
+ Get a quaternion for a given rotation matrix
+*>
+fn Quaternion quaternionFromMatrix(Matrix mat) {
 	Quaternion result;
 
 	float fourWSquaredMinus1 = mat.m0  + mat.m5 + mat.m10;
@@ -1777,12 +1956,11 @@ fn Quaternion quaternion_from_matrix(Matrix mat) {
 	return result;
 }
 
-// Get a matrix for a given quaternion
-fn Matrix quaternion_to_matrix(Quaternion q) {
-	Matrix result = { 1.0f, 0.0f, 0.0f, 0.0f,
-					  0.0f, 1.0f, 0.0f, 0.0f,
-					  0.0f, 0.0f, 1.0f, 0.0f,
-					  0.0f, 0.0f, 0.0f, 1.0f }; // MatrixIdentity()
+<*
+ Get a matrix for a given quaternion
+*>
+fn Matrix quaternionToMatrix(Quaternion q) {
+	Matrix result = matrixIdentity();
 
 	float a2 = q.x*q.x;
 	float b2 = q.y*q.y;
@@ -1809,9 +1987,11 @@ fn Matrix quaternion_to_matrix(Quaternion q) {
 	return result;
 }
 
-// Get rotation quaternion for an angle and axis
-// NOTE: Angle must be provided in radians
-fn Quaternion quaternion_from_axis_angle(Vector3 axis, float angle) {
+<*
+ Get rotation quaternion for an angle and axis
+ NOTE: Angle must be provided in radians
+*>
+fn Quaternion quaternionFromAxisAngle(Vector3 axis, float angle) {
 	Quaternion result = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	float axisLength = math::sqrt(axis.x*axis.x + axis.y*axis.y + axis.z*axis.z);
@@ -1854,8 +2034,10 @@ fn Quaternion quaternion_from_axis_angle(Vector3 axis, float angle) {
 	return result;
 }
 
-// Get the rotation angle and axis for a given quaternion
-fn void quaternion_to_axis_angle(Quaternion q, Vector3 *outAxis, float *outAngle) {
+<*
+ Get the rotation angle and axis for a given quaternion
+*>
+fn void quaternionToAxisAngle(Quaternion q, Vector3 *outAxis, float *outAngle) {
 	if (math::abs(q.w) > 1.0f)
 	{
 		// QuaternionNormalize(q);
@@ -1890,9 +2072,11 @@ fn void quaternion_to_axis_angle(Quaternion q, Vector3 *outAxis, float *outAngle
 	*outAngle = resAngle;
 }
 
-// Get the quaternion equivalent to Euler angles
-// NOTE: Rotation order is ZYX
-fn Quaternion quaternion_from_euler(float pitch, float yaw, float roll) {
+<*
+ Get the quaternion equivalent to Euler angles
+ NOTE: Rotation order is ZYX
+*>
+fn Quaternion quaternionFromEuler(float pitch, float yaw, float roll) {
 	Quaternion result;
 
 	float x0 = math::cos(pitch*0.5f);
@@ -1910,9 +2094,11 @@ fn Quaternion quaternion_from_euler(float pitch, float yaw, float roll) {
 	return result;
 }
 
-// Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
-// NOTE: Angles are returned in a Vector3 struct in radians
-fn Vector3 quaternion_to_euler(Quaternion q) {
+<*
+ Get the Euler angles equivalent to quaternion (roll, pitch, yaw)
+ NOTE: Angles are returned in a Vector3 struct in radians
+*>
+fn Vector3 quaternionToEuler(Quaternion q) {
 	Vector3 result;
 
 	// Roll (x-axis rotation)
@@ -1934,8 +2120,10 @@ fn Vector3 quaternion_to_euler(Quaternion q) {
 	return result;
 }
 
-// Transform a quaternion given a transformation matrix
-fn Quaternion quaternion_transform(Quaternion q, Matrix mat) {
+<*
+ Transform a quaternion given a transformation matrix
+*>
+fn Quaternion quaternionTransform(Quaternion q, Matrix mat) {
 	Quaternion result;
 
 	result.x = mat.m0*q.x + mat.m4*q.y + mat.m8*q.z + mat.m12*q.w;
@@ -1946,16 +2134,18 @@ fn Quaternion quaternion_transform(Quaternion q, Matrix mat) {
 	return result;
 }
 
-// Check whether two given quaternions are almost equal
-fn bool quaternion_equals(Quaternion p, Quaternion q) {
+<*
+ Check whether two given quaternions are almost equal
+*>
+fn bool quaternionEquals(Quaternion p, Quaternion q) {
 	bool result = (((math::abs(p.x - q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
-				  ((math::abs(p.y - q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
-				  ((math::abs(p.z - q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z))))) &&
-				  ((math::abs(p.w - q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w)))))) ||
-				 (((math::abs(p.x + q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
-				  ((math::abs(p.y + q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
-				  ((math::abs(p.z + q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z))))) &&
-				  ((math::abs(p.w + q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w))))));
+	               ((math::abs(p.y - q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
+	               ((math::abs(p.z - q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z))))) &&
+	               ((math::abs(p.w - q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w)))))) ||
+	              (((math::abs(p.x + q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
+	               ((math::abs(p.y + q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
+	               ((math::abs(p.z + q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z))))) &&
+	               ((math::abs(p.w + q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w))))));
 
 	return result;
 }

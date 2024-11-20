@@ -309,7 +309,7 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
-module rgui @if($feature(SUPPORT_RAYGUI));
+module raygui @if($feature(SUPPORT_RAYGUI));
 import rl;
 
 const RAYGUI_VERSION_MAJOR = 4;
@@ -324,9 +324,9 @@ const RAYGUI_VERSION = "4.0";
 // Style property
 // NOTE: Used when exporting style as code for convenience
 struct GuiStyleProp {
-    ushort control_id;  // Control identifier
-    ushort property_id; // Property identifier
-    int property_value; // Property value
+	ushort control_id;  // Control identifier
+	ushort property_id; // Property identifier
+	int property_value; // Property value
 }
 
 // Gui control state
