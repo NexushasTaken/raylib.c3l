@@ -553,9 +553,60 @@ extern fn void pollInputEvents() @extern("PollInputEvents");
 *>
 extern fn void waitTime(double seconds) @extern("WaitTime");
 
-//------------------------------------------------------------------------------------
 // Random values generation functions (see random.c3)
 //------------------------------------------------------------------------------------
+
+module rl @if($feature(SUPPORT_RANDOM_GENERATION));
+
+// Random values generation functions
+//------------------------------------------------------------------------------------
+tlocal bool is_random_initialized = false; // WARNING: required if raylib was configured with SUPPORT_RPRAND_GENERATOR
+
+<*
+ Set the seed for the random number generator
+*>
+fn void setRandomSeed(uint seed) @inline {
+	__set_random_seed(seed);
+	$if $defined(is_random_initialized):
+		is_random_initialized = true;
+	$endif
+}
+
+<*
+ Get a random value between min and max (both included)
+*>
+fn int getRandomValue(int min, int max) @inline {
+	$if $defined(is_random_initialized):
+		if (!is_random_initialized) {
+			setRandomSeed(0);
+			is_random_initialized = true;
+		}
+	$endif
+	return __get_random_value(min, max);
+}
+
+<*
+ Load random values sequence, no values repeated
+*>
+fn int[] loadRandomSequence(uint count, int min, int max) @inline {
+	$if $defined(is_random_initialized):
+		if (!is_random_initialized) {
+			setRandomSeed(0);
+			is_random_initialized = true;
+		}
+	$endif
+	return __load_random_sequence(count, min, max)[:(usz)count];
+}
+
+<*
+ Unload random values sequence
+*>
+fn void unloadRandomSequence(int[] sequence) @inline {
+	return __unload_random_sequence(sequence.ptr);
+}
+
+module rl;
+import std::io;
 
 //------------------------------------------------------------------------------------
 // Misc. functions
@@ -590,7 +641,20 @@ extern fn void traceLog(TraceLogLevel logLevel, ZString text, ...) @extern("Trac
 *>
 extern fn void setTraceLogLevel(TraceLogLevel logLevel) @extern("SetTraceLogLevel");
 
-// INFO: see mem.c3 for MemAlloc(), MemRealloc() and MemFree()
+<*
+ Internal memory allocator
+*>
+extern fn void* memAlloc(uint size) @extern("MemAlloc");
+
+<*
+ Internal memory reallocator
+*>
+extern fn void* memRealloc(void* ptr, uint size) @extern("MemRealloc");
+
+<*
+ Internal memory free
+*>
+extern fn void memFree(void* ptr) @extern("MemFree");
 
 //------------------------------------------------------------------------------------
 // Set custom callbacks
