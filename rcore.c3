@@ -556,7 +556,7 @@ extern fn void waitTime(double seconds) @extern("WaitTime");
 // Random values generation functions (see random.c3)
 //------------------------------------------------------------------------------------
 
-module rl @if($feature(SUPPORT_RANDOM_GENERATION));
+module rl @if($feature(ENABLE_RANDOM_GENERATION));
 
 // Random values generation functions
 //------------------------------------------------------------------------------------
@@ -864,7 +864,7 @@ fn char[] decompressData(char[] comp_data) @inline {
 <*
  Encode data to Base64 string, memory must be MemFree()
 *>
-macro char[] encodeDataBase64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
+macro char[] encodeDataBase64(char[] data) {
     int size = 0;
     char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
     return encoded_data[:(usz)size];
@@ -873,7 +873,7 @@ macro char[] encodeDataBase64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
 <*
  Decode Base64 string data, memory must be MemFree()
 *>
-macro char[] decodeDataBase64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
+macro char[] decodeDataBase64(char[] data) {
     int size = 0;
     char* decoded_data = __decode_data_base64(data.ptr, &size);
     return decoded_data[:(usz)size];

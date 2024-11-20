@@ -23,14 +23,9 @@
   // "target": "windows-x64",
   "features": [
     // See rcore.c3
-    "SUPPORT_INTERNAL_MEMORY_MANAGEMENT",
     "SUPPORT_STANDARD_FILEIO",
-    "SUPPORT_FILE_SYSTEM_FUNCTIONS",
-    "SUPPORT_DATA_ENCODER",
-    // See text.c3
-    "SUPPORT_TEXT_CODEPOINTS_MANAGEMENT",
-    "SUPPORT_TEXT_C_STRING_MANAGEMENT",
-    "SUPPORT_RANDOM_GENERATION",
+    "ENABLE_RANDOM_GENERATION",
+    //"ENABLE_RLGL",
 
     //"SUPPORT_RAYGUI",
     //"RAYGUI_NO_ICONS",
@@ -53,7 +48,7 @@
       // and overrides of global settings here.
       "sources": [ "./examples/core/core_2d_camera.c3" ],
       "output": "./examples/core",
-      "features": [ "SUPPORT_RANDOM_GENERATION", ],
+      "features": [ "ENABLE_RANDOM_GENERATION", ],
     },
     "core_3d_camera_free": {
       // Executable or library.
@@ -71,8 +66,7 @@
       "sources": [ "./examples/core/core_3d_camera_first_person.c3" ],
       "output": "./examples/core",
       "features" : [
-        "SUPPORT_RANDOM_GENERATION",
-        "SUPPORT_TEXT_C_STRING_MANAGEMENT",
+        "ENABLE_RANDOM_GENERATION",
       ],
     },
 
@@ -93,9 +87,7 @@
       ],
       "output": "./examples/controls_test_suite",
       "features": [
-        "SUPPORT_FILE_SYSTEM_FUNCTIONS",
         "SUPPORT_RAYGUI",
-        "SUPPORT_TEXT_C_STRING_MANAGEMENT",
       ],
     },
 
@@ -107,7 +99,6 @@
     "test_data_encoder": {
       "type": "executable",
       "sources": [ "./test/unit/test_data_encoder.c3" ],
-      "features": [ "SUPPORT_DATA_ENCODER" ],
     },
     "test_export_data_as_code": {
       "type": "executable",

@@ -1,4 +1,4 @@
-module rlgl;
+module rlgl @if($feature(ENABLE_RLGL));
 import rl;
 
 const GRAPHICS_API_OPENGL_11 @if($feature(GRAPHICS_API_OPENGL_11)) = true;

@@ -33,19 +33,14 @@ Add this to your `project.json`, you can uncomment some features that are listed
 ```json
 "dependencies": [ "raylib" ],
 "features": [
-  // See rcore.c3
-  //"SUPPORT_INTERNAL_MEMORY_MANAGEMENT",
-  //"SUPPORT_STANDARD_FILEIO",
-  //"SUPPORT_FILE_SYSTEM_FUNCTIONS",
-  //"SUPPORT_DATA_ENCODER",
-  // See text.c3
-  //"SUPPORT_TEXT_CODEPOINTS_MANAGEMENT",
-  //"SUPPORT_TEXT_C_STRING_MANAGEMENT",
-  //"SUPPORT_RANDOM_GENERATION",
+	// See rcore.c3
+	"SUPPORT_STANDARD_FILEIO",
+	"ENABLE_RANDOM_GENERATION",
+	//"ENABLE_RLGL",
 
-  "SUPPORT_RAYGUI",
-  //"RAYGUI_NO_ICONS",
-  //"RAYGUI_CUSTOM_ICONS",
+	//"SUPPORT_RAYGUI",
+	//"RAYGUI_NO_ICONS",
+	//"RAYGUI_CUSTOM_ICONS",
 ],
 ```
 
@@ -79,5 +74,4 @@ cd lib/raylib.c3l && just build_raylib
 - Port every raylib examples to C3
 - Use C3 allocators to handle raylib allocations? (for easier resource management)
 - Add physac port?
-- Add rlgl port?
 - Provide user to configure and compile raylib?

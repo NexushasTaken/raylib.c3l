@@ -10,7 +10,7 @@ extern fn void __set_window_icons(Image* images, int count) @extern("SetWindowIc
 extern fn int __get_shader_location(Shader shader, ZString uniform_name) @extern("GetShaderLocation") @private;
 extern fn int __get_shader_location_attrib(Shader shader, ZString attrib_name) @extern("GetShaderLocationAttrib") @private;
 
-module rl @if($feature(SUPPORT_RANDOM_GENERATION));
+module rl @if($feature(ENABLE_RANDOM_GENERATION));
 
 extern fn void __set_random_seed(uint seed) @extern("SetRandomSeed");
 extern fn int __get_random_value(int min, int max) @extern("GetRandomValue") @private;
@@ -28,8 +28,8 @@ module rl;
 
 extern fn char* __compress_data(char* data, int dataSize, int *comp_data_size) @extern("CompressData") @private;
 extern fn char* __decompress_data(char* comp_data, int comp_data_size, int *data_size) @extern("DecompressData") @private;
-extern fn char* __encode_data_base64(char* data, int data_size, int *outputSize) @extern("EncodeDataBase64") @private @if($feature(SUPPORT_DATA_ENCODER));
-extern fn char* __decode_data_base64(char* data, int *output_size) @extern("DecodeDataBase64") @private @if($feature(SUPPORT_DATA_ENCODER));
+extern fn char* __encode_data_base64(char* data, int data_size, int *outputSize) @extern("EncodeDataBase64") @private;
+extern fn char* __decode_data_base64(char* data, int *output_size) @extern("DecodeDataBase64") @private;
 //------------------------------------------------------------------------------------
 
 // raudio.c3
