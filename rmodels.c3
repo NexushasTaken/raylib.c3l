@@ -337,6 +337,7 @@ extern fn void setModelMeshMaterial(Model* model, int mesh_id, int material_id) 
 
 <*
  Load model animations from file
+ @ensure return.len <= int.max
 *>
 fn ModelAnimation[] loadModelAnimations(ZString file_name) @inline {
     int len = 0;

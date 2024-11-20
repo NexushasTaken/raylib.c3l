@@ -16,7 +16,7 @@ extern fn int __get_random_value(int min, int max) @extern("GetRandomValue") @pr
 extern fn int* __load_random_sequence(uint count, int min, int max) @extern("LoadRandomSequence") @private;
 extern fn void __unload_random_sequence(int* sequence) @extern("UnloadRandomSequence") @private;
 
-module rl @private @if($feature(SUPPORT_STANDARD_FILEIO));
+module rl @if($feature(SUPPORT_STANDARD_FILEIO));
 
 extern fn char* __load_file_data(ZString file_name, int* data_size) @extern("LoadFileData");
 extern fn void __unload_file_data(char* data) @extern("UnloadFileData") @private;

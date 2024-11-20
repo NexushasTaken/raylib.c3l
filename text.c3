@@ -43,7 +43,7 @@ extern fn bool isFontReady(Font font) @extern("IsFontReady");
 *>
 extern fn GlyphInfo* loadFontData(ZString file_data, int data_size, int font_size, int *codepoints, int codepoint_count, FontType type) @extern("LoadFontData");
 
-// TODO: glyphs/glyph_count as List(<GlyphInfo>)
+// TODO: glyphs/glyph_count as GlyphInfo[]
 <*
  Generate image font atlas using chars info
 *>
@@ -132,3 +132,130 @@ extern fn GlyphInfo getGlyphInfo(Font font, int codepoint) @extern("GetGlyphInfo
  Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
 *>
 extern fn Rectangle getGlyphAtlasRec(Font font, int codepoint) @extern("GetGlyphAtlasRec");
+
+// Text codepoints management functions (unicode characters)
+//------------------------------------------------------------------------------------
+
+<*
+ Load UTF-8 text encoded from codepoints array
+*>
+extern fn char* loadUTF8(int *codepoints, int length) @extern("LoadUTF8");
+
+<*
+ Unload UTF-8 text encoded from codepoints array
+*>
+extern fn void unloadUTF8(char* text) @extern("UnloadUTF8");
+
+<*
+ Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
+*>
+extern fn int* loadCodepoints(ZString text, int *count) @extern("LoadCodepoints");
+
+<*
+ Unload codepoints data from memory
+*>
+extern fn void unloadCodepoints(int* codepoints) @extern("UnloadCodepoints");
+
+<*
+ Get total number of codepoints in a UTF-8 encoded string
+*>
+extern fn int getCodepointCount(ZString text) @extern("GetCodepointCount");
+
+<*
+ Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+*>
+extern fn int getCodepoint(ZString text, int *codepoint_size) @extern("GetCodepoint");
+
+<*
+ Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+*>
+extern fn int getCodepointNext(ZString text, int *codepoint_size) @extern("GetCodepointNext");
+
+<*
+ Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
+*>
+extern fn int getCodepointPrevious(ZString text, int *codepoint_size) @extern("GetCodepointPrevious");
+
+<*
+ Encode one codepoint into UTF-8 byte array (array length returned as parameter)
+*>
+extern fn ZString codepointToUTF8(int codepoint, int *utf8_size) @extern("CodepointToUTF8");
+
+// Text strings management functions (no UTF-8 strings, only byte chars)
+// NOTE: Some strings allocate memory internally for returned strings, just be careful!
+//------------------------------------------------------------------------------------
+
+<*
+ Copy one string to another, returns bytes copied
+*>
+extern fn int textCopy(ZString dst, ZString src) @extern("TextCopy");
+
+<*
+ Check if two text string are equal
+*>
+extern fn bool textIsEqual(ZString text1, ZString text2) @extern("TextIsEqual");
+
+<*
+ Get text length, checks for '\0' ending
+*>
+extern fn uint textLength(ZString text) @extern("TextLength");
+
+<*
+ Text formatting with variables (sprintf() style)
+*>
+extern fn ZString textFormat(ZString text, ...) @extern("TextFormat");
+
+<*
+ Get a piece of a text string
+*>
+extern fn ZString textSubtext(ZString text, int position, int length) @extern("TextSubtext");
+
+<*
+ Replace text string (WARNING: memory must be freed!)
+*>
+extern fn char* textReplace(char* text, ZString replace, ZString by) @extern("TextReplace");
+
+<*
+ Insert text in a position (WARNING: memory must be freed!)
+*>
+extern fn char* textInsert(ZString text, ZString insert, int position) @extern("TextInsert");
+
+<*
+ Join text strings with delimiter
+*>
+extern fn ZString textJoin(ZString* text_list, int count, ZString delimiter) @extern("TextJoin");
+
+<*
+ Split text into multiple strings
+*>
+extern fn ZString *textSplit(ZString text, char delimiter, int* count) @extern("TextSplit");
+
+<*
+ Append text at specific position and move cursor!
+*>
+extern fn void textAppend(char* text, ZString append, int* position) @extern("TextAppend");
+
+<*
+ Find first text occurrence within a string
+*>
+extern fn int textFindIndex(ZString text, ZString find) @extern("TextFindIndex");
+
+<*
+ Get upper case version of provided string
+*>
+extern fn ZString textToUpper(ZString text) @extern("TextToUpper");
+
+<*
+ Get lower case version of provided string
+*>
+extern fn ZString textToLower(ZString text) @extern("TextToLower");
+
+<*
+ Get Pascal case notation version of provided string
+*>
+extern fn ZString textToPascal(ZString text) @extern("TextToPascal");
+
+<*
+ Get integer value from text (negative values not supported)
+*>
+extern fn int textToInteger(ZString text) @extern("TextToInteger");

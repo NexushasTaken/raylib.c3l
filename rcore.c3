@@ -23,6 +23,7 @@ Index of this module:
 
 */
 
+//------------------------------------------------------------------------------------
 // Window-related functions
 //------------------------------------------------------------------------------------
 
@@ -269,6 +270,7 @@ extern fn void enableEventWaiting() @extern("EnableEventWaiting");
 *>
 extern fn void disableEventWaiting() @extern("DisableEventWaiting");
 
+//------------------------------------------------------------------------------------
 // Cursor-related functions
 //------------------------------------------------------------------------------------
 
@@ -302,6 +304,7 @@ extern fn void disableCursor() @extern("DisableCursor");
 *>
 extern fn bool isCursorOnScreen() @extern("IsCursorOnScreen");
 
+//------------------------------------------------------------------------------------
 // Drawing-related functions
 //------------------------------------------------------------------------------------
 
@@ -390,6 +393,7 @@ extern fn void beginVrStereoMode(VrStereoConfig config) @extern("BeginVrStereoMo
 *>
 extern fn void endVrStereoMode() @extern("EndVrStereoMode");
 
+//------------------------------------------------------------------------------------
 // VR stereo config functions for VR simulator
 //------------------------------------------------------------------------------------
 
@@ -403,6 +407,7 @@ extern fn VrStereoConfig loadVrStereoConfig(VrDeviceInfo device) @extern("LoadVr
 *>
 extern fn void unloadVrStereoConfig(VrStereoConfig config) @extern("UnloadVrStereoConfig");
 
+//------------------------------------------------------------------------------------
 // Shader management functions
 // NOTE: Shader functionality is not available on OpenGL 1.1
 //------------------------------------------------------------------------------------
@@ -463,6 +468,7 @@ extern fn void setShaderValueTexture(Shader shader, int locIndex, Texture2D text
 *>
 extern fn void unloadShader(Shader shader) @extern("UnloadShader");
 
+//------------------------------------------------------------------------------------
 // Screen-space-related functions
 //------------------------------------------------------------------------------------
 
@@ -501,6 +507,7 @@ extern fn Vector2 getWorldToScreenEx(Vector3 position, Camera camera, int width,
 *>
 extern fn Vector2 getWorldToScreen2d(Vector2 position, Camera2D camera) @extern("GetWorldToScreen2D");
 
+//------------------------------------------------------------------------------------
 // Timing-related functions
 //------------------------------------------------------------------------------------
 
@@ -524,6 +531,7 @@ extern fn double getTime() @extern("GetTime");
 *>
 extern fn int getFPS() @extern("GetFPS");
 
+//------------------------------------------------------------------------------------
 // Custom frame control functions
 // NOTE: Those functions are intended for advance users that want full control over the frame processing
 // By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
@@ -545,6 +553,11 @@ extern fn void pollInputEvents() @extern("PollInputEvents");
 *>
 extern fn void waitTime(double seconds) @extern("WaitTime");
 
+//------------------------------------------------------------------------------------
+// Random values generation functions (see random.c3)
+//------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------
 // Misc. functions
 //------------------------------------------------------------------------------------
 
@@ -563,6 +576,7 @@ extern fn void setConfigFlags(uint flags) @extern("SetConfigFlags");
 *>
 extern fn void openUrl(ZString url) @extern("OpenURL");
 
+//------------------------------------------------------------------
 // NOTE: Following functions implemented in module [utils]
 //------------------------------------------------------------------
 
@@ -576,9 +590,194 @@ extern fn void traceLog(TraceLogLevel logLevel, ZString text, ...) @extern("Trac
 *>
 extern fn void setTraceLogLevel(TraceLogLevel logLevel) @extern("SetTraceLogLevel");
 
+// INFO: see mem.c3 for MemAlloc(), MemRealloc() and MemFree()
+
+//------------------------------------------------------------------------------------
+// Set custom callbacks
+// WARNING: Callbacks setup is intended for advance users
+//------------------------------------------------------------------------------------
+
+<*
+ Set custom file binary data loader
+*>
+extern fn void setLoadFileDataCallback(LoadFileDataCallback callback) @extern("SetLoadFileDataCallback");
+
+<*
+ Set custom file binary data saver
+*>
+extern fn void setSaveFileDataCallback(SaveFileDataCallback callback) @extern("SetSaveFileDataCallback");
+
+<*
+ Set custom file text data loader
+*>
+extern fn void setLoadFileTextCallback(LoadFileTextCallback callback) @extern("SetLoadFileTextCallback");
+
+<*
+ Set custom file text data saver
+*>
+extern fn void setSaveFileTextCallback(SaveFileTextCallback callback) @extern("SetSaveFileTextCallback");
+
+//------------------------------------------------------------------------------------
+// Files management functions
+//------------------------------------------------------------------------------------
+
+<*
+ Load file data as byte array (read)
+ @ensure return.len <= int.max
+*>
+fn char[] loadFileData(ZString file_name) @inline {
+    int len = 0;
+    char* ptr = __load_file_data(file_name, &len);
+    return ptr[:(usz)len];
+}
+
+<*
+ Unload file data allocated by LoadFileData()
+*>
+fn void unloadFileData(char[] data) @inline {
+    __unload_file_data(data.ptr);
+}
+
+<*
+ Save data to file from byte array (write), returns true on success
+*>
+extern fn bool saveFileData(ZString file_name, void* data, int data_size) @extern("SaveFileData");
+
+// TODO: review
+<*
+ Export data to code (.h), returns true on success
+ @require data.len <= int.max
+*>
+macro bool exportDataAsCode(ZString file_name, char[] data) {
+    return __export_data_as_code(data.ptr, data.len, file_name);
+}
+
+<*
+ Load text data from file (read), returns a '\0' terminated string
+*>
+fn ZString! loadFileText(ZString file_name) @inline {
+    char* zstr = __load_file_text(file_name);
+    return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
+}
+
+<*
+ Unload file text data allocated by LoadFileText()
+*>
+extern fn void unloadFileText(ZString text) @extern("UnloadFileText");
+
+<*
+ Save text data to file (write), string must be '\0' terminated, returns true on success
+*>
+extern fn bool saveFileText(ZString file_name, ZString text) @extern("SaveFileText");
+
+//------------------------------------------------------------------------------------
+// File system functions
+//------------------------------------------------------------------------------------
+
+<*
+ Check if file exists
+*>
+extern fn bool fileExists(ZString file_name) @extern("FileExists");
+
+<*
+ Check if a directory path exists
+*>
+extern fn bool directoryExists(ZString dir_path) @extern("DirectoryExists");
+
+<*
+ Check file extension (including point: .png, .wav)
+*>
+extern fn bool isFileExtension(ZString file_name, ZString ext) @extern("IsFileExtension");
+
+<*
+ Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
+*>
+extern fn int getFileLength(ZString file_name) @extern("GetFileLength");
+
+<*
+ Get pointer to extension for a filename string (includes dot: '.png')
+*>
+extern fn ZString getFileExtension(ZString file_name) @extern("GetFileExtension");
+
+<*
+ Get pointer to filename for a path string
+*>
+extern fn ZString getFileName(ZString file_path) @extern("GetFileName");
+
+<*
+ Get filename string without extension (uses static string)
+*>
+extern fn ZString getFileNameWithoutExt(ZString file_path) @extern("GetFileNameWithoutExt");
+
+<*
+ Get full path for a given fileName with path (uses static string)
+*>
+extern fn ZString getDirectoryPath(ZString file_path) @extern("GetDirectoryPath");
+
+<*
+ Get previous directory path for a given path (uses static string)
+*>
+extern fn ZString getPrevDirectoryPath(ZString dir_path) @extern("GetPrevDirectoryPath");
+
+<*
+ Get current working directory (uses static string)
+*>
+extern fn ZString getWorkingDirectory() @extern("GetWorkingDirectory");
+
+<*
+ Get the directory of the running application (uses static string)
+*>
+extern fn ZString getApplicationDirectory() @extern("GetApplicationDirectory");
+
+<*
+ Change working directory, return true on success
+*>
+extern fn bool changeDirectory(ZString dir) @extern("ChangeDirectory");
+
+<*
+ Check if a given path is a file or a directory
+*>
+extern fn bool isPathFile(ZString path) @extern("IsPathFile");
+
+<*
+ Load directory filepaths
+*>
+extern fn FilePathList loadDirectoryFiles(ZString  dir_path) @extern("LoadDirectoryFiles");
+
+<*
+ Load directory filepaths with extension filtering and recursive directory scan
+*>
+extern fn FilePathList loadDirectoryFilesEx(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx");
+
+<*
+ Unload filepaths
+*>
+extern fn void unloadDirectoryFiles(FilePathList files) @extern("UnloadDirectoryFiles");
+
+<*
+ Check if a file has been dropped into window
+*>
+extern fn bool isFileDropped() @extern("IsFileDropped");
+
+<*
+ Load dropped filepaths
+*>
+extern fn FilePathList loadDroppedFiles() @extern("LoadDroppedFiles");
+
+<*
+ Unload dropped filepaths
+*>
+extern fn void unloadDroppedFiles(FilePathList files) @extern("UnloadDroppedFiles");
+
+<*
+ Get file modification time (last write time)
+*>
+extern fn long getFileModTime(ZString file_name) @extern("GetFileModTime");
+
+//------------------------------------------------------------------
 // Compression/Encoding functionality
 //------------------------------------------------------------------------------------
-// INFO: add test units
+// INFO: add unit tests
 
 <*
  Compress data (DEFLATE algorithm), memory must be MemFree()
@@ -616,6 +815,7 @@ macro char[] decodeDataBase64(char[] data) @if($feature(SUPPORT_DATA_ENCODER)) {
     return decoded_data[:(usz)size];
 }
 
+//------------------------------------------------------------------------------------
 // Automation events functionality
 //------------------------------------------------------------------------------------
 
@@ -659,94 +859,261 @@ extern fn void stopAutomationEventRecording() @extern("StopAutomationEventRecord
 *>
 extern fn void playAutomationEvent(AutomationEvent event) @extern("PlayAutomationEvent");
 
-// Additional Raylib.c3 Mode helper macros
-//----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+// Input Handling Functions (Module: core)
+//------------------------------------------------------------------------------------
+
+// Input-related functions: keyboard
+//------------------------------------------------------------------------------------
 
 <*
- Setup canvas (framebuffer) to start drawing, then calls [block].
- Drawing will end after [block] has finished.
+ Check if a key has been pressed once
 *>
-macro void @drawing(;@body)
-{
-  beginDrawing();
-  defer endDrawing();
-  @body();
-}
+extern fn bool isKeyPressed(KeyboardKey key) @extern("IsKeyPressed");
 
 <*
- Setup 2D mode with custom camera to start 2D Mode, then calls [block].
- Mode2D will end after [block] has finished.
+ Check if a key has been pressed again (Only PLATFORM_DESKTOP)
 *>
-macro void @mode2D(Camera2D camera ;@body)
-{
-  beginMode2D(camera);
-  defer endMode2D();
-  @body();
-}
+extern fn bool isKeyPressedRepeat(KeyboardKey key) @extern("IsKeyPressedRepeat");
 
 <*
- Setup 3D mode with custom camera to start 2D Mode, then calls [block].
- Mode2D will end after [block] has finished.
+ Check if a key is being pressed
 *>
-macro void @mode3D(Camera3D camera ;@body)
-{
-  beginMode3D(camera);
-  defer endMode3D();
-  @body();
-}
+extern fn bool isKeyDown(KeyboardKey key) @extern("IsKeyDown");
 
 <*
- Setup texture mode to draw to render texture, then calls [block].
- texture mode will end after [block] has finished.
+ Check if a key has been released once
 *>
-macro void @textureMode(RenderTexture2D texture ;@body)
-{
-  beginTextureMode(texture);
-  defer endTextureMode();
-  @body();
-}
-
+extern fn bool isKeyReleased(KeyboardKey key) @extern("IsKeyReleased");
 
 <*
- Setup custom shqder mode then calls [block].
- shader mode will end after [block] has finished.
+ Check if a key is NOT being pressed
 *>
-macro void @shaderMode(Shader shader ;@body)
-{
-  beginShaderMode(shader);
-  defer endShaderMode();
-  @body();
-}
+extern fn bool isKeyUp(KeyboardKey key) @extern("IsKeyUp");
 
 <*
- Setup blending mode, then calls [block].
- blend mode will end after [block] has finished.
+ Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
 *>
-macro void @blendMode(BlendMode mode ;@body)
-{
-  beginShaderMode(mode);
-  defer endShaderMode();
-  @body();
-}
+extern fn KeyboardKey getKeyPressed() @extern("GetKeyPressed");
 
 <*
- Setup scissor mode then calls [block].
- scissor mode will end after [block] has finished.
+ Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
 *>
-macro void @scissorMode(int x, int y, int width, int height ;@body)
-{
-  beginScissorMode(x, y, width, height);
-  defer endScissorMode();
-  @body();
-}
+extern fn KeyboardKey getCharPressed() @extern("GetCharPressed");
 
 <*
- Setup stereo rendering mode, then calls [block].
- stereo rendering mode will end after [block] has finished.
+ Set a custom key to exit program (default is ESC)
 *>
-macro void @vrMode(VrStereoConfig config ;@body)
-{
-  beginVrStereoMode(config);
-  defer endVrStereoMode();
-  @body();
-}
+extern fn void setExitKey(KeyboardKey key) @extern("SetExitKey");
+
+// Input-related functions: gamepads
+//------------------------------------------------------------------------------------
+
+<*
+ Check if a gamepad is available
+*>
+extern fn bool isGamepadAvailable(int gamepad) @extern("IsGamepadAvailable");
+
+<*
+ Get gamepad internal name id
+*>
+extern fn ZString getGamepadName(int gamepad) @extern("GetGamepadName");
+
+<*
+ Check if a gamepad button has been pressed once
+*>
+extern fn bool isGamepadButtonPressed(int gamepad, GamepadButton button) @extern("IsGamepadButtonPressed");
+
+<*
+ Check if a gamepad button is being pressed
+*>
+extern fn bool isGamepadButtonDown(int gamepad, GamepadButton button) @extern("IsGamepadButtonDown");
+
+<*
+ Check if a gamepad button has been released once
+*>
+extern fn bool isGamepadButtonReleased(int gamepad, GamepadButton button) @extern("IsGamepadButtonReleased");
+
+<*
+ Check if a gamepad button is NOT being pressed
+*>
+extern fn bool isGamepadButtonUp(int gamepad, GamepadButton button) @extern("IsGamepadButtonUp");
+
+<*
+ Get the last gamepad button pressed
+*>
+extern fn int getGamepadButtonPressed() @extern("GetGamepadButtonPressed");
+
+<*
+ Get gamepad axis count for a gamepad
+*>
+extern fn int getGamepadAxisCount(int gamepad) @extern("GetGamepadAxisCount");
+
+<*
+ Get axis movement value for a gamepad axis
+*>
+extern fn float getGamepadAxisMovement(int gamepad, GamepadAxis axis) @extern("GetGamepadAxisMovement");
+
+<*
+ Set internal gamepad mappings (SDL_GameControllerDB)
+*>
+extern fn int setGamepadMappings(ZString mappings) @extern("SetGamepadMappings");
+
+// Input-related functions: mouse
+//------------------------------------------------------------------------------------
+
+<*
+ Check if a mouse button has been pressed once
+*>
+extern fn bool isMouseButtonPressed(MouseButton button) @extern("IsMouseButtonPressed");
+
+<*
+ Check if a mouse button is being pressed
+*>
+extern fn bool isMouseButtonDown(MouseButton button) @extern("IsMouseButtonDown");
+
+<*
+ Check if a mouse button has been released once
+*>
+extern fn bool isMouseButtonReleased(MouseButton button) @extern("IsMouseButtonReleased");
+
+<*
+ Check if a mouse button is NOT being pressed
+*>
+extern fn bool isMouseButtonUp(MouseButton button) @extern("IsMouseButtonUp");
+
+<*
+ Get mouse position X
+*>
+extern fn int getMouseX() @extern("GetMouseX");
+
+<*
+ Get mouse position Y
+*>
+extern fn int getMouseY() @extern("GetMouseY");
+
+<*
+ Get mouse position XY
+*>
+extern fn Vector2 getMousePosition() @extern("GetMousePosition");
+
+<*
+ Get mouse delta between frames
+*>
+extern fn Vector2 getMouseDelta() @extern("GetMouseDelta");
+
+<*
+ Set mouse position XY
+*>
+extern fn void setMousePosition(int x, int y) @extern("SetMousePosition");
+
+<*
+ Set mouse offset
+*>
+extern fn void setMouseOffset(int offset_x, int offset_y) @extern("SetMouseOffset");
+
+<*
+ Set mouse scaling
+*>
+extern fn void setMouseScale(float scale_x, float scale_y) @extern("SetMouseScale");
+
+<*
+ Get mouse wheel movement for X or Y, whichever is larger
+*>
+extern fn float getMouseWheelMove() @extern("GetMouseWheelMove");
+
+<*
+ Get mouse wheel movement for both X and Y
+*>
+extern fn Vector2 getMouseWheelMoveV() @extern("GetMouseWheelMoveV");
+
+<*
+ Set mouse cursor
+*>
+extern fn void setMouseCursor(MouseCursor cursor) @extern("SetMouseCursor");
+
+// Input-related functions: touch
+//------------------------------------------------------------------------------------
+
+<*
+ Get touch position X for touch point 0 (relative to screen size)
+*>
+extern fn int getTouchX() @extern("GetTouchX");
+
+<*
+ Get touch position Y for touch point 0 (relative to screen size)
+*>
+extern fn int getTouchY() @extern("GetTouchY");
+
+<*
+ Get touch position XY for a touch point index (relative to screen size)
+*>
+extern fn Vector2 getTouchPosition(int index) @extern("GetTouchPosition");
+
+<*
+ Get touch point identifier for given index
+*>
+extern fn int getTouchPointId(int index) @extern("GetTouchPointId");
+
+<*
+ Get number of touch points
+*>
+extern fn int getTouchPointCount() @extern("GetTouchPointCount");
+
+//------------------------------------------------------------------------------------
+// Gestures and Touch Handling Functions (Module: rgestures)
+//------------------------------------------------------------------------------------
+
+<*
+ Enable a set of gestures using flags
+*>
+extern fn void setGesturesEnabled(Gesture flags) @extern("SetGesturesEnabled");
+
+<*
+ Check if a gesture have been detected
+*>
+extern fn bool isGestureDetected(Gesture gesture) @extern("IsGestureDetected");
+
+<*
+ Get latest detected gesture
+*>
+extern fn int getGestureDetected() @extern("GetGestureDetected");
+
+<*
+ Get gesture hold time in milliseconds
+*>
+extern fn float getGestureHoldDuration() @extern("GetGestureHoldDuration");
+
+<*
+ Get gesture drag vector
+*>
+extern fn Vector2 getGestureDragVector() @extern("GetGestureDragVector");
+
+<*
+ Get gesture drag angle
+*>
+extern fn float getGestureDragAngle() @extern("GetGestureDragAngle");
+
+<*
+ Get gesture pinch delta
+*>
+extern fn Vector2 getGesturePinchVector() @extern("GetGesturePinchVector");
+
+<*
+ Get gesture pinch angle
+*>
+extern fn float getGesturePinchAngle() @extern("GetGesturePinchAngle");
+
+//------------------------------------------------------------------------------------
+// Camera System Functions (Module: rcamera)
+//------------------------------------------------------------------------------------
+
+<*
+ Update camera position for selected mode
+*>
+extern fn void updateCamera(Camera* camera, CameraMode mode) @extern("UpdateCamera");
+
+<*
+ Update camera movement/rotation
+*>
+extern fn void updateCameraPro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @extern("UpdateCameraPro");
