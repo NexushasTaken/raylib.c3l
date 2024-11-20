@@ -12,6 +12,7 @@ extern fn int __get_shader_location_attrib(Shader shader, ZString attrib_name) @
 
 module rl @if($feature(SUPPORT_RANDOM_GENERATION));
 
+extern fn void __set_random_seed(uint seed) @extern("SetRandomSeed");
 extern fn int __get_random_value(int min, int max) @extern("GetRandomValue") @private;
 extern fn int* __load_random_sequence(uint count, int min, int max) @extern("LoadRandomSequence") @private;
 extern fn void __unload_random_sequence(int* sequence) @extern("UnloadRandomSequence") @private;
