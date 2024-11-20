@@ -13,13 +13,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_lavanda;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const LAVANDA_STYLE_PROPS_COUNT = 16;
 
 // Custom style name: Lavanda
-rgui::GuiStyleProp[LAVANDA_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[LAVANDA_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0xab9bd3ff },    // DEFAULT_BORDER_COLOR_NORMAL
     { 0, 1, (int)0x3e4350ff },    // DEFAULT_BASE_COLOR_NORMAL
     { 0, 2, (int)0xdadaf4ff },    // DEFAULT_TEXT_COLOR_NORMAL

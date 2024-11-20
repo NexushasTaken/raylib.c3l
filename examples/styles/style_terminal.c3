@@ -13,13 +13,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_terminal;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const TERMINAL_STYLE_PROPS_COUNT = 16;
 
 // Custom style name: terminal
-rgui::GuiStyleProp[TERMINAL_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[TERMINAL_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0x1c8d00ff },    // DEFAULT_BORDER_COLOR_NORMAL
     { 0, 1, (int)0x161313ff },    // DEFAULT_BASE_COLOR_NORMAL
     { 0, 2, (int)0x38f620ff },    // DEFAULT_TEXT_COLOR_NORMAL

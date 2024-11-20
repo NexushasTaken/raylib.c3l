@@ -12,14 +12,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_bluish;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const BLUISH_STYLE_PROPS_COUNT = 14;
 
 // TODO: explicitly casting these hex values will cause truncation.
 // Custom style name: bluish
-rgui::GuiStyleProp[BLUISH_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[BLUISH_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0x5ca6a6ff },    // DEFAULT_BORDER_COLOR_NORMAL 
     { 0, 1, (int)0xb4e8f3ff },    // DEFAULT_BASE_COLOR_NORMAL 
     { 0, 2, (int)0x447e77ff },    // DEFAULT_TEXT_COLOR_NORMAL 
@@ -318,7 +318,7 @@ rl::GlyphInfo[95] font_chars = {
 // Style loading function: bluish
 fn void load_style() @inline
 {
-    rl::Image im_font = { null, 256, 256, 1, rl::PixelFormat.UNCOMPRESSED_GRAY_ALPHA };
+    rl::Image im_font = { null, 256, 256, 1, rl::PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA };
     rl::Font font = {
         .base_size = 10,
         .glyph_count = 95

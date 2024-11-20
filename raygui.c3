@@ -647,7 +647,7 @@ extern fn int panel(rl::Rectangle bounds, ZString text) @extern("GuiPanel");
  @param [&inout] active
 *>
 fn int tabBar(rl::Rectangle bounds, ZString[] text, int* active) @inline {
-  return rgui::__gui_tab_bar(bounds, text.ptr, (int)text.len, active);
+  return raygui::__gui_tab_bar(bounds, text.ptr, (int)text.len, active);
 }
 
 <*
@@ -724,12 +724,12 @@ extern fn int spinner(rl::Rectangle bounds, ZString text, int* value, int min_va
 *>
 extern fn int valueBox(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @extern("GuiValueBox");
 
-// TODO: find a better type for param 'text' 
 <*
  Text Box control, updates input text
+ @require text.len <= int.max
 *>
 fn int textBox(rl::Rectangle bounds, char[] text, bool edit_mode) @inline {
-    return rgui::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
+    return raygui::__gui_text_box(bounds, text.ptr, (int)text.len, edit_mode);
 }
 
 <*
@@ -785,7 +785,7 @@ extern fn int listView(rl::Rectangle bounds, ZString text, int* scroll_index, in
  @param [&inout] focus
 *>
 fn int listViewEx(rl::Rectangle bounds, ZString[] text, int* scroll_index, int* active, int* focus) @inline {
-    return rgui::__gui_list_view_ex(bounds, text.ptr, (int)text.len, scroll_index, active, focus);
+    return raygui::__gui_list_view_ex(bounds, text.ptr, (int)text.len, scroll_index, active, focus);
 }
 
 <*
@@ -796,10 +796,11 @@ extern fn int messageBox(rl::Rectangle bounds, ZString title, ZString message, Z
 // TODO: find a better type for param 'text'
 <*
  Text Input Box control, ask for text, supports secret
+ @require text.len <= int.max
  @param [in] secret_view_active
 *>
 fn int textInputBox(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char[] text, bool* secret_view_active) @inline {
-    return rgui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
+    return raygui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
 }
 
 <*
@@ -840,7 +841,7 @@ extern fn int colorPanelHsv(rl::Rectangle bounds, ZString text, rl::Vector3* col
 
 //----------------------------------------------------------------------------------------------------------
 
-module rgui @if(!$feature(RAYGUI_NO_ICONS) && !$feature(RAYGUI_CUSTOM_ICONS));
+module raygui @if(!$feature(RAYGUI_NO_ICONS) && !$feature(RAYGUI_CUSTOM_ICONS));
 
 enum GuiIconName : int {
     ICON_NONE,

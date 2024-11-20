@@ -13,13 +13,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_cyber;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const CYBER_STYLE_PROPS_COUNT = 16;
 
 // Custom style name: cyber
-GuiStyleProp[CYBER_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[CYBER_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0x2f7486ff },    // DEFAULT_BORDER_COLOR_NORMAL
     { 0, 1, (int)0x024658ff },    // DEFAULT_BASE_COLOR_NORMAL
     { 0, 2, (int)0x51bfd3ff },    // DEFAULT_TEXT_COLOR_NORMAL

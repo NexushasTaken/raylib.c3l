@@ -13,13 +13,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_dark;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const DARK_STYLE_PROPS_COUNT = 22;
 
 // Custom style name: dark
-rgui::GuiStyleProp[DARK_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[DARK_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0x878787ff },    // DEFAULT_BORDER_COLOR_NORMAL
     { 0, 1, (int)0x2c2c2cff },    // DEFAULT_BASE_COLOR_NORMAL
     { 0, 2, (int)0xc3c3c3ff },    // DEFAULT_TEXT_COLOR_NORMAL

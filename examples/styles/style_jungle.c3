@@ -13,13 +13,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module style_jungle;
 import rl;
-import rgui;
+import raygui;
 import style_loader;
 
 const JUNGLE_STYLE_PROPS_COUNT = 17;
 
 // Custom style name: Jungle
-rgui::GuiStyleProp[JUNGLE_STYLE_PROPS_COUNT] properties = {
+raygui::GuiStyleProp[JUNGLE_STYLE_PROPS_COUNT] properties = {
     { 0, 0, (int)0x60827dff },    // DEFAULT_BORDER_COLOR_NORMAL
     { 0, 1, (int)0x2c3334ff },    // DEFAULT_BASE_COLOR_NORMAL
     { 0, 2, (int)0x82a29fff },    // DEFAULT_TEXT_COLOR_NORMAL
