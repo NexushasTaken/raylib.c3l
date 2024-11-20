@@ -25,6 +25,26 @@ fn float clamp(float value, float min, float max) @inline {
 	return value.clamp(min, max);
 }
 
+// Get min value for each pair of components
+fn Vector2 vector2_min(Vector2 v1, Vector2 v2) {
+	Vector2 result;
+
+	result.x = math::min(v1.x, v2.x);
+	result.y = math::min(v1.y, v2.y);
+
+	return result;
+}
+
+// Get max value for each pair of components
+fn Vector2 vector2_max(Vector2 v1, Vector2 v2) {
+	Vector2 result;
+
+	result.x = math::max(v1.x, v2.x);
+	result.y = math::max(v1.y, v2.y);
+
+	return result;
+}
+
 <*
  Calculate linear interpolation between two floats
 *>
@@ -365,18 +385,18 @@ fn Vector2 vector2ClampValue(Vector2 v, float min, float max) {
 	{
 		length = math::sqrt(length);
 
+		float scale = 1;    // By default, 1 as the neutral element.
 		if (length < min)
 		{
-			float scale = min/length;
-			result.x = v.x*scale;
-			result.y = v.y*scale;
+			scale = min/length;
 		}
 		else if (length > max)
 		{
-			float scale = max/length;
-			result.x = v.x*scale;
-			result.y = v.y*scale;
+			scale = max/length;
 		}
+
+		result.x = v.x*scale;
+		result.y = v.y*scale;
 	}
 
 	return result;
@@ -391,6 +411,32 @@ fn bool vector2Equals(Vector2 p, Vector2 q) {
 
 	return result;
 }
+
+<*
+ Compute the direction of a refracted ray
+ v: normalized direction of the incoming ray
+ n: normalized normal vector of the interface of two optical media
+ r: ratio of the refractive index of the medium from where the ray comes
+    to the refractive index of the medium on the other side of the surface
+*>
+fn Vector2 vector2Refract(Vector2 v, Vector2 n, float r) {
+	Vector2 result;
+
+	float dot = v.x*n.x + v.y*n.y;
+	float d = 1.0f - r*r*(1.0f - dot*dot);
+
+	if (d >= 0.0f)
+	{
+		d = math::sqrt(d);
+		v.x = r*v.x - (r*dot + d)*n.x;
+		v.y = r*v.y - (r*dot + d)*n.y;
+
+		result = v;
+	}
+
+	return result;
+}
+
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector3 math
@@ -771,6 +817,28 @@ fn Vector3 vector3RotateByAxisAngle(Vector3 v, Vector3 axis, float angle) {
 }
 
 <*
+ Move Vector towards target
+*>
+fn Vector3 vector3MoveTowards(Vector3 v, Vector3 target, float maxDistance) {
+	Vector3 result;
+
+	float dx = target.x - v.x;
+	float dy = target.y - v.y;
+	float dz = target.z - v.z;
+	float value = (dx*dx) + (dy*dy) + (dz*dz);
+
+	if ((value == 0) || ((maxDistance >= 0) && (value <= maxDistance*maxDistance))) return target;
+
+	float dist = math::sqrt(value);
+
+	result.x = v.x + dx/dist*maxDistance;
+	result.y = v.y + dy/dist*maxDistance;
+	result.z = v.z + dz/dist*maxDistance;
+
+	return result;
+}
+
+<*
  Calculate linear interpolation between two vectors
 *>
 fn Vector3 vector3Lerp(Vector3 v1, Vector3 v2, float amount) {
@@ -779,6 +847,23 @@ fn Vector3 vector3Lerp(Vector3 v1, Vector3 v2, float amount) {
 	result.x = v1.x + amount*(v2.x - v1.x);
 	result.y = v1.y + amount*(v2.y - v1.y);
 	result.z = v1.z + amount*(v2.z - v1.z);
+
+	return result;
+}
+
+<*
+ Calculate cubic hermite interpolation between two vectors and their tangents
+ as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+*>
+fn Vector3 vector3CubicHermite(Vector3 v1, Vector3 tangent1, Vector3 v2, Vector3 tangent2, float amount) {
+	Vector3 result;
+
+	float amountPow2 = amount*amount;
+	float amountPow3 = amount*amount*amount;
+
+	result.x = (2*amountPow3 - 3*amountPow2 + 1)*v1.x + (amountPow3 - 2*amountPow2 + amount)*tangent1.x + (-2*amountPow3 + 3*amountPow2)*v2.x + (amountPow3 - amountPow2)*tangent2.x;
+	result.y = (2*amountPow3 - 3*amountPow2 + 1)*v1.y + (amountPow3 - 2*amountPow2 + amount)*tangent1.y + (-2*amountPow3 + 3*amountPow2)*v2.y + (amountPow3 - amountPow2)*tangent2.y;
+	result.z = (2*amountPow3 - 3*amountPow2 + 1)*v1.z + (amountPow3 - 2*amountPow2 + amount)*tangent1.z + (-2*amountPow3 + 3*amountPow2)*v2.z + (amountPow3 - amountPow2)*tangent2.z;
 
 	return result;
 }
@@ -984,20 +1069,19 @@ fn Vector3 vector3ClampValue(Vector3 v, float min, float max) {
 	{
 		length = math::sqrt(length);
 
+		float scale = 1;    // By default, 1 as the neutral element.
 		if (length < min)
 		{
-			float scale = min/length;
-			result.x = v.x*scale;
-			result.y = v.y*scale;
-			result.z = v.z*scale;
+			scale = min/length;
 		}
 		else if (length > max)
 		{
-			float scale = max/length;
-			result.x = v.x*scale;
-			result.y = v.y*scale;
-			result.z = v.z*scale;
+			scale = max/length;
 		}
+
+		result.x = v.x*scale;
+		result.y = v.y*scale;
+		result.z = v.z*scale;
 	}
 
 	return result;
@@ -1037,6 +1121,228 @@ fn Vector3 vector3Refract(Vector3 v, Vector3 n, float r) {
 		result = v;
 	}
 
+	return result;
+}
+
+
+//----------------------------------------------------------------------------------
+// Module Functions Definition - Vector4 math
+//----------------------------------------------------------------------------------
+
+fn Vector4 vector4Zero()
+{
+	Vector4 result = { 0.0f, 0.0f, 0.0f, 0.0f };
+	return result;
+}
+
+fn Vector4 vector4One()
+{
+	Vector4 result = { 1.0f, 1.0f, 1.0f, 1.0f };
+	return result;
+}
+
+fn Vector4 vector4Add(Vector4 v1, Vector4 v2)
+{
+	Vector4 result = {
+		v1.x + v2.x,
+		v1.y + v2.y,
+		v1.z + v2.z,
+		v1.w + v2.w
+	};
+	return result;
+}
+
+fn Vector4 vector4AddValue(Vector4 v, float add)
+{
+	Vector4 result = {
+		v.x + add,
+		v.y + add,
+		v.z + add,
+		v.w + add
+	};
+	return result;
+}
+
+fn Vector4 vector4Subtract(Vector4 v1, Vector4 v2)
+{
+	Vector4 result = {
+		v1.x - v2.x,
+		v1.y - v2.y,
+		v1.z - v2.z,
+		v1.w - v2.w
+	};
+	return result;
+}
+
+fn Vector4 vector4SubtractValue(Vector4 v, float add)
+{
+	Vector4 result = {
+		v.x - add,
+		v.y - add,
+		v.z - add,
+		v.w - add
+	};
+	return result;
+}
+
+fn float vector4Length(Vector4 v)
+{
+	float result = math::sqrt((v.x*v.x) + (v.y*v.y) + (v.z*v.z) + (v.w*v.w));
+	return result;
+}
+
+fn float vector4LengthSqr(Vector4 v)
+{
+	float result = (v.x*v.x) + (v.y*v.y) + (v.z*v.z) + (v.w*v.w);
+	return result;
+}
+
+fn float vector4DotProduct(Vector4 v1, Vector4 v2)
+{
+	float result = (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z + v1.w*v2.w);
+	return result;
+}
+
+// Calculate distance between two vectors
+fn float vector4Distance(Vector4 v1, Vector4 v2)
+{
+	float result = math::sqrt(
+		(v1.x - v2.x)*(v1.x - v2.x) + (v1.y - v2.y)*(v1.y - v2.y) +
+		(v1.z - v2.z)*(v1.z - v2.z) + (v1.w - v2.w)*(v1.w - v2.w));
+	return result;
+}
+
+// Calculate square distance between two vectors
+fn float vector4DistanceSqr(Vector4 v1, Vector4 v2)
+{
+	float result =
+		(v1.x - v2.x)*(v1.x - v2.x) + (v1.y - v2.y)*(v1.y - v2.y) +
+		(v1.z - v2.z)*(v1.z - v2.z) + (v1.w - v2.w)*(v1.w - v2.w);
+
+	return result;
+}
+
+fn Vector4 vector4Scale(Vector4 v, float scale)
+{
+	Vector4 result = { v.x*scale, v.y*scale, v.z*scale, v.w*scale };
+	return result;
+}
+
+// Multiply vector by vector
+fn Vector4 vector4Multiply(Vector4 v1, Vector4 v2)
+{
+	Vector4 result = { v1.x*v2.x, v1.y*v2.y, v1.z*v2.z, v1.w*v2.w };
+	return result;
+}
+
+// Negate vector
+fn Vector4 vector4Negate(Vector4 v)
+{
+	Vector4 result = { -v.x, -v.y, -v.z, -v.w };
+	return result;
+}
+
+// Divide vector by vector
+fn Vector4 vector4Divide(Vector4 v1, Vector4 v2)
+{
+	Vector4 result = { v1.x/v2.x, v1.y/v2.y, v1.z/v2.z, v1.w/v2.w };
+	return result;
+}
+
+// Normalize provided vector
+fn Vector4 vector4Normalize(Vector4 v)
+{
+	Vector4 result;
+	float length = math::sqrt((v.x*v.x) + (v.y*v.y) + (v.z*v.z) + (v.w*v.w));
+
+	if (length > 0)
+	{
+		float ilength = 1.0f/length;
+		result.x = v.x*ilength;
+		result.y = v.y*ilength;
+		result.z = v.z*ilength;
+		result.w = v.w*ilength;
+	}
+
+	return result;
+}
+
+// Get min value for each pair of components
+fn Vector4 vector4Min(Vector4 v1, Vector4 v2)
+{
+	Vector4 result;
+
+	result.x = math::min(v1.x, v2.x);
+	result.y = math::min(v1.y, v2.y);
+	result.z = math::min(v1.z, v2.z);
+	result.w = math::min(v1.w, v2.w);
+
+	return result;
+}
+
+// Get max value for each pair of components
+fn Vector4 vector4Max(Vector4 v1, Vector4 v2)
+{
+	Vector4 result;
+
+	result.x = math::max(v1.x, v2.x);
+	result.y = math::max(v1.y, v2.y);
+	result.z = math::max(v1.z, v2.z);
+	result.w = math::max(v1.w, v2.w);
+
+	return result;
+}
+
+// Calculate linear interpolation between two vectors
+fn Vector4 vector4Lerp(Vector4 v1, Vector4 v2, float amount)
+{
+	Vector4 result;
+
+	result.x = v1.x + amount*(v2.x - v1.x);
+	result.y = v1.y + amount*(v2.y - v1.y);
+	result.z = v1.z + amount*(v2.z - v1.z);
+	result.w = v1.w + amount*(v2.w - v1.w);
+
+	return result;
+}
+
+// Move Vector towards target
+fn Vector4 vector4MoveTowards(Vector4 v, Vector4 target, float maxDistance)
+{
+	Vector4 result;
+
+	float dx = target.x - v.x;
+	float dy = target.y - v.y;
+	float dz = target.z - v.z;
+	float dw = target.w - v.w;
+	float value = (dx*dx) + (dy*dy) + (dz*dz) + (dw*dw);
+
+	if ((value == 0) || ((maxDistance >= 0) && (value <= maxDistance*maxDistance))) return target;
+
+	float dist = math::sqrt(value);
+
+	result.x = v.x + dx/dist*maxDistance;
+	result.y = v.y + dy/dist*maxDistance;
+	result.z = v.z + dz/dist*maxDistance;
+	result.w = v.w + dw/dist*maxDistance;
+
+	return result;
+}
+
+// Invert the given vector
+fn Vector4 vector4Invert(Vector4 v)
+{
+	Vector4 result = { 1.0f/v.x, 1.0f/v.y, 1.0f/v.z, 1.0f/v.w };
+	return result;
+}
+
+// Check whether two given vectors are almost equal
+fn bool vector4Equals(Vector4 p, Vector4 q)
+{
+	bool result = ((math::abs(p.x - q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
+				  ((math::abs(p.y - q.y)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.y), math::abs(q.y))))) &&
+				  ((math::abs(p.z - q.z)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.z), math::abs(q.z))))) &&
+				  ((math::abs(p.w - q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w)))));
 	return result;
 }
 
@@ -1460,31 +1766,32 @@ fn Matrix matrixScale(float x, float y, float z) {
 <*
  Get perspective projection matrix
 *>
-fn Matrix matrixFrustum(double left, double right, double bottom, double top, double near, double far) {
+fn Matrix matrixFrustum(double left, double right, double bottom, double top, double nearPlane, double farPlane)
+{
 	Matrix result;
 
 	float rl = (float)(right - left);
 	float tb = (float)(top - bottom);
-	float fmn = (float)(far - near); // fmn = far minus near
+	float fn_ = (float)(farPlane - nearPlane);
 
-	result.m0 = ((float)near*2.0f)/rl;
+	result.m0 = ((float)nearPlane*2.0f)/rl;
 	result.m1 = 0.0f;
 	result.m2 = 0.0f;
 	result.m3 = 0.0f;
 
 	result.m4 = 0.0f;
-	result.m5 = ((float)near*2.0f)/tb;
+	result.m5 = ((float)nearPlane*2.0f)/tb;
 	result.m6 = 0.0f;
 	result.m7 = 0.0f;
 
 	result.m8 = ((float)right + (float)left)/rl;
 	result.m9 = ((float)top + (float)bottom)/tb;
-	result.m10 = -((float)far + (float)near)/fmn;
+	result.m10 = -((float)farPlane + (float)nearPlane)/fn_;
 	result.m11 = -1.0f;
 
 	result.m12 = 0.0f;
 	result.m13 = 0.0f;
-	result.m14 = -((float)far*(float)near*2.0f)/fmn;
+	result.m14 = -((float)farPlane*(float)nearPlane*2.0f)/fn_;
 	result.m15 = 0.0f;
 
 	return result;
@@ -1863,6 +2170,33 @@ fn Quaternion quaternionSlerp(Quaternion q1, Quaternion q2, float amount) {
 }
 
 <*
+ Calculate quaternion cubic spline interpolation using Cubic Hermite Spline algorithm
+ as described in the GLTF 2.0 specification: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#interpolation-cubic
+*>
+fn Quaternion quaternionCubicHermiteSpline(Quaternion q1, Quaternion outTangent1, Quaternion q2, Quaternion inTangent2, float t) {
+	float t2 = t*t;
+	float t3 = t2*t;
+	float h00 = 2*t3 - 3*t2 + 1;
+	float h10 = t3 - 2*t2 + t;
+	float h01 = -2*t3 + 3*t2;
+	float h11 = t3 - t2;
+
+	Quaternion p0 = quaternionScale(q1, h00);
+	Quaternion m0 = quaternionScale(outTangent1, h10);
+	Quaternion p1 = quaternionScale(q2, h01);
+	Quaternion m1 = quaternionScale(inTangent2, h11);
+
+	Quaternion result;
+
+	result = quaternionAdd(p0, m0);
+	result = quaternionAdd(result, p1);
+	result = quaternionAdd(result, m1);
+	result = quaternionNormalize(result);
+
+	return result;
+}
+
+<*
  Calculate quaternion based on the rotation from one vector to another
 *>
 fn Quaternion quaternionFromvector3ToVector3(Vector3 from, Vector3 to) {
@@ -2004,8 +2338,7 @@ fn Quaternion quaternionFromAxisAngle(Vector3 axis, float angle) {
 		float ilength = 0.0f;
 
 		// vector3_Normalize(axis)
-		Vector3 v = axis;
-		length = math::sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+		length = axisLength;
 		if (length == 0.0f) length = 1.0f;
 		ilength = 1.0f/length;
 		axis.x *= ilength;
@@ -2148,4 +2481,66 @@ fn bool quaternionEquals(Quaternion p, Quaternion q) {
 	               ((math::abs(p.w + q.w)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.w), math::abs(q.w))))));
 
 	return result;
+}
+
+<*
+ Decompose a transformation matrix into its rotational, translational and scaling components
+*>
+fn void matrixDecompose(Matrix mat, Vector3 *translation, Quaternion *rotation, Vector3 *scale) {
+    // Extract translation.
+    translation.x = mat.m12;
+    translation.y = mat.m13;
+    translation.z = mat.m14;
+
+    // Extract upper-left for determinant computation
+    float a = mat.m0;
+    float b = mat.m4;
+    float c = mat.m8;
+    float d = mat.m1;
+    float e = mat.m5;
+    float f = mat.m9;
+    float g = mat.m2;
+    float h = mat.m6;
+    float i = mat.m10;
+    float _a = e*i - f*h;
+    float _b = f*g - d*i;
+    float _c = d*h - e*g;
+
+    // extract scale
+    float det = a*_a + b*_b + c*_c;
+    Vector3 abc = { a, b, c };
+    Vector3 def_ = { d, e, f };
+    Vector3 ghi = { g, h, i };
+
+    float scalex = vector3Length(abc);
+    float scaley = vector3Length(def_);
+    float scalez = vector3Length(ghi);
+    Vector3 s = { scalex, scaley, scalez };
+
+    if (det < 0) s = vector3Negate(s);
+
+    *scale = s;
+
+    // Remove scale from the matrix if it is not close to zero
+    Matrix clone = mat;
+    if (!floatEquals(det, 0))
+    {
+        clone.m0 /= s.x;
+        clone.m4 /= s.x;
+        clone.m8 /= s.x;
+        clone.m1 /= s.y;
+        clone.m5 /= s.y;
+        clone.m9 /= s.y;
+        clone.m2 /= s.z;
+        clone.m6 /= s.z;
+        clone.m10 /= s.z;
+
+        // Extract rotation
+        *rotation = quaternionFromMatrix(clone);
+    }
+    else
+    {
+        // Set to identity if close to zero
+        *rotation = quaternionIdentity();
+    }
 }

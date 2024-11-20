@@ -133,9 +133,9 @@ extern fn Model loadModel(ZString file_name) @extern("LoadModel");
 extern fn Model loadModelFromMesh(Mesh mesh) @extern("LoadModelFromMesh");
 
 <*
- Check if a model is ready
+ Check if a model is valid (loaded in GPU, VAO/VBOs)
 *>
-extern fn bool isModelReady(Model model) @extern("IsModelReady");
+extern fn bool isModelValid(Model model) @extern("IsModelValid");
 
 <*
  Unload model (including meshes) from memory (RAM and/or VRAM)
@@ -169,6 +169,16 @@ extern fn void drawModelWires(Model model, Vector3 position, float scale, Color 
  Draw a model wires (with texture if set) with extended parameters
 *>
 extern fn void drawModelWiresEx(Model model, Vector3 position, Vector3 rotation_axis, float rotation_angle, Vector3 scale, Color tint) @extern("DrawModelWiresEx");
+
+<*
+ Draw a model as points
+*>
+extern fn void drawModelPoints(Model model, Vector3 position, float scale, Color tint) @extern("DrawModelPoints");
+
+<*
+ Draw a model as points with extended parameters
+*>
+extern fn void drawModelPointsEx(Model model, Vector3 position, Vector3 rotation_axis, float rotationAngle, Vector3 scale, Color tint) @extern("DrawModelPointsEx");
 
 <*
  Draw bounding box (wires)
@@ -223,11 +233,6 @@ fn void drawMeshInstanced(Mesh mesh, Material material, Matrix[] transforms) @in
 }
 
 <*
- Export mesh data to file, returns true on success
-*>
-extern fn bool exportMesh(Mesh mesh, ZString file_name) @extern("ExportMesh");
-
-<*
  Compute mesh bounding box limits
 *>
 extern fn BoundingBox getMeshBoundingBox(Mesh mesh) @extern("GetMeshBoundingBox");
@@ -236,6 +241,16 @@ extern fn BoundingBox getMeshBoundingBox(Mesh mesh) @extern("GetMeshBoundingBox"
  Compute mesh tangents
 *>
 extern fn void genMeshTangents(Mesh* mesh) @extern("GenMeshTangents");
+
+<*
+ Export mesh data to file, returns true on success
+*>
+extern fn bool exportMesh(Mesh mesh, ZString file_name) @extern("ExportMesh");
+
+<*
+ Export mesh as code file (.h) defining multiple arrays of vertex attributes
+*>
+extern fn bool exportMeshAsCode(Mesh mesh, ZString file_name) @extern("ExportMeshAsCode");
 
 // Mesh generation functions
 //------------------------------------------------------------------------------------
@@ -313,9 +328,9 @@ fn Material[] loadMaterials(ZString file_name) @inline {
 extern fn Material loadMaterialDefault() @extern("LoadMaterialDefault");
 
 <*
- Check if a material is ready
+ Check if a material is valid (shader assigned, map textures loaded in GPU)
 *>
-extern fn bool isMaterialReady(Material material) @extern("IsMaterialReady");
+extern fn bool isMaterialValid(Material material) @extern("IsMaterialValid");
 
 <*
  Unload material from GPU memory (VRAM)
@@ -349,6 +364,11 @@ fn ModelAnimation[] loadModelAnimations(ZString file_name) @inline {
  Update model animation pose
 *>
 extern fn void updateModelAnimation(Model model, ModelAnimation anim, int frame) @extern("UpdateModelAnimation");
+
+<*
+ Update model animation mesh bone matrices (GPU skinning)
+*>
+extern fn void updateModelAnimationBones(Model model, ModelAnimation anim, int frame) @extern("UpdateModelAnimationBones");
 
 <*
  Unload animation data

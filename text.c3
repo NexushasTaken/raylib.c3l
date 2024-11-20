@@ -18,9 +18,9 @@ extern fn Font getFontDefault() @extern("GetFontDefault");
 extern fn Font loadFont(ZString file_name) @extern("LoadFont");
 
 <*
- Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set
+ Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height
 *>
-extern fn Font loadFontEx(ZString file_name, int font_size, int *codepoints, int codepoint_count) @extern("LoadFontEx");
+extern fn Font loadFontEx(ZString file_name, int font_size, int* codepoints, int codepoint_count) @extern("LoadFontEx");
 
 <*
  Load font from Image (XNA style)
@@ -33,9 +33,9 @@ extern fn Font loadFontFromImage(Image image, Color key, int first_char) @extern
 extern fn Font loadFontFromMemory(ZString file_type, ZString file_data, int data_size, int fontSize, int *codepoints, int codepoint_count) @extern("LoadFontFromMemory");
 
 <*
- Check if a font is ready
+ Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 *>
-extern fn bool isFontReady(Font font) @extern("IsFontReady");
+extern fn bool isFontValid(Font font) @extern("IsFontValid");
 
 // TODO: review
 <*
@@ -213,7 +213,7 @@ extern fn ZString textSubtext(ZString text, int position, int length) @extern("T
 <*
  Replace text string (WARNING: memory must be freed!)
 *>
-extern fn char* textReplace(char* text, ZString replace, ZString by) @extern("TextReplace");
+extern fn char *textReplace(ZString text, ZString replace, ZString by) @extern("TextReplace");
 
 <*
  Insert text in a position (WARNING: memory must be freed!)
@@ -256,6 +256,21 @@ extern fn ZString textToLower(ZString text) @extern("TextToLower");
 extern fn ZString textToPascal(ZString text) @extern("TextToPascal");
 
 <*
+ Get Snake case notation version of provided string
+*>
+extern fn ZString textToSnake(ZString text) @extern("TextToSnake");
+
+<*
+ Get Camel case notation version of provided string
+*>
+extern fn ZString textToCamel(ZString text) @extern("TextToCamel");
+
+<*
  Get integer value from text (negative values not supported)
 *>
 extern fn int textToInteger(ZString text) @extern("TextToInteger");
+
+<*
+ Get float value from text (negative values not supported)
+*>
+extern fn float textToFloat(ZString text) @extern("TextToFloat");

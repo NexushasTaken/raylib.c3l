@@ -13,16 +13,26 @@ module rl;
 *>
 extern fn void setShapesTexture(Texture2D texture, Rectangle source) @extern("SetShapesTexture");
 
+<*
+ Get texture that is used for shapes drawing
+*>
+extern fn Texture2D getShapesTexture() @extern("GetShapesTexture");
+
+<*
+ Get texture source rectangle that is used for shapes drawing
+*>
+extern fn Rectangle getShapesTextureRectangle() @extern("GetShapesTextureRectangle");
+
 // Basic shapes drawing functions
 //------------------------------------------------------------------------------------
 
 <*
- Draw a pixel
+ Draw a pixel using geometry [Can be slow, use with care]
 *>
 extern fn void drawPixel(int pos_x, int pos_y, Color color) @extern("DrawPixel");
 
 <*
- Draw a pixel (Vector version)
+ Draw a pixel using geometry (Vector version) [Can be slow, use with care]
 *>
 extern fn void drawPixelV(Vector2 position, Color color) @extern("DrawPixelV");
 
@@ -72,7 +82,7 @@ extern fn void drawCircleSectorLines(Vector2 center, float radius, float start_a
 <*
  Draw a gradient-filled circle
 *>
-extern fn void drawCircleGradient(int center_x, int center_y, float radius, Color color1, Color color2) @extern("DrawCircleGradient");
+extern fn void drawCircleGradient(int center_x, int center_y, float radius, Color inner, Color outer) @extern("DrawCircleGradient");
 
 <*
  Draw a color-filled circle (Vector version)
@@ -132,17 +142,17 @@ extern fn void drawRectanglePro(Rectangle rec, Vector2 origin, float rotation, C
 <*
  Draw a vertical-gradient-filled rectangle
 *>
-extern fn void drawRectangleGradientV(int pos_x, int pos_y, int width, int height, Color color1, Color color2) @extern("DrawRectangleGradientV");
+extern fn void drawRectangleGradientV(int pos_x, int pos_y, int width, int height, Color top, Color bottom) @extern("DrawRectangleGradientV");
 
 <*
  Draw a horizontal-gradient-filled rectangle
 *>
-extern fn void drawRectangleGradientH(int pos_x, int pos_y, int width, int height, Color color1, Color color2) @extern("DrawRectangleGradientH");
+extern fn void drawRectangleGradientH(int pos_x, int pos_y, int width, int height, Color left, Color right) @extern("DrawRectangleGradientH");
 
 <*
  Draw a gradient-filled rectangle with custom vertex colors
 *>
-extern fn void drawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4) @extern("DrawRectangleGradientEx");
+extern fn void drawRectangleGradientEx(Rectangle rec, Color top_left, Color bottom_left, Color top_right, Color bottom_right) @extern("DrawRectangleGradientEx");
 
 <*
  Draw rectangle outline
@@ -159,10 +169,16 @@ extern fn void drawRectangleLinesEx(Rectangle rec, float line_thick, Color color
 *>
 extern fn void drawRectangleRounded(Rectangle rec, float roundness, int segments, Color color) @extern("DrawRectangleRounded");
 
+
+<*
+ Draw rectangle lines with rounded edges
+*>
+extern fn void drawRectangleRoundedLines(Rectangle rec, float roundness, int segments, Color color) @extern("DrawRectangleRoundedLines");
+
 <*
  Draw rectangle with rounded edges outline
 *>
-extern fn void drawRectangleRoundedLines(Rectangle rec, float roundness, int segments, float line_thick, Color color) @extern("DrawRectangleRoundedLines");
+extern fn void drawRectangleRoundedLinesEx(Rectangle rec, float roundness, int segments, float line_thick, Color color) @extern("DrawRectangleRoundedLinesEx");
 
 <*
  Draw a color-filled triangle (vertex in counter-clockwise order!)
@@ -320,6 +336,11 @@ extern fn bool checkCollisionCircles(Vector2 center1, float radius1, Vector2 cen
 extern fn bool checkCollisionCircleRec(Vector2 center, float radius, Rectangle rec) @extern("CheckCollisionCircleRec");
 
 <*
+ Check if circle collides with a line created betweeen two points [p1] and [p2]
+*>
+extern fn bool checkCollisionCircleLine(Vector2 center, float radius, Vector2 p1, Vector2 p2) @extern("CheckCollisionCircleLine");
+
+<*
  Check if point is inside rectangle
 *>
 extern fn bool checkCollisionPointRec(Vector2 point, Rectangle rec) @extern("CheckCollisionPointRec");
@@ -335,6 +356,11 @@ extern fn bool checkCollisionPointCircle(Vector2 point, Vector2 center, float ra
 extern fn bool checkCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3) @extern("CheckCollisionPointTriangle");
 
 <*
+ Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
+*>
+extern fn bool checkCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshold) @extern("CheckCollisionPointLine");
+
+<*
  Check if point is within a polygon described by array of vertices
  @require points.len <= int.max
 *>
@@ -347,11 +373,6 @@ fn bool checkCollisionPointPoly(Vector2 point, Vector2[] points) @inline {
  @param [out] collision_point
 *>
 extern fn bool checkCollisionLines(Vector2 start_pos1, Vector2 end_pos1, Vector2 start_pos2, Vector2 end_pos2, Vector2* collision_point) @extern("CheckCollisionLines");
-
-<*
- Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]
-*>
-extern fn bool checkCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshold) @extern("CheckCollisionPointLine");
 
 <*
  Get collision rectangle for two rectangles collision

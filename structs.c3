@@ -157,8 +157,10 @@ struct Mesh {
 	// Animation vertex data
 	float* anim_vertices;    // Animated vertex positions (after bones transformations)
 	float* anim_normals;     // Animated normals (after bones transformations)
-	char* bone_ids;          // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
-	float* bone_weights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+	char* bone_ids;          // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+	float* bone_weights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+	Matrix *bone_matrices;   // Bones animated transformation matrices
+	int bone_count;          // Number of bones
 
 	// OpenGL identifiers
 	uint vao_id;             // OpenGL Vertex Array Object id
@@ -224,13 +226,13 @@ struct ModelAnimation {
 }
 
 // Ray, ray for raycasting
-struct Ray @packed {
+struct Ray {
 	Vector3 position;  // Ray position (origin)
-	Vector3 direction; // Ray direction
+	Vector3 direction; // Ray direction (normalized)
 }
 
 // RayCollision, ray hit information
-struct RayCollision @packed {
+struct RayCollision {
 	bool hit;       // Did the ray hit something?
 	float distance; // Distance to the nearest hit
 	Vector3 point;  // Point of the nearest hit
@@ -238,7 +240,7 @@ struct RayCollision @packed {
 }
 
 // BoundingBox
-struct BoundingBox @packed {
+struct BoundingBox {
 	Vector3 min; // Minimum vertex box-corner
 	Vector3 max; // Maximum vertex box-corner
 }
@@ -289,7 +291,6 @@ struct VrDeviceInfo {
 	int v_resolution;                // Vertical resolution in pixels
 	float h_screen_size;             // Horizontal size in meters
 	float v_screen_size;             // Vertical size in meters
-	float v_screen_center;           // Screen center in meters
 	float eye_to_screen_distance;    // Distance between eye and display in meters
 	float lens_separation_distance;  // Lens separation distance in meters
 	float interpupillary_distance;   // IPD (distance between pupils) in meters

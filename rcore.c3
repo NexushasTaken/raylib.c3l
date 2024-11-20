@@ -53,22 +53,22 @@ extern fn bool isWindowReady() @extern("IsWindowReady");
 extern fn bool isWindowFullscreen() @extern("IsWindowFullscreen");
 
 <*
- Check if window is currently hidden (only PLATFORM_DESKTOP)
+ Check if window is currently hidden
 *>
 extern fn bool isWindowHidden() @extern("IsWindowHidden");
 
 <*
- Check if window is currently minimized (only PLATFORM_DESKTOP)
+ Check if window is currently minimized
 *>
 extern fn bool isWindowMinimized() @extern("IsWindowMinimized");
 
 <*
- Check if window is currently maximized (only PLATFORM_DESKTOP)
+ Check if window is currently maximized
 *>
 extern fn bool isWindowMaximized() @extern("IsWindowMaximized");
 
 <*
- Check if window is currently focused (only PLATFORM_DESKTOP)
+ Check if window is currently focused
 *>
 extern fn bool isWindowFocused() @extern("IsWindowFocused");
 
@@ -83,7 +83,7 @@ extern fn bool isWindowResized() @extern("IsWindowResized");
 extern fn bool isWindowState(ConfigFlags flag) @extern("IsWindowState");
 
 <*
- Set window configuration state using flags (only PLATFORM_DESKTOP)
+ Set window configuration state using flags
 *>
 extern fn void setWindowState(ConfigFlags flags) @extern("SetWindowState");
 
@@ -93,27 +93,27 @@ extern fn void setWindowState(ConfigFlags flags) @extern("SetWindowState");
 extern fn void clearWindowState(ConfigFlags flags) @extern("ClearWindowState");
 
 <*
- Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+ Toggle window state: fullscreen/windowed, resizes monitor to match window resolution
 *>
 extern fn void toggleFullscreen() @extern("ToggleFullscreen");
 
 <*
- Toggle window state: borderless windowed (only PLATFORM_DESKTOP)
+ Toggle window state: borderless windowed, resizes window to match monitor resolution
 *>
 extern fn void toggleBorderlessWindowed() @extern("ToggleBorderlessWindowed");
 
 <*
- Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+ Set window state: maximized, if resizable
 *>
 extern fn void maximizeWindow() @extern("MaximizeWindow");
 
 <*
- Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+ Set window state: minimized, if resizable
 *>
 extern fn void minimizeWindow() @extern("MinimizeWindow");
 
 <*
- Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+ Set window state: not minimized/maximized
 *>
 extern fn void restoreWindow() @extern("RestoreWindow");
 
@@ -136,7 +136,7 @@ fn void setWindowIcons(Image[] images) @inline {
 extern fn void setWindowTitle(ZString title) @extern("SetWindowTitle");
 
 <*
- Set window position on screen (only PLATFORM_DESKTOP)
+ Set window position on screen
 *>
 extern fn void setWindowPosition(int x, int y) @extern("SetWindowPosition");
 
@@ -161,12 +161,13 @@ extern fn void setWindowMaxSize(int width, int height) @extern("SetWindowMaxSize
 extern fn void setWindowSize(int width, int height) @extern("SetWindowSize");
 
 <*
- Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+ Set window opacity [0.0f..1.0f]
+ @require opacity >= 0.0f && opacity <= 1.0f
 *>
 extern fn void setWindowOpacity(float opacity) @extern("SetWindowOpacity");
 
 <*
- Set window focused (only PLATFORM_DESKTOP)
+ Set window focused
 *>
 extern fn void setWindowFocused() @extern("SetWindowFocused");
 
@@ -201,7 +202,7 @@ extern fn int getRenderHeight() @extern("GetRenderHeight");
 extern fn int getMonitorCount() @extern("GetMonitorCount");
 
 <*
- Get current connected monitor
+ Get current monitor where window is placed
 *>
 extern fn int getCurrentMonitor() @extern("GetCurrentMonitor");
 
@@ -259,6 +260,11 @@ extern fn void setClipboardText(ZString text) @extern("SetClipboardText");
  Get clipboard text content
 *>
 extern fn ZString getClipboardText() @extern("GetClipboardText");
+
+<*
+ Get clipboard image content
+ *>
+extern fn Image getClipboardImage() @extern("GetClipboardImage");
 
 <*
  Enable waiting for events on EndDrawing(), no automatic event polling
@@ -423,9 +429,9 @@ extern fn Shader loadShader(ZString vs_file_name, ZString fs_file_name) @extern(
 extern fn Shader loadShaderFromMemory(ZString vs_code, ZString fs_code) @extern("LoadShaderFromMemory");
 
 <*
- Check if a shader is ready
+ Check if a shader is ready (loaded on GPU)
 *>
-extern fn bool isShaderReady(Shader shader) @extern("IsShaderReady");
+extern fn bool isShaderValid(Shader shader) @extern("IsShaderValid");
 
 <*
  Get shader uniform location
@@ -473,29 +479,24 @@ extern fn void unloadShader(Shader shader) @extern("UnloadShader");
 //------------------------------------------------------------------------------------
 
 <*
- Get a ray trace from mouse position
+ Compatibility hack for previous raylib versions
 *>
-extern fn Ray getMouseRay(Vector2 mousePosition, Camera camera) @extern("GetMouseRay");
+def getMouseRay = getScreenToWorldRay;
 
 <*
- Get camera transform matrix (view matrix)
+ Get a ray trace from screen position (i.e mouse)
 *>
-extern fn Matrix getCameraMatrix(Camera camera) @extern("GetCameraMatrix");
+extern fn Ray getScreenToWorldRay(Vector2 position, Camera camera) @extern("GetScreenToWorldRay");
 
 <*
- Get camera 2d transform matrix
+ Get a ray trace from screen position (i.e mouse) in a viewport
 *>
-extern fn Matrix getCameraMatrix2d(Camera2D camera) @extern("GetCameraMatrix2D");
+extern fn Ray getScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height) @extern("GetScreenToWorldRayEx");
 
 <*
  Get the screen space position for a 3d world space position
 *>
 extern fn Vector2 getWorldToScreen(Vector3 position, Camera camera) @extern("GetWorldToScreen");
-
-<*
- Get the world space position for a 2d camera screen space position
-*>
-extern fn Vector2 getScreenToWorld2d(Vector2 position, Camera2D camera) @extern("GetScreenToWorld2D");
 
 <*
  Get size position for a 3d world space position
@@ -505,7 +506,23 @@ extern fn Vector2 getWorldToScreenEx(Vector3 position, Camera camera, int width,
 <*
  Get the screen space position for a 2d camera world space position
 *>
-extern fn Vector2 getWorldToScreen2d(Vector2 position, Camera2D camera) @extern("GetWorldToScreen2D");
+extern fn Vector2 getWorldToScreen2D(Vector2 position, Camera2D camera) @extern("GetWorldToScreen2D");
+
+<*
+ Get the world space position for a 2d camera screen space position
+*>
+extern fn Vector2 getScreenToWorld2D(Vector2 position, Camera2D camera) @extern("GetScreenToWorld2D");
+
+<*
+ Get camera transform matrix (view matrix)
+*>
+extern fn Matrix getCameraMatrix(Camera camera) @extern("GetCameraMatrix");
+
+<*
+ Get camera 2d transform matrix
+*>
+extern fn Matrix getCameraMatrix2D(Camera2D camera) @extern("GetCameraMatrix2D");
+
 
 //------------------------------------------------------------------------------------
 // Timing-related functions
@@ -533,7 +550,7 @@ extern fn int getFPS() @extern("GetFPS");
 
 //------------------------------------------------------------------------------------
 // Custom frame control functions
-// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// NOTE: Those functions are intended for advanced users that want full control over the frame processing
 // By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 //------------------------------------------------------------------------------------
@@ -658,7 +675,7 @@ extern fn void memFree(void* ptr) @extern("MemFree");
 
 //------------------------------------------------------------------------------------
 // Set custom callbacks
-// WARNING: Callbacks setup is intended for advance users
+// WARNING: Callbacks setup is intended for advanced users
 //------------------------------------------------------------------------------------
 
 <*
@@ -794,6 +811,11 @@ extern fn ZString getWorkingDirectory() @extern("GetWorkingDirectory");
 extern fn ZString getApplicationDirectory() @extern("GetApplicationDirectory");
 
 <*
+ Create directories (including full path requested), returns 0 on success
+*>
+extern fn int makeDirectory(ZString dir_path) @extern("MakeDirectory");
+
+<*
  Change working directory, return true on success
 *>
 extern fn bool changeDirectory(ZString dir) @extern("ChangeDirectory");
@@ -804,12 +826,17 @@ extern fn bool changeDirectory(ZString dir) @extern("ChangeDirectory");
 extern fn bool isPathFile(ZString path) @extern("IsPathFile");
 
 <*
+ Check if fileName is valid for the platform/OS
+*>
+extern fn bool isFileNameValid(ZString file_name) @extern("IsFileNameValid");
+
+<*
  Load directory filepaths
 *>
 extern fn FilePathList loadDirectoryFiles(ZString  dir_path) @extern("LoadDirectoryFiles");
 
 <*
- Load directory filepaths with extension filtering and recursive directory scan
+ Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
 *>
 extern fn FilePathList loadDirectoryFilesEx(ZString base_path, ZString filter, bool scan_subdirs) @extern("LoadDirectoryFilesEx");
 
@@ -879,6 +906,24 @@ macro char[] decodeDataBase64(char[] data) {
     return decoded_data[:(usz)size];
 }
 
+
+<*
+ Compute CRC32 hash code
+*>
+extern fn uint computeCRC32(ZString data, int data_size) @extern("ComputeCRC32");
+
+// TODO: convert return value to uint[4]
+<*
+ Compute MD5 hash code, returns static int[4] (16 bytes)
+*>
+extern fn uint* computeMD5(ZString data, int data_size) @extern("ComputeMD5");
+
+// TODO: convert return value to uint[5]
+<*
+ Compute SHA1 hash code, returns static int[5] (20 bytes)
+*>
+extern fn uint* computeSHA1(ZString data, int data_size) @extern("ComputeSHA1");
+
 //------------------------------------------------------------------------------------
 // Automation events functionality
 //------------------------------------------------------------------------------------
@@ -891,7 +936,7 @@ extern fn AutomationEventList loadAutomationEventList(ZString file_name) @extern
 <*
  Unload automation events list from file
 *>
-extern fn void unloadAutomationEventList(AutomationEventList* list) @extern("UnloadAutomationEventList");
+extern fn void unloadAutomationEventList(AutomationEventList list) @extern("UnloadAutomationEventList");
 
 <*
  Export automation events list as text file
@@ -936,7 +981,7 @@ extern fn void playAutomationEvent(AutomationEvent event) @extern("PlayAutomatio
 extern fn bool isKeyPressed(KeyboardKey key) @extern("IsKeyPressed");
 
 <*
- Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+ Check if a key has been pressed again
 *>
 extern fn bool isKeyPressedRepeat(KeyboardKey key) @extern("IsKeyPressedRepeat");
 
@@ -1022,6 +1067,11 @@ extern fn float getGamepadAxisMovement(int gamepad, GamepadAxis axis) @extern("G
  Set internal gamepad mappings (SDL_GameControllerDB)
 *>
 extern fn int setGamepadMappings(ZString mappings) @extern("SetGamepadMappings");
+
+<*
+ Set gamepad vibration for both motors (duration in seconds)
+*>
+extern fn void setGamepadVibration(int gamepad, float left_motor, float right_motor, float duration) @extern("SetGamepadVibration");
 
 // Input-related functions: mouse
 //------------------------------------------------------------------------------------
@@ -1144,7 +1194,7 @@ extern fn bool isGestureDetected(Gesture gesture) @extern("IsGestureDetected");
 extern fn int getGestureDetected() @extern("GetGestureDetected");
 
 <*
- Get gesture hold time in milliseconds
+ Get gesture hold time in seconds
 *>
 extern fn float getGestureHoldDuration() @extern("GetGestureHoldDuration");
 

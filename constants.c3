@@ -2,9 +2,9 @@ module rl;
 import std::math;
 
 const RAYLIB_VERSION_MAJOR = 5;
-const RAYLIB_VERSION_MINOR = 0;
+const RAYLIB_VERSION_MINOR = 5;
 const RAYLIB_VERSION_PATCH = 0;
-const RAYLIB_VERSION = "5.0";
+const RAYLIB_VERSION = "5.5";
 
 //----------------------------------------------------------------------------------
 // Some basic Defines
@@ -194,7 +194,7 @@ const KeyboardKey KEY_KP_ENTER        = 335;      // Key: Keypad Enter
 const KeyboardKey KEY_KP_EQUAL        = 336;      // Key: Keypad =
 // Android key buttons
 const KeyboardKey KEY_BACK            = 4;        // Key: Android back button
-const KeyboardKey KEY_MENU            = 82;       // Key: Android menu button
+const KeyboardKey KEY_MENU            = 5;        // Key: Android menu button
 const KeyboardKey KEY_VOLUME_UP       = 24;       // Key: Android volume up button
 const KeyboardKey KEY_VOLUME_DOWN     = 25;       // Key: Android volume down button
 
@@ -230,12 +230,12 @@ const GamepadButton GAMEPAD_BUTTON_LEFT_FACE_RIGHT  = 2;  // Gamepad left DPAD r
 const GamepadButton GAMEPAD_BUTTON_LEFT_FACE_DOWN   = 3;  // Gamepad left DPAD down button
 const GamepadButton GAMEPAD_BUTTON_LEFT_FACE_LEFT   = 4;  // Gamepad left DPAD left button
 const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_UP    = 5;  // Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
-const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6;  // Gamepad right button right (i.e. PS3: Square, Xbox: X)
+const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6;  // Gamepad right button right (i.e. PS3: Circle, Xbox: B)
 const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_DOWN  = 7;  // Gamepad right button down (i.e. PS3: Cross, Xbox: A)
-const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_LEFT  = 8;  // Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+const GamepadButton GAMEPAD_BUTTON_RIGHT_FACE_LEFT  = 8;  // Gamepad right button left (i.e. PS3: Square, Xbox: X)
 const GamepadButton GAMEPAD_BUTTON_LEFT_TRIGGER_1   = 9;  // Gamepad top/back trigger left (first), it could be a trailing button
 const GamepadButton GAMEPAD_BUTTON_LEFT_TRIGGER_2   = 10; // Gamepad top/back trigger left (second), it could be a trailing button
-const GamepadButton GAMEPAD_BUTTON_RIGHT_TRIGGER_1  = 11; // Gamepad top/back trigger right (one), it could be a trailing button
+const GamepadButton GAMEPAD_BUTTON_RIGHT_TRIGGER_1  = 11; // Gamepad top/back trigger right (first), it could be a trailing button
 const GamepadButton GAMEPAD_BUTTON_RIGHT_TRIGGER_2  = 12; // Gamepad top/back trigger right (second), it could be a trailing button
 const GamepadButton GAMEPAD_BUTTON_MIDDLE_LEFT      = 13; // Gamepad center buttons, left one (i.e. PS3: Select)
 const GamepadButton GAMEPAD_BUTTON_MIDDLE           = 14; // Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
@@ -295,6 +295,9 @@ const ShaderLocationIndex SHADER_LOC_MAP_CUBEMAP       = 22; // Shader location:
 const ShaderLocationIndex SHADER_LOC_MAP_IRRADIANCE    = 23; // Shader location: samplerCube texture: irradiance
 const ShaderLocationIndex SHADER_LOC_MAP_PREFILTER     = 24; // Shader location: samplerCube texture: prefilter
 const ShaderLocationIndex SHADER_LOC_MAP_BRDF          = 25; // Shader location: sampler2d texture: brdf
+const ShaderLocationIndex SHADER_LOC_VERTEX_BONEIDS    = 26; // Shader location: vertex attribute: boneIds
+const ShaderLocationIndex SHADER_LOC_VERTEX_BONEWEIGHTS= 27; // Shader location: vertex attribute: boneWeights
+const ShaderLocationIndex SHADER_LOC_BONE_MATRICES     = 28; // Shader location: array of matrices uniform: boneMatrices
 
 // Shader uniform data type
 def ShaderUniformDataType = int;
@@ -369,7 +372,6 @@ const CUBEMAP_LAYOUT_LINE_VERTICAL = 1;       // Layout is defined by a vertical
 const CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2;     // Layout is defined by a horizontal line with faces
 const CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3; // Layout is defined by a 3x4 cross with cubemap faces
 const CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4; // Layout is defined by a 4x3 cross with cubemap faces
-const CUBEMAP_LAYOUT_PANORAMA = 5;            // Layout is defined by a panorama image (equirrectangular map)
 
 // Font type, defines generation method
 def FontType = int;
@@ -405,11 +407,11 @@ const Gesture GESTURE_PINCH_OUT   = 512;      // Pinch out gesture
 
 // Camera system modes
 def CameraMode = int;
-const CameraMode CAMERA_CUSTOM  = 0;             // Custom camera
-const CameraMode CAMERA_FREE    = 1;             // Free camera
-const CameraMode CAMERA_ORBITAL = 2;             // Orbital camera
-const CameraMode CAMERA_FIRST_PERSON = 3;        // First person camera
-const CameraMode CAMERA_THIRD_PERSON = 4;        // Third person camera
+const CameraMode CAMERA_CUSTOM       = 0;        // Camera custom, controlled by user (UpdateCamera() does nothing)
+const CameraMode CAMERA_FREE         = 1;        // Camera free mode
+const CameraMode CAMERA_ORBITAL      = 2;        // Camera orbital, around target, zoom supported
+const CameraMode CAMERA_FIRST_PERSON = 3;        // Camera first person
+const CameraMode CAMERA_THIRD_PERSON = 4;        // Camera third person
 
 // Camera projection
 def CameraProjection = int;

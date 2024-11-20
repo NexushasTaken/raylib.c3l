@@ -1,7 +1,7 @@
 [submodule "thirdparty/raylib"]
   path = thirdparty/raylib
   url = https://github.com/raysan5/raylib
-  branch = 5.0
+  branch = 5.5
   shallow = 1
 
 [submodule "raygui"]

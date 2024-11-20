@@ -19,15 +19,16 @@ extern fn Image loadImage(ZString file_name) @extern("LoadImage");
 extern fn Image loadImageRaw(ZString file_name, int width, int height, int format, int header_size) @extern("LoadImageRaw");
 
 <*
- Load image from SVG file data or string with specified size
-*>
-extern fn Image loadImageSvg(ZString file_name_or_string, int width, int height) @extern("LoadImageSvg");
-
-<*
  Load image sequence from file (frames appended to image.data)
  @param [out] frames
 *>
 extern fn Image loadImageAnim(ZString file_name, int *frames) @extern("LoadImageAnim");
+
+// TODO: do something
+<*
+ Load image sequence from memory buffer
+*>
+extern fn Image loadImageAnimFromMemory(ZString fileType, char *fileData, int dataSize, int *frames) @extern("LoadImageAnimFromMemory");
 
 <*
  Load image from memory buffer, fileType refers to extension: i.e. '.png'
@@ -43,6 +44,11 @@ extern fn Image loadImageFromTexture(Texture2D texture) @extern("LoadImageFromTe
  Load image from screen buffer and (screenshot)
 *>
 extern fn Image loadImageFromScreen() @extern("LoadImageFromScreen");
+
+<*
+ Check if an image is valid (data and parameters)
+*>
+extern fn bool isImageValid(Image image) @extern("IsImageValid");
 
 <*
  Check if an image is ready
@@ -134,6 +140,12 @@ extern fn Image imageCopy(Image image) @extern("ImageCopy");
 *>
 extern fn Image imageFromImage(Image image, Rectangle rec) @extern("ImageFromImage");
 
+// TODO: do something
+<*
+ Create an image from a selected channel of another image (GRAYSCALE)
+*>
+extern fn Image imageFromChannel(Image image, int selected_channel) @extern("ImageFromChannel");
+
 <*
  Create an image from text (default font)
 *>
@@ -183,6 +195,12 @@ extern fn void imageAlphaPremultiply(Image* image) @extern("ImageAlphaPremultipl
  Apply Gaussian blur using a box blur approximation
 *>
 extern fn void imageBlurGaussian(Image* image, int blur_size) @extern("ImageBlurGaussian");
+
+// TODO: do something
+<*
+ Apply custom square convolution kernel to image
+*>
+extern fn void imageKernelConvolution(Image* image, float *kernel, int kernelSize) @extern("ImageKernelConvolution");
 
 <*
  Resize image (Bicubic scaling algorithm)
@@ -331,6 +349,11 @@ extern fn void imageDrawPixelV(Image* dst, Vector2 position, Color color) @exter
 extern fn void imageDrawLine(Image* dst, int start_pos_x, int start_pos_y, int end_pos_x, int end_pos_y, Color color) @extern("ImageDrawLine");
 
 <*
+ Draw a line defining thickness within an image
+*>
+extern fn void imageDrawLineEx(Image* dst, Vector2 start, Vector2 end, int thick, Color color) @extern("ImageDrawLineEx");
+
+<*
  Draw line within an image (Vector version)
 *>
 extern fn void imageDrawLineV(Image* dst, Vector2 start, Vector2 end, Color color) @extern("ImageDrawLineV");
@@ -376,6 +399,37 @@ extern fn void imageDrawRectangleRec(Image* dst, Rectangle rec, Color color) @ex
 extern fn void imageDrawRectangleLines(Image* dst, Rectangle rec, int thick, Color color) @extern("ImageDrawRectangleLines");
 
 <*
+ Draw triangle within an image
+*>
+extern fn void imageDrawTriangle(Image* dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color) @extern("ImageDrawTriangle");
+
+<*
+ Draw triangle with interpolated colors within an image
+*>
+extern fn void imageDrawTriangleEx(Image* dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3) @extern("ImageDrawTriangleEx");
+
+<*
+ Draw triangle outline within an image
+*>
+extern fn void imageDrawTriangleLines(Image* dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color) @extern("ImageDrawTriangleLines");
+
+<*
+ Draw a triangle fan defined by points within an image (first vertex is the center)
+ @require points.len <= int.max
+*>
+fn void imageDrawTriangleFan(Image* dst, Vector2[] points, Color color) @inline {
+	__image_draw_triangle_fan(dst, points.ptr, (int)points.len, color);
+}
+
+<*
+ Draw a triangle strip defined by points within an image
+ @require points.len <= int.max
+*>
+fn void imageDrawTriangleStrip(Image* dst, Vector2[] points, Color color) @inline {
+	__image_draw_triangle_strip(dst, points.ptr, (int)points.len, color);
+}
+
+<*
  Draw a source image within a destination image (tint applied to source)
 *>
 extern fn void imageDraw(Image* dst, Image src, Rectangle src_rec, Rectangle dst_rec, Color tint) @extern("ImageDraw");
@@ -415,9 +469,9 @@ extern fn TextureCubemap loadTextureCubemap(Image image, CubemapLayout layout) @
 extern fn RenderTexture2D loadRenderTexture(int width, int height) @extern("LoadRenderTexture");
 
 <*
- Check if a texture is ready
+ Check if a texture is valid (loaded in GPU)
 *>
-extern fn bool isTextureReady(Texture2D texture) @extern("IsTextureReady");
+extern fn bool isTextureValid(Texture2D texture) @extern("IsTextureValid");
 
 <*
  Unload texture from GPU memory (VRAM)
@@ -425,9 +479,9 @@ extern fn bool isTextureReady(Texture2D texture) @extern("IsTextureReady");
 extern fn void unloadTexture(Texture2D texture) @extern("UnloadTexture");
 
 <*
- Check if a render texture is ready
+ Check if a render texture is valid (loaded in GPU)
 *>
-extern fn bool isRenderTextureReady(RenderTexture2D target) @extern("IsRenderTextureReady");
+extern fn bool isRenderTextureValid(RenderTexture2D target) @extern("IsRenderTextureValid");
 
 <*
  Unload render texture from GPU memory (VRAM)
@@ -497,6 +551,11 @@ extern fn void drawTextureNPatch(Texture2D texture, NPatchInfo n_patch_info, Rec
 
 // Color/pixel related functions
 //------------------------------------------------------------------------------------
+
+<*
+ Check if two colors are equal
+*>
+extern fn bool colorIsEqual(Color col1, Color col2) @extern("ColorIsEqual");
 
 <*
  Get color with alpha applied, alpha goes from 0.0f to 1.0f
@@ -570,6 +629,12 @@ extern fn Color colorAlpha(Color color, float alpha) @extern("ColorAlpha");
  Get src alpha-blended into dst color with tint
 *>
 extern fn Color colorAlphaBlend(Color dst, Color src, Color tint) @extern("ColorAlphaBlend");
+
+<*
+ Get color lerp interpolation between two colors, factor [0.0f..1.0f]
+ @require factor >= 0.0f && factor <= 1.0f
+*>
+extern fn Color colorLerp(Color color1, Color color2, float factor) @extern("ColorLerp");
 
 <*
  Get Color structure from hexadecimal value

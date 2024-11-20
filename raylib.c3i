@@ -86,3 +86,9 @@ extern fn Color* __load_image_palette(Image image, int max_palette_size, int *co
 extern fn void __unload_image_colors(Color* colors) @extern("UnloadImageColors") @private;
 extern fn void __unload_image_palette(Color* colors) @extern("UnloadImagePalette") @private;
 //------------------------------------------------------------------------------------
+
+// rtextures.c3
+//------------------------------------------------------------------------------------
+extern fn void __image_draw_triangle_fan(Image* dst, Vector2* points, int point_count, Color color) @extern("ImageDrawTriangleFan");
+extern fn void __image_draw_triangle_strip(Image* dst, Vector2* points, int point_count, Color color) @extern("ImageDrawTriangleStrip");
+//------------------------------------------------------------------------------------

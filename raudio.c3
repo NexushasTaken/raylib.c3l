@@ -64,9 +64,9 @@ fn Wave loadWaveFromMemory(ZString file_type, String file_data) @inline {
 }
 
 <*
- Checks if wave data is ready
+ Checks if wave data is valid (data loaded and parameters)
 *>
-extern fn bool isWaveReady(Wave wave) @extern("IsWaveReady");
+extern fn bool isWaveValid(Wave wave) @extern("IsWaveValid");
 
 <*
  Load sound from file
@@ -84,9 +84,9 @@ extern fn Sound loadSoundFromWave(Wave wave) @extern("LoadSoundFromWave");
 extern fn Sound loadSoundAlias(Sound source) @extern("LoadSoundAlias");
 
 <*
- Checks if a sound is ready
+ Checks if a sound is valid (data loaded and buffers initialized)
 *>
-extern fn bool isSoundReady(Sound sound) @extern("IsSoundReady");
+extern fn bool isSoundValid(Sound sound) @extern("IsSoundValid");
 
 <*
  Update sound buffer with new data
@@ -170,9 +170,9 @@ extern fn void setSoundPan(Sound sound, float pan) @extern("SetSoundPan");
 extern fn Wave waveCopy(Wave wave) @extern("WaveCopy");
 
 <*
- Crop a wave to defined samples range
+ Crop a wave to defined frames range
 *>
-extern fn void waveCrop(Wave* wave, int init_sample, int final_sample) @extern("WaveCrop");
+extern fn void waveCrop(Wave *wave, int init_frame, int final_frame) @extern("WaveCrop");
 
 <*
  Convert wave data to desired format
@@ -203,9 +203,9 @@ extern fn Music loadMusicStream(ZString file_name) @extern("LoadMusicStream");
 extern fn Music loadMusicStreamFromMemory(ZString file_type, ZString data, int data_size) @extern("LoadMusicStreamFromMemory");
 
 <*
- Checks if a music stream is ready
+ Checks if a music stream is valid (context and buffers initialized)
 *>
-extern fn bool isMusicReady(Music music) @extern("IsMusicReady");
+extern fn bool isMusicValid(Music music) @extern("IsMusicValid");
 
 <*
  Unload music stream
@@ -284,9 +284,9 @@ extern fn float getMusicTimePlayed(Music music) @extern("GetMusicTimePlayed");
 extern fn AudioStream loadAudioStream(uint sample_rate, uint sample_size, uint channels) @extern("LoadAudioStream");
 
 <*
- Checks if an audio stream is ready
+ Checks if an audio stream is valid (buffers initialized)
 *>
-extern fn bool isAudioStreamReady(AudioStream stream) @extern("IsAudioStreamReady");
+extern fn bool isAudioStreamValid(AudioStream stream) @extern("IsAudioStreamValid");
 
 <*
  Unload audio stream and free memory
@@ -357,7 +357,7 @@ extern fn void setAudioStreamBufferSizeDefault(int size) @extern("SetAudioStream
 extern fn void setAudioStreamCallback(AudioStream stream, AudioCallback callback) @extern("SetAudioStreamCallback");
 
 <*
- Attach audio stream processor to stream, receives the samples as <float>s
+ Attach audio stream processor to stream, receives the samples as 'float'
 *>
 extern fn void attachAudioStreamProcessor(AudioStream stream, AudioCallback processor) @extern("AttachAudioStreamProcessor");
 
@@ -367,7 +367,7 @@ extern fn void attachAudioStreamProcessor(AudioStream stream, AudioCallback proc
 extern fn void detachAudioStreamProcessor(AudioStream stream, AudioCallback processor) @extern("DetachAudioStreamProcessor");
 
 <*
- Attach audio stream processor to the entire audio pipeline, receives the samples as <float>s
+ Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'
 *>
 extern fn void attachAudioMixedProcessor(AudioCallback processor) @extern("AttachAudioMixedProcessor");
 
