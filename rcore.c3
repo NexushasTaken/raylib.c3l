@@ -411,7 +411,8 @@ extern fn VrStereoConfig loadVrStereoConfig(VrDeviceInfo device) @extern("LoadVr
 <*
  Unload VR stereo config
 *>
-extern fn void unloadVrStereoConfig(VrStereoConfig config) @extern("UnloadVrStereoConfig");
+extern fn void VrStereoConfig.unload(VrStereoConfig config) @extern("UnloadVrStereoConfig");
+def unloadVrStereoConfig = VrStereoConfig.unload;
 
 //------------------------------------------------------------------------------------
 // Shader management functions
@@ -431,48 +432,54 @@ extern fn Shader loadShaderFromMemory(ZString vs_code, ZString fs_code) @extern(
 <*
  Check if a shader is ready (loaded on GPU)
 *>
-extern fn bool isShaderValid(Shader shader) @extern("IsShaderValid");
+extern fn bool Shader.isValid(Shader shader) @extern("IsShaderValid");
+def isShaderValid = Shader.isValid;
 
 <*
  Get shader uniform location
 *>
-fn int! getShaderLocation(Shader shader, ZString uniform_name) @inline {
-    int loc = __get_shader_location(shader, uniform_name);
-    return loc == -1 ? SearchResult.MISSING? : loc;
+fn int Shader.getLocation(Shader shader, ZString uniform_name) @inline {
+	return __get_shader_location(shader, uniform_name);
 }
+def getShaderLocation = Shader.getLocation;
 
 <*
  Get shader attribute location
 *>
-fn int! getShaderLocationAttrib(Shader shader, ZString attrib_name) @inline {
-    int loc = __get_shader_location_attrib(shader, attrib_name);
-    return loc == -1 ? SearchResult.MISSING? : loc;
+fn int Shader.getLocationAttrib(Shader shader, ZString attrib_name) @inline {
+	return __get_shader_location_attrib(shader, attrib_name);
 }
+def getShaderLocationAttrib = Shader.getLocationAttrib;
 
 <*
  Set shader uniform value
 *>
-extern fn void setShaderValue(Shader shader, int loc_index, void* value, ShaderUniformDataType uniform_type) @extern("SetShaderValue");
+extern fn void Shader.setValue(Shader shader, int loc_index, void* value, ShaderUniformDataType uniform_type) @extern("SetShaderValue");
+def setShaderValue = Shader.setValue;
 
 <*
  Set shader uniform value vector
 *>
-extern fn void setShaderValueV(Shader shader, int locIndex, void* value, ShaderUniformDataType uniform_type, int count) @extern("SetShaderValueV");
+extern fn void Shader.setValueV(Shader shader, int locIndex, void* value, ShaderUniformDataType uniform_type, int count) @extern("SetShaderValueV");
+def setShaderValueV = Shader.setValueV;
 
 <*
  Set shader uniform value (matrix 4x4)
 *>
-extern fn void setShaderValueMatrix(Shader shader, int locIndex, Matrix mat) @extern("SetShaderValueMatrix");
+extern fn void Shader.setValueMatrix(Shader shader, int locIndex, Matrix mat) @extern("SetShaderValueMatrix");
+def setShaderValueMatrix = Shader.setValueMatrix;
 
 <*
  Set shader uniform value for texture (sampler2d)
 *>
-extern fn void setShaderValueTexture(Shader shader, int locIndex, Texture2D texture) @extern("SetShaderValueTexture");
+extern fn void Shader.setValueTexture(Shader shader, int locIndex, Texture2D texture) @extern("SetShaderValueTexture");
+def setShaderValueTexture = Shader.setValueTexture;
 
 <*
  Unload shader from GPU memory (VRAM)
 *>
-extern fn void unloadShader(Shader shader) @extern("UnloadShader");
+extern fn void Shader.unload(Shader shader) @extern("UnloadShader");
+def unloadShader = Shader.unload;
 
 //------------------------------------------------------------------------------------
 // Screen-space-related functions
@@ -833,7 +840,7 @@ extern fn bool isFileNameValid(ZString file_name) @extern("IsFileNameValid");
 <*
  Load directory filepaths
 *>
-extern fn FilePathList loadDirectoryFiles(ZString  dir_path) @extern("LoadDirectoryFiles");
+extern fn FilePathList loadDirectoryFiles(ZString dir_path) @extern("LoadDirectoryFiles");
 
 <*
  Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
@@ -843,7 +850,8 @@ extern fn FilePathList loadDirectoryFilesEx(ZString base_path, ZString filter, b
 <*
  Unload filepaths
 *>
-extern fn void unloadDirectoryFiles(FilePathList files) @extern("UnloadDirectoryFiles");
+extern fn void FilePathList.unload(FilePathList files) @extern("UnloadDirectoryFiles");
+def unloadDirectoryFiles = FilePathList.unload;
 
 <*
  Check if a file has been dropped into window
@@ -936,17 +944,20 @@ extern fn AutomationEventList loadAutomationEventList(ZString file_name) @extern
 <*
  Unload automation events list from file
 *>
-extern fn void unloadAutomationEventList(AutomationEventList list) @extern("UnloadAutomationEventList");
+extern fn void AutomationEventList.unload(AutomationEventList list) @extern("UnloadAutomationEventList");
+def unloadAutomationEventList = AutomationEventList.unload;
 
 <*
  Export automation events list as text file
 *>
-extern fn bool exportAutomationEventList(AutomationEventList list, ZString file_name) @extern("ExportAutomationEventList");
+extern fn bool AutomationEventList.export(AutomationEventList list, ZString file_name) @extern("ExportAutomationEventList");
+def exportAutomationEventList = AutomationEventList.export;
 
 <*
  Set automation event list to record to
 *>
-extern fn void setAutomationEventList(AutomationEventList* list) @extern("SetAutomationEventList");
+extern fn void AutomationEventList.set(AutomationEventList* list) @extern("SetAutomationEventList");
+def setAutomationEventList = AutomationEventList.set;
 
 <*
  Set automation event internal base frame to start recording
@@ -1225,9 +1236,11 @@ extern fn float getGesturePinchAngle() @extern("GetGesturePinchAngle");
 <*
  Update camera position for selected mode
 *>
-extern fn void updateCamera(Camera* camera, CameraMode mode) @extern("UpdateCamera");
+extern fn void Camera.update(Camera* camera, CameraMode mode) @extern("UpdateCamera");
+def updateCamera = Camera.update;
 
 <*
  Update camera movement/rotation
 *>
-extern fn void updateCameraPro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @extern("UpdateCameraPro");
+extern fn void Camera.updatePro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @extern("UpdateCameraPro");
+def updateCameraPro = Camera.updatePro;

@@ -35,7 +35,8 @@ extern fn Font loadFontFromMemory(ZString file_type, ZString file_data, int data
 <*
  Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 *>
-extern fn bool isFontValid(Font font) @extern("IsFontValid");
+extern fn bool Font.isValid(Font font) @extern("IsFontValid");
+def isFontValid = Font.isValid;
 
 // TODO: review
 <*
@@ -60,12 +61,14 @@ fn void unloadFontData(GlyphInfo[] glyphs) @inline {
 <*
  Unload font from GPU memory (VRAM)
 *>
-extern fn void unloadFont(Font font) @extern("UnloadFont");
+extern fn void Font.unload(Font font) @extern("UnloadFont");
+def unloadFont = Font.unload;
 
 <*
  Export font as code file, returns true on success
 *>
-extern fn bool exportFontAsCode(Font font, ZString file_name) @extern("ExportFontAsCode");
+extern fn bool Font.exportAsCode(Font font, ZString file_name) @extern("ExportFontAsCode");
+def exportFontAsCode = Font.exportAsCode;
 
 // Text drawing functions
 //------------------------------------------------------------------------------------
