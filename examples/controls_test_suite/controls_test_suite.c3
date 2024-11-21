@@ -75,12 +75,10 @@ fn int main()
 	int valueBox002Value = 0;
 	bool valueBoxEditMode = false;
 
-	char[64] textBoxTextBuffer = "Text box";
-	char[] textBoxText = textBoxTextBuffer[:textBoxTextBuffer.len];
+	char[64] textBoxText = "Text box";
 	bool textBoxEditMode = true;
 
-	char[1024] textBoxMultiTextBuffer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-	char[] textBoxMultiText = textBoxMultiTextBuffer[:textBoxMultiTextBuffer.len];
+	char[1024] textBoxMultiText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 	bool textBoxMultiEditMode = false;
 
 	int listViewScrollIndex = 0;
@@ -208,7 +206,7 @@ fn int main()
 			if (raygui::spinner(Rectangle { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
 			if (raygui::valueBox(Rectangle { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
 			raygui::setStyle(raygui::TEXTBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			if (raygui::textBox(Rectangle { 25, 215, 125, 30 }, textBoxText, textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
+			if (raygui::textBox(Rectangle { 25, 215, 125, 30 }, textBoxText[..], textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
 
 			raygui::setStyle(raygui::BUTTON, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_CENTER);
 
@@ -268,7 +266,7 @@ fn int main()
 
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT_VERTICAL, raygui::TEXT_ALIGN_TOP); // WARNING: Word-wrap does not work as expected in case of no-top alignment
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_WRAP_MODE, raygui::TEXT_WRAP_WORD);          // WARNING: If wrap mode enabled, text editing is not supported
-			if (raygui::textBox(Rectangle { 678, 25, 258, 492 }, textBoxMultiText, textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
+			if (raygui::textBox(Rectangle { 678, 25, 258, 492 }, textBoxMultiText[..], textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_WRAP_MODE, raygui::TEXT_WRAP_NONE);
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT_VERTICAL, raygui::TEXT_ALIGN_MIDDLE);
 
