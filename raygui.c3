@@ -309,7 +309,7 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
-module raygui @if($feature(SUPPORT_RAYGUI));
+module raygui @if($feature(ENABLE_RAYGUI));
 import rl;
 
 const RAYGUI_VERSION_MAJOR = 4;

@@ -577,11 +577,6 @@ extern fn void pollInputEvents() @extern("PollInputEvents");
 *>
 extern fn void waitTime(double seconds) @extern("WaitTime");
 
-// Random values generation functions (see random.c3)
-//------------------------------------------------------------------------------------
-
-module rl @if($feature(ENABLE_RANDOM_GENERATION));
-
 // Random values generation functions
 //------------------------------------------------------------------------------------
 tlocal bool is_random_initialized = false; // WARNING: required if raylib was configured with SUPPORT_RPRAND_GENERATOR
@@ -628,9 +623,6 @@ fn int[] loadRandomSequence(uint count, int min, int max) @inline {
 fn void unloadRandomSequence(int[] sequence) @inline {
 	return __unload_random_sequence(sequence.ptr);
 }
-
-module rl;
-import std::io;
 
 //------------------------------------------------------------------------------------
 // Misc. functions

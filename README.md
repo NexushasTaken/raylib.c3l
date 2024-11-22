@@ -33,12 +33,8 @@ Add this to your `project.json`, you can uncomment some features that are listed
 ```json
 "dependencies": [ "raylib" ],
 "features": [
-	// See rcore.c3
-	"SUPPORT_STANDARD_FILEIO",
-	"ENABLE_RANDOM_GENERATION",
 	//"ENABLE_RLGL",
-
-	//"SUPPORT_RAYGUI",
+	//"ENABLE_RAYGUI",
 	//"RAYGUI_NO_ICONS",
 	//"RAYGUI_CUSTOM_ICONS",
 ],

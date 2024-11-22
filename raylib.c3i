@@ -1,4 +1,4 @@
-module raygui @if($feature(SUPPORT_RAYGUI));
+module raygui @if($feature(ENABLE_RAYGUI));
 import rl;
 
 // Controls
@@ -24,14 +24,14 @@ extern fn void __set_window_icons(Image* images, int count) @extern("SetWindowIc
 extern fn int __get_shader_location(Shader shader, ZString uniform_name) @extern("GetShaderLocation") @private;
 extern fn int __get_shader_location_attrib(Shader shader, ZString attrib_name) @extern("GetShaderLocationAttrib") @private;
 
-module rl @if($feature(ENABLE_RANDOM_GENERATION));
+module rl;
 
 extern fn void __set_random_seed(uint seed) @extern("SetRandomSeed");
 extern fn int __get_random_value(int min, int max) @extern("GetRandomValue") @private;
 extern fn int* __load_random_sequence(uint count, int min, int max) @extern("LoadRandomSequence") @private;
 extern fn void __unload_random_sequence(int* sequence) @extern("UnloadRandomSequence") @private;
 
-module rl @if($feature(SUPPORT_STANDARD_FILEIO));
+module rl;
 
 extern fn char* __load_file_data(ZString file_name, int* data_size) @extern("LoadFileData");
 extern fn void __unload_file_data(char* data) @extern("UnloadFileData") @private;

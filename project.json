@@ -22,12 +22,8 @@
   // You can use 'c3c --list-targets' to list all valid targets.
   // "target": "windows-x64",
   "features": [
-    // See rcore.c3
-    "SUPPORT_STANDARD_FILEIO",
-    "ENABLE_RANDOM_GENERATION",
     //"ENABLE_RLGL",
-
-    //"SUPPORT_RAYGUI",
+    //"ENABLE_RAYGUI",
     //"RAYGUI_NO_ICONS",
     //"RAYGUI_CUSTOM_ICONS",
   ],
@@ -87,7 +83,7 @@
       ],
       "output": "./examples/controls_test_suite",
       "features": [
-        "SUPPORT_RAYGUI",
+        "ENABLE_RAYGUI",
       ],
     },
 
