@@ -1,7 +1,5 @@
 build
 
-linux-x64
-linux-x64/libraylib.a
 examples/core/core_2d_camera
 examples/controls_test_suite/controls_test_suite
 examples/core/core_3d_camera_free
