@@ -38,6 +38,29 @@ Add this to your `project.json`; you can uncomment some features that are listed
 ],
 ```
 
+Use this code as your template.
+```c3
+import rl;
+
+fn int main(String[] args)
+{
+	rl::initWindow(800, 450, "Raylib in C3!");
+
+	while (!rl::windowShouldClose())
+	{
+		rl::@drawing() {
+			rl::clearBackground(rl::RAYWHITE);
+			rl::drawText("Raylib in C3!", 190, 200, 20, rl::LIGHTGRAY);
+		};
+	}
+
+	rl::closeWindow();
+	return 0;
+}
+```
+
+For more examples see [Examples](./examples/).
+
 # Future goals
 - Better documentation and the README itself.
 - Testing on different platforms
