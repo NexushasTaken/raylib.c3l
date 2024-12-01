@@ -8,5 +8,8 @@ build_raylib:
 run_example MODULE TARGET:
 	c3c build {{TARGET}} && ./examples/{{MODULE}}/{{TARGET}}
 
+dist:
+  zip -r dist/raylib.c3l manifest.json *.c3* src linux-x64 macos-aarch64 macos-x64 wasm32 windows-x64
+
 debug_example MODULE TARGET:
 	c3c build {{TARGET}} && gdb ./examples/{{MODULE}}/{{TARGET}}
