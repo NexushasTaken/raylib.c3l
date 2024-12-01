@@ -7,7 +7,8 @@ jobs:
   examples_template:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
       - run: wget https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz
-      - run: tar xvf c3-ubuntu-20.tar.gz
+      #- run: tar xvf c3-ubuntu-20.tar.gz
       - run: ls -la
-      - run: ./c3c --version
