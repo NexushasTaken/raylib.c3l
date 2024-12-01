@@ -1,5 +1,7 @@
 {
   "provides" : "raylib",
+  "c-sources": [ "./src/raygui.c" ],
+  "c-include-dirs": [ "./src" ],
   "targets" : {
     "macos-x64" : {
       "dependencies" : [],
