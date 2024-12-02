@@ -5,7 +5,7 @@
   shallow = 1
 
 [submodule "raygui"]
-	path = thirdparty/raygui
-	url = https://github.com/raysan5/raygui
+  path = thirdparty/raygui
+  url = https://github.com/raysan5/raygui
   branch = 4.0
   shallow = 1
