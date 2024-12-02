@@ -1,0 +1,59 @@
+name: Main
+on: [push]
+jobs:
+  #windows:
+    #runs-on: windows-latest
+    #steps:
+      #- name: Check out repository code
+      #  uses: actions/checkout@v4
+      #- name: Setup msvc
+      #  uses: ilammy/msvc-dev-cmd@v1
+      #- name: Download c3 tool (Windows)
+      #  run: Invoke-WebRequest -Uri https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip -OutFile c3-windows.zip
+      #- name: Extract c3 tool
+      #  run: Expand-Archive -Path c3-windows.zip -DestinationPath c3
+      #- name: Install necessary libraries and Setup MSVC
+      #  run: |
+      #    Invoke-WebRequest -Uri https://gist.githubusercontent.com/mmozeiko/7f3162ec2988e81e56d5c4e22cde9977/raw/9f8555326867d4ecba70ee07f105f159f5d8afd5/portable-msvc.py -OutFile portable-msvc.py
+      #    python portable-msvc.py --accept-license
+      #    .\msvc\setup_x64.bat
+      #- name: List directory structure
+      #  run: Get-ChildItem -Recurse
+      #- name: Build with c3
+      #  run: .\c3\c3-windows-Release\c3c.exe build examples_template
+  macos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-x64, macos-arm64]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: brew install llvm@17
+      - name: Download c3 tool
+        run: wget https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip
+      - name: Extract c3 tool
+        run: unzip c3-macos.zip
+      - name: Build with c3
+        run: ./macos/c3c build examples_template
+  linux:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, debian-11]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libglfw3 libglfw3-dev libgles2-mesa-dev
+      - name: Set tarball based on OS
+        run: echo "TARBALL_URL=https://github.com/c3lang/c3c/releases/download/latest/c3-${{ matrix.os == 'ubuntu-latest' && 'ubuntu-20' || 'linux' }}.tar.gz" >> $GITHUB_ENV
+      - name: Download c3 tool
+        run: wget ${{ env.TARBALL_URL }}
+      - name: Extract c3 tool
+        run: tar xvf c3-*.tar.gz
+      - name: Build with c3
+        run: ./c3/c3c build examples_template
