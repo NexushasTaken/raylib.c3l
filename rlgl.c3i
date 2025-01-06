@@ -966,7 +966,7 @@ fn void setShader(uint id, int *locs) @extern("rlSetShader");
 /**
  * Load compute shader program
  */
-fn uint load_compute_shader_program(uint shaderId) @extern("rlLoadComputeShaderProgram");
+fn uint loadComputeShaderProgram(uint shaderId) @extern("rlLoadComputeShaderProgram");
 
 /**
  * Dispatch compute shader (equivalent to *draw* for graphics pipeline)
