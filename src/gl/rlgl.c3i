@@ -1,18 +1,7 @@
 module rlgl @if($feature(ENABLE_RLGL));
 import rl;
 
-const GRAPHICS_API_OPENGL_11 @if($feature(GRAPHICS_API_OPENGL_11)) = true;
-const GRAPHICS_API_OPENGL_33 @if($feature(GRAPHICS_API_OPENGL_33) || $feature(GRAPHICS_API_OPENGL_21) || $feature(GRAPHICS_API_OPENGL_43)) = true;
-const GRAPHICS_API_OPENGL_ES2 @if($feature(GRAPHICS_API_OPENGL_ES2) || $feature(GRAPHICS_API_OPENGL_ES3)) = true;
-
-//// Security check in case no GRAPHICS_API_OPENGL_* defined
-const GRAPHICS_API_OPENGL_33
-	@if(!$defined(GRAPHICS_API_OPENGL_11) &&
-		!$defined(GRAPHICS_API_OPENGL_21) &&
-		!$defined(GRAPHICS_API_OPENGL_33) &&
-		!$defined(GRAPHICS_API_OPENGL_43) &&
-		!$defined(GRAPHICS_API_OPENGL_ES2) &&
-		!$defined(GRAPHICS_API_OPENGL_ES3)) = true;
+const GRAPHICS_API_OPENGL_33 = true;
 
 const RLGL_VERSION = "4.5";
 
