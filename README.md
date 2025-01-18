@@ -19,9 +19,6 @@ Though, C Libraries can be easily ported to C3, this binding supposed to use the
  | physac | :x:                | :x:                |       |     |         |              |
  | rlgl   | :heavy_check_mark: | :heavy_check_mark: |       |     |         |              |
 
-**I only have linux running on my pc, so i can't test it on other OS.
-You can however compile raylib from source yourself(with raygui enabled) and copy the compiled library to target folder in parent directory of this binding.**
-
 # Installation
 
 Download the `raylib.c3l` library from [releases page](https://github.com/NexushasTaken/raylib.c3l/releases), and copy it to your project `lib` folder.
