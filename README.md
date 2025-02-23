@@ -3,12 +3,12 @@
 raylib.c3l is a C3 bindings for [raylib](http://www.raylib.com/) 5.5.
 
 Though, C Libraries can be easily ported to C3, this binding supposed to use the C3 features for easier usage.
-- Since C3 has builtin vector support such as Vec2f, Vec3f, etc...; Vector helpers are added to convert raylib Vectors to C3 vectors and vice versa. (See [rl_vector](./helpers.c3)).
+- Since C3 has builtin vector support such as Vec2f, Vec3f, etc...; Vector helpers are added to convert raylib Vectors to C3 vectors and vice versa. (See [rl_vector](./src/rl/helpers.c3)).
 - This bindings uses `features` to disable some raylib functions such as RLGL, RAYGUI and so on...
 - Some raylib functions returns an error, this bindings replaced that using Optionals (under construction).
-- For function that required a array/object pointer and its length, is replaced by `Object[]`.
+- **Slices** will be used for function that required a array/object pointer and its length.
 
-**Disclaimer: I created this binding to learn C3 more in depth, ive also borrow some inspiration from [official raylib bindings](https://github.com/c3lang/vendor) in order to make this binding. These are some things this binding can improved, specially the documentation. So feel free to make suggestions!**
+**Disclaimer: I created this binding to learn C3 more in depth, ive also took some inspiration from [official raylib bindings](https://github.com/c3lang/vendor) in order to make this binding. These are some things in this binding can be improved, specially the documentation. So feel free to make suggestions!**
 
 ## Supported Platforms
 
