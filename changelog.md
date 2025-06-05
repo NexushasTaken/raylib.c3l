@@ -8,3 +8,8 @@
 - rename `load_compute_shader_program` -> `loadComputeShaderProgram`.
 - fix grammar on [README](README.md).
 - added [changelog](changelog.md).
+
+## v1.1.1
+
+### Changes
+- updated bundled `libraylib.a` for macos-aarch64 from v5.0 to v5.5.
