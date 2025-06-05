@@ -13,3 +13,4 @@
 
 ### Changes
 - updated bundled `libraylib.a` for macos-aarch64 from v5.0 to v5.5.
+- added bundled `libraylib.a` for freebsd-x64.
