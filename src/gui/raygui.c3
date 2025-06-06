@@ -330,34 +330,34 @@ struct GuiStyleProp {
 }
 
 // Gui control state
-def GuiState = int;
+alias GuiState = int;
 const GuiState STATE_NORMAL   = 0;
 const GuiState STATE_FOCUSED  = 1;
 const GuiState STATE_PRESSED  = 2;
 const GuiState STATE_DISABLED = 3;
 
 // Gui control text alignment
-def GuiTextAlignment = int;
+alias GuiTextAlignment = int;
 const GuiTextAlignment TEXT_ALIGN_LEFT   = 0;
 const GuiTextAlignment TEXT_ALIGN_CENTER = 1;
 const GuiTextAlignment TEXT_ALIGN_RIGHT  = 2;
 
 // Gui control text alignment vertical
 // NOTE: Text vertical position inside the text bounds
-def GuiTextAlignmentVertical = int;
+alias GuiTextAlignmentVertical = int;
 const GuiTextAlignmentVertical TEXT_ALIGN_TOP    = 0;
 const GuiTextAlignmentVertical TEXT_ALIGN_MIDDLE = 1;
 const GuiTextAlignmentVertical TEXT_ALIGN_BOTTOM = 2;
 
 // Gui control text wrap mode
 // NOTE: Useful for multiline text
-def GuiTextWrapMode = int;
+alias GuiTextWrapMode = int;
 const GuiTextWrapMode TEXT_WRAP_NONE = 0;
 const GuiTextWrapMode TEXT_WRAP_CHAR = 1;
 const GuiTextWrapMode TEXT_WRAP_WORD = 2;
 
 // Gui controls
-def GuiControl = int;
+alias GuiControl = int;
 // Default -> populates to all controls when set
 const GuiControl DEFAULT     = 0;
 // Basic controls
@@ -379,7 +379,7 @@ const GuiControl STATUSBAR   = 15;
 
 // Gui base properties for every control
 // NOTE: RAYGUI_MAX_PROPS_BASE properties (by default 16 properties)
-def GuiControlProperty = int;
+alias GuiControlProperty = int;
 const GuiControlProperty BORDER_COLOR_NORMAL   = 0;      // Control border color in STATE_NORMAL
 const GuiControlProperty BASE_COLOR_NORMAL     = 1;      // Control base color in STATE_NORMAL
 const GuiControlProperty TEXT_COLOR_NORMAL     = 2;      // Control text color in STATE_NORMAL
@@ -405,7 +405,7 @@ const GuiControlProperty TEXT_ALIGNMENT        = 14;     // Control text horizon
 // DEFAULT extended properties
 // NOTE: Those properties are common to all controls or global
 // WARNING: We only have 8 slots for those properties by default!!! -> New global control: TEXT?
-def GuiDefaultProperty = int;
+alias GuiDefaultProperty = int;
 const GuiDefaultProperty TEXT_SIZE               = 16; // Text size (glyphs max height)
 const GuiDefaultProperty TEXT_SPACING            = 17; // Text spacing between glyphs
 const GuiDefaultProperty LINE_COLOR              = 18; // Line control color
@@ -417,20 +417,20 @@ const GuiDefaultProperty TEXT_WRAP_MODE          = 22; // Text wrap-mode inside 
 //const GuiDefaultProperty TEXT_DECORATION_THICK;        // Text decoration line thikness
 
 // Toggle/ToggleGroup
-def GuiToggleProperty = int;
+alias GuiToggleProperty = int;
 const GuiToggleProperty GROUP_PADDING = 16; // ToggleGroup separation between toggles
 
 // Slider/SliderBar
-def GuiSliderProperty = int;
+alias GuiSliderProperty = int;
 const GuiSliderProperty SLIDER_WIDTH   = 16; // Slider size of internal bar
 const GuiSliderProperty SLIDER_PADDING = 17; // Slider/SliderBar internal bar padding
 
 // ProgressBar
-def GuiProgressBarProperty = int;
+alias GuiProgressBarProperty = int;
 const GuiProgressBarProperty PROGRESS_PADDING = 16; // ProgressBar internal padding
 
 // ScrollBar
-def GuiScrollBarProperty = int;
+alias GuiScrollBarProperty = int;
 const GuiScrollBarProperty ARROWS_SIZE           = 16; // ScrollBar arrows size
 const GuiScrollBarProperty ARROWS_VISIBLE        = 17; // ScrollBar arrows visible
 const GuiScrollBarProperty SCROLL_SLIDER_PADDING = 18; // ScrollBar slider internal padding
@@ -439,37 +439,37 @@ const GuiScrollBarProperty SCROLL_PADDING        = 20; // ScrollBar scroll paddi
 const GuiScrollBarProperty SCROLL_SPEED          = 21; // ScrollBar scrolling speed
 
 // CheckBox
-def GuiCheckBoxProperty = int;
+alias GuiCheckBoxProperty = int;
 const GuiCheckBoxProperty CHECK_PADDING = 16; // CheckBox internal check padding
 
 // ComboBox
-def GuiComboBoxProperty = int;
+alias GuiComboBoxProperty = int;
 const GuiComboBoxProperty COMBO_BUTTON_WIDTH   = 16; // ComboBox right button width
 const GuiComboBoxProperty COMBO_BUTTON_SPACING = 17; // ComboBox button separation
 
 // DropdownBox
-def GuiDropdownBoxProperty = int;
+alias GuiDropdownBoxProperty = int;
 const GuiDropdownBoxProperty ARROW_PADDING = 16;          // DropdownBox arrow separation from border and items
 const GuiDropdownBoxProperty DROPDOWN_ITEMS_SPACING = 17; // DropdownBox items separation
 
 // TextBox/TextBoxMulti/ValueBox/Spinner
-def GuiTextBoxProperty = int;
+alias GuiTextBoxProperty = int;
 const GuiTextBoxProperty TEXT_READONLY = 16; // TextBox in read-only mode: 0-text editable, 1-text no-editable
 
 // Spinner
-def GuiSpinnerProperty = int;
+alias GuiSpinnerProperty = int;
 const GuiSpinnerProperty SPIN_BUTTON_WIDTH   = 16; // Spinner left/right buttons width
 const GuiSpinnerProperty SPIN_BUTTON_SPACING = 17; // Spinner buttons separation
 
 // ListView
-def GuiListViewProperty = int;
+alias GuiListViewProperty = int;
 const GuiListViewProperty LIST_ITEMS_HEIGHT  = 16; // ListView items height
 const GuiListViewProperty LIST_ITEMS_SPACING = 17; // ListView items separation
 const GuiListViewProperty SCROLLBAR_WIDTH    = 18; // ListView scrollbar size (usually width)
 const GuiListViewProperty SCROLLBAR_SIDE     = 19; // ListView scrollbar side (0-SCROLLBAR_LEFT_SIDE, 1-SCROLLBAR_RIGHT_SIDE)
 
 // ColorPicker
-def GuiColorPickerProperty = int;
+alias GuiColorPickerProperty = int;
 const GuiColorPickerProperty COLOR_SELECTOR_SIZE      = 16;
 const GuiColorPickerProperty HUEBAR_WIDTH             = 17; // ColorPicker right hue bar width
 const GuiColorPickerProperty HUEBAR_PADDING           = 18; // ColorPicker right hue bar separation from panel

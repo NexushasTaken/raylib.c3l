@@ -2,7 +2,7 @@ import std::io;
 import std::core::runtime;
 import rl @public;
 
-fn void! test_export_data_as_code() {
+fn void? test_export_data_as_code() {
   io::printn();
   String str = "Hello, World";
   ZString file_name = "build/header.h";

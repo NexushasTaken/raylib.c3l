@@ -2,7 +2,7 @@ import std::io;
 import std::core::runtime;
 import rl @public;
 
-fn void! test_compression() {
+fn void? test_compression() {
   io::printn();
 
   char[] str = "Hello, World";

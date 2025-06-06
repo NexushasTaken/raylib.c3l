@@ -2,7 +2,7 @@ import std::io;
 import std::core::runtime;
 import rl @public;
 
-fn void! test() {
+fn void? test() {
 }
 
 fn int main(String[] args) {
