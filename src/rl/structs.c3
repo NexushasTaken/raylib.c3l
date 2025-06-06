@@ -26,7 +26,7 @@ struct Vector4 {
 }
 
 // Quaternion, 4 components (Vector4 alias)
-//def Quaternion = quaternion::Quaternion(<float>);
+//def Quaternion = quaternion::Quaternion{float};
 struct Quaternion {
 	float x;                // Vector x component
 	float y;                // Vector y component
@@ -77,10 +77,10 @@ struct Texture {
 }
 
 // Texture2D, same as Texture
-def Texture2D = Texture;
+alias Texture2D = Texture;
 
 // TextureCubemap, same as Texture
-def TextureCubemap = Texture;
+alias TextureCubemap = Texture;
 
 // RenderTexture, fbo for texture rendering
 struct RenderTexture {
@@ -90,7 +90,7 @@ struct RenderTexture {
 }
 
 // RenderTexture2D, same as RenderTexture
-def RenderTexture2D = RenderTexture;
+alias RenderTexture2D = RenderTexture;
 
 // NPatchInfo, n-patch layout info
 struct NPatchInfo {
@@ -130,7 +130,7 @@ struct Camera3D {
 	int projection;   // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
-def Camera = Camera3D;    // Camera type fallback, defaults to Camera3D
+alias Camera = Camera3D;    // Camera type fallback, defaults to Camera3D
 
 // Camera2D, defines position/orientation in 2d space
 struct Camera2D @packed {
@@ -256,8 +256,8 @@ struct Wave {
 
 // Opaque structs declaration
 // NOTE: Actual structs are defined internally in raudio module
-distinct AudioBufferRef = void*;
-distinct AudioProcessorRef = void*;
+typedef AudioBufferRef = void*;
+typedef AudioProcessorRef = void*;
 
 // AudioStream, custom audio stream
 struct AudioStream {
