@@ -207,19 +207,19 @@ extern fn void drawBillboardPro(Camera camera, Texture2D texture, Rectangle sour
  Upload mesh vertex data in GPU and provide VAO/VBO ids
 *>
 extern fn void Mesh.upload(Mesh* mesh, bool dynamic) @extern("UploadMesh");
-def uploadMesh = Mesh.upload;
+alias uploadMesh = Mesh.upload;
 
 <*
  Update mesh vertex data in GPU for a specific buffer index
 *>
 extern fn void Mesh.updateBuffer(Mesh mesh, int index, void* data, int data_size, int offset) @extern("UpdateMeshBuffer");
-def updateMeshBuffer = Mesh.updateBuffer;
+alias updateMeshBuffer = Mesh.updateBuffer;
 
 <*
  Unload mesh data from CPU and GPU
 *>
 extern fn void Mesh.unload(Mesh mesh) @extern("UnloadMesh");
-def unloadMesh = Mesh.unload;
+alias unloadMesh = Mesh.unload;
 
 <*
  Draw a 3D mesh with material and transform
@@ -239,25 +239,25 @@ fn void drawMeshInstanced(Mesh mesh, Material material, Matrix[] transforms) @in
  Compute mesh bounding box limits
 *>
 extern fn BoundingBox Mesh.getBoundingBox(Mesh mesh) @extern("GetMeshBoundingBox");
-def getMeshBoundingBox = Mesh.getBoundingBox;
+alias getMeshBoundingBox = Mesh.getBoundingBox;
 
 <*
  Compute mesh tangents
 *>
 extern fn void Mesh.genTangents(Mesh* mesh) @extern("GenMeshTangents");
-def genMeshTangents = Mesh.genTangents;
+alias genMeshTangents = Mesh.genTangents;
 
 <*
  Export mesh data to file, returns true on success
 *>
 extern fn bool Mesh.export(Mesh mesh, ZString file_name) @extern("ExportMesh");
-def exportMesh = Mesh.export;
+alias exportMesh = Mesh.export;
 
 <*
  Export mesh as code file (.h) defining multiple arrays of vertex attributes
 *>
 extern fn bool Mesh.exportAsCode(Mesh mesh, ZString file_name) @extern("ExportMeshAsCode");
-def exportMeshAsCode = Mesh.exportAsCode;
+alias exportMeshAsCode = Mesh.exportAsCode;
 
 // Mesh generation functions
 //------------------------------------------------------------------------------------
@@ -338,25 +338,25 @@ extern fn Material loadMaterialDefault() @extern("LoadMaterialDefault");
  Check if a material is valid (shader assigned, map textures loaded in GPU)
 *>
 extern fn bool Material.isValid(Material material) @extern("IsMaterialValid");
-def isMaterialValid = Material.isValid;
+alias isMaterialValid = Material.isValid;
 
 <*
  Unload material from GPU memory (VRAM)
 *>
 extern fn void Material.unload(Material material) @extern("UnloadMaterial");
-def unloadMaterial = Material.unload;
+alias unloadMaterial = Material.unload;
 
 <*
  Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)
 *>
 extern fn void Material.setTexture(Material* material, MaterialMapIndex map_type, Texture2D texture) @extern("SetMaterialTexture");
-def setMaterialTexture = Material.setTexture;
+alias setMaterialTexture = Material.setTexture;
 
 <*
  Set material for a mesh
 *>
 extern fn void Model.setMeshMaterial(Model* model, int mesh_id, int material_id) @extern("SetModelMeshMaterial");
-def setModelMeshMaterial = Model.setMeshMaterial;
+alias setModelMeshMaterial = Model.setMeshMaterial;
 
 // Model animations loading/unloading functions
 //------------------------------------------------------------------------------------
@@ -375,19 +375,19 @@ fn ModelAnimation[] loadModelAnimations(ZString file_name) @inline {
  Update model animation pose
 *>
 extern fn void Model.updateAnimation(Model model, ModelAnimation anim, int frame) @extern("UpdateModelAnimation");
-def updateModelAnimation = Model.updateAnimation;
+alias updateModelAnimation = Model.updateAnimation;
 
 <*
  Update model animation mesh bone matrices (GPU skinning)
 *>
 extern fn void Model.updateAnimationBones(Model model, ModelAnimation anim, int frame) @extern("UpdateModelAnimationBones");
-def updateModelAnimationBones = Model.updateAnimationBones;
+alias updateModelAnimationBones = Model.updateAnimationBones;
 
 <*
  Unload animation data
 *>
 extern fn void ModelAnimation.unload(ModelAnimation anim) @extern("UnloadModelAnimation");
-def unloadModelAnimation = ModelAnimation.unload;
+alias unloadModelAnimation = ModelAnimation.unload;
 
 <*
  Unload animation array data
@@ -401,7 +401,7 @@ fn void unloadModelAnimations(ModelAnimation[] animations) @inline {
  Check model animation skeleton match
 *>
 extern fn bool Model.isAnimationValid(Model model, ModelAnimation anim) @extern("IsModelAnimationValid");
-def isModelAnimationValid = Model.isAnimationValid;
+alias isModelAnimationValid = Model.isAnimationValid;
 
 // Collision detection functions
 //------------------------------------------------------------------------------------

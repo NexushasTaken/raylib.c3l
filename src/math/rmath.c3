@@ -10,9 +10,9 @@ const EPSILON = 0.000001f;
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
 // NOTE: Helper types to be used instead of array return types for *ToFloat functions
-def Float3 = float[3];
-def Float16 = float[<16>];
-def Quaternionf = quaternion::Quaternion(<float>);
+alias Float3 = float[3];
+alias Float16 = float[<16>];
+alias Quaternionf = quaternion::Quaternion{float};
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Utils math

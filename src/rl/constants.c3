@@ -15,33 +15,33 @@ const RAD2DEG = (180.0f/PI);
 
 // Some Basic Colors
 // NOTE: Custom raylib color palette for amazing visuals on WHITE background
-const LIGHTGRAY  = Color { 200, 200, 200, 255 };   // Light Gray
-const GRAY       = Color { 130, 130, 130, 255 };   // Gray
-const DARKGRAY   = Color { 80, 80, 80, 255 };      // Dark Gray
-const YELLOW     = Color { 253, 249, 0, 255 };     // Yellow
-const GOLD       = Color { 255, 203, 0, 255 };     // Gold
-const ORANGE     = Color { 255, 161, 0, 255 };     // Orange
-const PINK       = Color { 255, 109, 194, 255 };   // Pink
-const RED        = Color { 230, 41, 55, 255 };     // Red
-const MAROON     = Color { 190, 33, 55, 255 };     // Maroon
-const GREEN      = Color { 0, 228, 48, 255 };      // Green
-const LIME       = Color { 0, 158, 47, 255 };      // Lime
-const DARKGREEN  = Color { 0, 117, 44, 255 };      // Dark Green
-const SKYBLUE    = Color { 102, 191, 255, 255 };   // Sky Blue
-const BLUE       = Color { 0, 121, 241, 255 };     // Blue
-const DARKBLUE   = Color { 0, 82, 172, 255 };      // Dark Blue
-const PURPLE     = Color { 200, 122, 255, 255 };   // Purple
-const VIOLET     = Color { 135, 60, 190, 255 };    // Violet
-const DARKPURPLE = Color { 112, 31, 126, 255 };    // Dark Purple
-const BEIGE      = Color { 211, 176, 131, 255 };   // Beige
-const BROWN      = Color { 127, 106, 79, 255 };    // Brown
-const DARKBROWN  = Color { 76, 63, 47, 255 };      // Dark Brown
+const LIGHTGRAY  = (Color) { 200, 200, 200, 255 };   // Light Gray
+const GRAY       = (Color) { 130, 130, 130, 255 };   // Gray
+const DARKGRAY   = (Color) { 80, 80, 80, 255 };      // Dark Gray
+const YELLOW     = (Color) { 253, 249, 0, 255 };     // Yellow
+const GOLD       = (Color) { 255, 203, 0, 255 };     // Gold
+const ORANGE     = (Color) { 255, 161, 0, 255 };     // Orange
+const PINK       = (Color) { 255, 109, 194, 255 };   // Pink
+const RED        = (Color) { 230, 41, 55, 255 };     // Red
+const MAROON     = (Color) { 190, 33, 55, 255 };     // Maroon
+const GREEN      = (Color) { 0, 228, 48, 255 };      // Green
+const LIME       = (Color) { 0, 158, 47, 255 };      // Lime
+const DARKGREEN  = (Color) { 0, 117, 44, 255 };      // Dark Green
+const SKYBLUE    = (Color) { 102, 191, 255, 255 };   // Sky Blue
+const BLUE       = (Color) { 0, 121, 241, 255 };     // Blue
+const DARKBLUE   = (Color) { 0, 82, 172, 255 };      // Dark Blue
+const PURPLE     = (Color) { 200, 122, 255, 255 };   // Purple
+const VIOLET     = (Color) { 135, 60, 190, 255 };    // Violet
+const DARKPURPLE = (Color) { 112, 31, 126, 255 };    // Dark Purple
+const BEIGE      = (Color) { 211, 176, 131, 255 };   // Beige
+const BROWN      = (Color) { 127, 106, 79, 255 };    // Brown
+const DARKBROWN  = (Color) { 76, 63, 47, 255 };      // Dark Brown
 
-const WHITE      = Color { 255, 255, 255, 255 };   // White
-const BLACK      = Color { 0, 0, 0, 255 };         // Black
-const BLANK      = Color { 0, 0, 0, 0 };           // Blank (Transparent)
-const MAGENTA    = Color { 255, 0, 255, 255 };     // Magenta
-const RAYWHITE   = Color { 245, 245, 245, 255 };   // My own White (raylib logo)
+const WHITE      = (Color) { 255, 255, 255, 255 };   // White
+const BLACK      = (Color) { 0, 0, 0, 255 };         // Black
+const BLANK      = (Color) { 0, 0, 0, 0 };           // Blank (Transparent)
+const MAGENTA    = (Color) { 255, 0, 255, 255 };     // Magenta
+const RAYWHITE   = (Color) { 245, 245, 245, 255 };   // My own White (raylib logo)
 
 //----------------------------------------------------------------------------------
 // Enumerators Definition
@@ -49,7 +49,7 @@ const RAYWHITE   = Color { 245, 245, 245, 255 };   // My own White (raylib logo)
 // System/Window config flags
 // NOTE: Every bit registers one state (use it with bit masks)
 // By default all flags are set to 0
-def ConfigFlags = uint;
+alias ConfigFlags = uint;
 const ConfigFlags FLAG_VSYNC_HINT         = 0x00000040;   // Set to try enabling V-Sync on GPU
 const ConfigFlags FLAG_FULLSCREEN_MODE    = 0x00000002;   // Set to run program in fullscreen
 const ConfigFlags FLAG_WINDOW_RESIZABLE   = 0x00000004;   // Set to allow resizable window
@@ -69,7 +69,7 @@ const ConfigFlags FLAG_INTERLACED_HINT    = 0x00010000;   // Set to try enabling
 
 // Trace log level
 // NOTE: Organized by priority level
-def TraceLogLevel = int;
+alias TraceLogLevel = int;
 const LOG_ALL     = 0;         // Display all logs (0)
 const LOG_TRACE   = 1;         // Trace logging, intended for internal use only
 const LOG_DEBUG   = 2;         // Debug logging, used for internal debugging, it should be disabled on release builds
@@ -82,7 +82,7 @@ const LOG_NONE    = 7;         // Disable logging
 // Keyboard keys (US keyboard layout)
 // NOTE: Use GetKeyPressed() to allow redefining
 // required keys for alternative layouts
-def KeyboardKey = int;
+alias KeyboardKey = int;
 const KeyboardKey KEY_NULL            = 0;        // Key: NULL, used for no key pressed
 // Alphanumeric keys
 const KeyboardKey KEY_APOSTROPHE      = 39;       // Key: '
@@ -199,7 +199,7 @@ const KeyboardKey KEY_VOLUME_UP       = 24;       // Key: Android volume up butt
 const KeyboardKey KEY_VOLUME_DOWN     = 25;       // Key: Android volume down button
 
 // Mouse buttons
-def MouseButton = int;
+alias MouseButton = int;
 const MOUSE_BUTTON_LEFT    = 0; // Mouse button left
 const MOUSE_BUTTON_RIGHT   = 1; // Mouse button right
 const MOUSE_BUTTON_MIDDLE  = 2; // Mouse button middle (pressed wheel)
@@ -209,7 +209,7 @@ const MOUSE_BUTTON_FORWARD = 5; // Mouse button forward (advanced mouse device)
 const MOUSE_BUTTON_BACK    = 6; // Mouse button back (advanced mouse device)
 
 // Mouse cursor
-def MouseCursor = int;
+alias MouseCursor = int;
 const MouseCursor MOUSE_CURSOR_DEFAULT       = 0;     // Default pointer shape
 const MouseCursor MOUSE_CURSOR_ARROW         = 1;     // Arrow shape
 const MouseCursor MOUSE_CURSOR_IBEAM         = 2;     // Text writing cursor shape
@@ -223,7 +223,7 @@ const MouseCursor MOUSE_CURSOR_RESIZE_ALL    = 9;     // The omnidirectional res
 const MouseCursor MOUSE_CURSOR_NOT_ALLOWED   = 10;    // The operation-not-allowed shape
 
 // Gamepad buttons
-def GamepadButton = int;
+alias GamepadButton = int;
 const GamepadButton GAMEPAD_BUTTON_UNKNOWN          = 0;  // Unknown button, just for error checking
 const GamepadButton GAMEPAD_BUTTON_LEFT_FACE_UP     = 1;  // Gamepad left DPAD up button
 const GamepadButton GAMEPAD_BUTTON_LEFT_FACE_RIGHT  = 2;  // Gamepad left DPAD right button
@@ -244,7 +244,7 @@ const GamepadButton GAMEPAD_BUTTON_LEFT_THUMB       = 16; // Gamepad joystick pr
 const GamepadButton GAMEPAD_BUTTON_RIGHT_THUMB      = 17; // Gamepad joystick pressed button right
 
 // Gamepad axis
-def GamepadAxis = int;
+alias GamepadAxis = int;
 const GamepadAxis GAMEPAD_AXIS_LEFT_X        = 0;     // Gamepad left stick X axis
 const GamepadAxis GAMEPAD_AXIS_LEFT_Y        = 1;     // Gamepad left stick Y axis
 const GamepadAxis GAMEPAD_AXIS_RIGHT_X       = 2;     // Gamepad right stick X axis
@@ -254,7 +254,7 @@ const GamepadAxis GAMEPAD_AXIS_RIGHT_TRIGGER = 5;     // Gamepad back trigger ri
 
 
 // Material map index
-def MaterialMapIndex = int;
+alias MaterialMapIndex = int;
 const MaterialMapIndex MATERIAL_MAP_ALBEDO     = 0;    // Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 const MaterialMapIndex MATERIAL_MAP_METALNESS  = 1;    // Metalness material (same as: MATERIAL_MAP_SPECULAR)
 const MaterialMapIndex MATERIAL_MAP_NORMAL     = 2;    // Normal material
@@ -268,7 +268,7 @@ const MaterialMapIndex MATERIAL_MAP_PREFILTER  = 9;    // Prefilter material (NO
 const MaterialMapIndex MATERIAL_MAP_BRDF       = 10;   // Brdf material
 
 // Shader location index
-def ShaderLocationIndex = int;
+alias ShaderLocationIndex = int;
 const ShaderLocationIndex SHADER_LOC_VERTEX_POSITION   = 0;  // Shader location: vertex attribute: position
 const ShaderLocationIndex SHADER_LOC_VERTEX_TEXCOORD01 = 1;  // Shader location: vertex attribute: texcoord01
 const ShaderLocationIndex SHADER_LOC_VERTEX_TEXCOORD02 = 2;  // Shader location: vertex attribute: texcoord02
@@ -300,7 +300,7 @@ const ShaderLocationIndex SHADER_LOC_VERTEX_BONEWEIGHTS= 27; // Shader location:
 const ShaderLocationIndex SHADER_LOC_BONE_MATRICES     = 28; // Shader location: array of matrices uniform: boneMatrices
 
 // Shader uniform data type
-def ShaderUniformDataType = int;
+alias ShaderUniformDataType = int;
 const ShaderUniformDataType SHADER_UNIFORM_FLOAT = 0;        // Shader uniform type: float
 const ShaderUniformDataType SHADER_UNIFORM_VEC2  = 1;        // Shader uniform type: vec2 (2 float)
 const ShaderUniformDataType SHADER_UNIFORM_VEC3  = 2;        // Shader uniform type: vec3 (3 float)
@@ -312,7 +312,7 @@ const ShaderUniformDataType SHADER_UNIFORM_IVEC4 = 7;        // Shader uniform t
 const ShaderUniformDataType SHADER_UNIFORM_SAMPLER2D = 8;    // Shader uniform type: sampler2d
 
 // Shader attribute data types
-def ShaderAttributeDataType = int;
+alias ShaderAttributeDataType = int;
 const ShaderAttributeDataType SHADER_ATTRIB_FLOAT = 0;         // Shader attribute type: float
 const ShaderAttributeDataType SHADER_ATTRIB_VEC2  = 1;         // Shader attribute type: vec2 (2 float)
 const ShaderAttributeDataType SHADER_ATTRIB_VEC3  = 2;         // Shader attribute type: vec3 (3 float)
@@ -320,7 +320,7 @@ const ShaderAttributeDataType SHADER_ATTRIB_VEC4  = 3;         // Shader attribu
 
 // Pixel formats
 // NOTE: Support depends on OpenGL version and platform
-def PixelFormat = int;
+alias PixelFormat = int;
 const PixelFormat PIXELFORMAT_UNCOMPRESSED_GRAYSCALE    = 1;  // 8 bit per pixel (no alpha)
 const PixelFormat PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA   = 2;  // 8*2 bpp (2 channels)
 const PixelFormat PIXELFORMAT_UNCOMPRESSED_R5G6B5       = 3;  // 16 bpp
@@ -349,7 +349,7 @@ const PixelFormat PIXELFORMAT_COMPRESSED_ASTC_8X8_RGBA  = 24; // 2 bpp
 // Texture parameters: filter mode
 // NOTE 1: Filtering considers mipmaps if available in the texture
 // NOTE 2: Filter is accordingly set for minification and magnification
-def TextureFilter = int;
+alias TextureFilter = int;
 const TextureFilter TEXTURE_FILTER_POINT     = 0;       // No filter, just pixel approximation
 const TextureFilter TEXTURE_FILTER_BILINEAR  = 1;       // Linear filtering
 const TextureFilter TEXTURE_FILTER_TRILINEAR = 2;       // Trilinear filtering (linear with mipmaps)
@@ -358,7 +358,7 @@ const TextureFilter TEXTURE_FILTER_ANISOTROPIC_8X  = 4; // Anisotropic filtering
 const TextureFilter TEXTURE_FILTER_ANISOTROPIC_16X = 5; // Anisotropic filtering 16x
 
 // Texture parameters: wrap mode
-def TextureWrap = int;
+alias TextureWrap = int;
 const TextureWrap TEXTURE_WRAP_REPEAT = 0;                // Repeats texture in tiled mode
 const TextureWrap TEXTURE_WRAP_CLAMP  = 1;                // Clamps texture to edge pixel in tiled mode
 const TextureWrap TEXTURE_WRAP_MIRROR_REPEAT = 2;         // Mirrors and repeats the texture in tiled mode
@@ -366,7 +366,7 @@ const TextureWrap TEXTURE_WRAP_MIRROR_CLAMP  = 3;         // Mirrors and clamps 
 
 
 // Cubemap layouts
-def CubemapLayout = int;
+alias CubemapLayout = int;
 const CUBEMAP_LAYOUT_AUTO_DETECT = 0;         // Automatically detect layout type
 const CUBEMAP_LAYOUT_LINE_VERTICAL = 1;       // Layout is defined by a vertical line with faces
 const CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2;     // Layout is defined by a horizontal line with faces
@@ -374,13 +374,13 @@ const CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3; // Layout is defined by a 3x4 cros
 const CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4; // Layout is defined by a 4x3 cross with cubemap faces
 
 // Font type, defines generation method
-def FontType = int;
+alias FontType = int;
 const FontType FONT_DEFAULT = 0;               // Default font generation, anti-aliased
 const FontType FONT_BITMAP = 1;                // Bitmap font generation, no anti-aliasing
 const FontType FONT_SDF = 2;                   // SDF font generation, requires external shader
 
 // Color blending modes (pre-defined)
-def BlendMode = int;
+alias BlendMode = int;
 const BlendMode BLEND_ALPHA             = 0; // Blend textures considering alpha (default)
 const BlendMode BLEND_ADDITIVE          = 1; // Blend textures adding colors
 const BlendMode BLEND_MULTIPLIED        = 2; // Blend textures multiplying colors
@@ -392,7 +392,7 @@ const BlendMode BLEND_CUSTOM_SEPARATE   = 7; // Blend textures using custom src/
 
 // Gesture
 // NOTE: Provided as bit-wise flags to enable only desired gestures
-def Gesture = uint;
+alias Gesture = uint;
 const Gesture GESTURE_NONE        = 0;        // No gesture
 const Gesture GESTURE_TAP         = 1;        // Tap gesture
 const Gesture GESTURE_DOUBLETAP   = 2;        // Double tap gesture
@@ -406,7 +406,7 @@ const Gesture GESTURE_PINCH_IN    = 256;      // Pinch in gesture
 const Gesture GESTURE_PINCH_OUT   = 512;      // Pinch out gesture
 
 // Camera system modes
-def CameraMode = int;
+alias CameraMode = int;
 const CameraMode CAMERA_CUSTOM       = 0;        // Camera custom, controlled by user (UpdateCamera() does nothing)
 const CameraMode CAMERA_FREE         = 1;        // Camera free mode
 const CameraMode CAMERA_ORBITAL      = 2;        // Camera orbital, around target, zoom supported
@@ -414,12 +414,12 @@ const CameraMode CAMERA_FIRST_PERSON = 3;        // Camera first person
 const CameraMode CAMERA_THIRD_PERSON = 4;        // Camera third person
 
 // Camera projection
-def CameraProjection = int;
+alias CameraProjection = int;
 const CameraProjection CAMERA_PERSPECTIVE = 0;         // Perspective projection
 const CameraProjection CAMERA_ORTHOGRAPHIC = 1;        // Orthographic projection
 
 // N-patch layout
-def NPatchLayout = int;
+alias NPatchLayout = int;
 const NPatchLayout NPATCH_NINE_PATCH = 0;             // Npatch layout: 3x3 tiles
 const NPatchLayout NPATCH_THREE_PATCH_VERTICAL = 1;   // Npatch layout: 1x3 tiles
 const NPatchLayout NPATCH_THREE_PATCH_HORIZONTAL = 2; // Npatch layout: 3x1 tiles

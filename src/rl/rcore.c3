@@ -412,7 +412,7 @@ extern fn VrStereoConfig loadVrStereoConfig(VrDeviceInfo device) @extern("LoadVr
  Unload VR stereo config
 *>
 extern fn void VrStereoConfig.unload(VrStereoConfig config) @extern("UnloadVrStereoConfig");
-def unloadVrStereoConfig = VrStereoConfig.unload;
+alias unloadVrStereoConfig = VrStereoConfig.unload;
 
 //------------------------------------------------------------------------------------
 // Shader management functions
@@ -433,7 +433,7 @@ extern fn Shader loadShaderFromMemory(ZString vs_code, ZString fs_code) @extern(
  Check if a shader is ready (loaded on GPU)
 *>
 extern fn bool Shader.isValid(Shader shader) @extern("IsShaderValid");
-def isShaderValid = Shader.isValid;
+alias isShaderValid = Shader.isValid;
 
 <*
  Get shader uniform location
@@ -441,7 +441,7 @@ def isShaderValid = Shader.isValid;
 fn int Shader.getLocation(Shader shader, ZString uniform_name) @inline {
 	return __get_shader_location(shader, uniform_name);
 }
-def getShaderLocation = Shader.getLocation;
+alias getShaderLocation = Shader.getLocation;
 
 <*
  Get shader attribute location
@@ -449,37 +449,37 @@ def getShaderLocation = Shader.getLocation;
 fn int Shader.getLocationAttrib(Shader shader, ZString attrib_name) @inline {
 	return __get_shader_location_attrib(shader, attrib_name);
 }
-def getShaderLocationAttrib = Shader.getLocationAttrib;
+alias getShaderLocationAttrib = Shader.getLocationAttrib;
 
 <*
  Set shader uniform value
 *>
 extern fn void Shader.setValue(Shader shader, int loc_index, void* value, ShaderUniformDataType uniform_type) @extern("SetShaderValue");
-def setShaderValue = Shader.setValue;
+alias setShaderValue = Shader.setValue;
 
 <*
  Set shader uniform value vector
 *>
 extern fn void Shader.setValueV(Shader shader, int locIndex, void* value, ShaderUniformDataType uniform_type, int count) @extern("SetShaderValueV");
-def setShaderValueV = Shader.setValueV;
+alias setShaderValueV = Shader.setValueV;
 
 <*
  Set shader uniform value (matrix 4x4)
 *>
 extern fn void Shader.setValueMatrix(Shader shader, int locIndex, Matrix mat) @extern("SetShaderValueMatrix");
-def setShaderValueMatrix = Shader.setValueMatrix;
+alias setShaderValueMatrix = Shader.setValueMatrix;
 
 <*
  Set shader uniform value for texture (sampler2d)
 *>
 extern fn void Shader.setValueTexture(Shader shader, int locIndex, Texture2D texture) @extern("SetShaderValueTexture");
-def setShaderValueTexture = Shader.setValueTexture;
+alias setShaderValueTexture = Shader.setValueTexture;
 
 <*
  Unload shader from GPU memory (VRAM)
 *>
 extern fn void Shader.unload(Shader shader) @extern("UnloadShader");
-def unloadShader = Shader.unload;
+alias unloadShader = Shader.unload;
 
 //------------------------------------------------------------------------------------
 // Screen-space-related functions
@@ -488,7 +488,7 @@ def unloadShader = Shader.unload;
 <*
  Compatibility hack for previous raylib versions
 *>
-def getMouseRay = getScreenToWorldRay;
+alias getMouseRay = getScreenToWorldRay;
 
 <*
  Get a ray trace from screen position (i.e mouse)
@@ -735,9 +735,9 @@ macro bool exportDataAsCode(ZString file_name, char[] data) {
 <*
  Load text data from file (read), returns a '\0' terminated string
 *>
-fn ZString! loadFileText(ZString file_name) @inline {
+fn ZString? loadFileText(ZString file_name) @inline {
     char* zstr = __load_file_text(file_name);
-    return zstr == null ? io::IoError.UNKNOWN_ERROR? : (ZString)zstr;
+    return zstr == null ? io::UNKNOWN_ERROR? : (ZString)zstr;
 }
 
 <*
@@ -843,7 +843,7 @@ extern fn FilePathList loadDirectoryFilesEx(ZString base_path, ZString filter, b
  Unload filepaths
 *>
 extern fn void FilePathList.unload(FilePathList files) @extern("UnloadDirectoryFiles");
-def unloadDirectoryFiles = FilePathList.unload;
+alias unloadDirectoryFiles = FilePathList.unload;
 
 <*
  Check if a file has been dropped into window
@@ -937,19 +937,19 @@ extern fn AutomationEventList loadAutomationEventList(ZString file_name) @extern
  Unload automation events list from file
 *>
 extern fn void AutomationEventList.unload(AutomationEventList list) @extern("UnloadAutomationEventList");
-def unloadAutomationEventList = AutomationEventList.unload;
+alias unloadAutomationEventList = AutomationEventList.unload;
 
 <*
  Export automation events list as text file
 *>
 extern fn bool AutomationEventList.export(AutomationEventList list, ZString file_name) @extern("ExportAutomationEventList");
-def exportAutomationEventList = AutomationEventList.export;
+alias exportAutomationEventList = AutomationEventList.export;
 
 <*
  Set automation event list to record to
 *>
 extern fn void AutomationEventList.set(AutomationEventList* list) @extern("SetAutomationEventList");
-def setAutomationEventList = AutomationEventList.set;
+alias setAutomationEventList = AutomationEventList.set;
 
 <*
  Set automation event internal base frame to start recording
@@ -1229,10 +1229,10 @@ extern fn float getGesturePinchAngle() @extern("GetGesturePinchAngle");
  Update camera position for selected mode
 *>
 extern fn void Camera.update(Camera* camera, CameraMode mode) @extern("UpdateCamera");
-def updateCamera = Camera.update;
+alias updateCamera = Camera.update;
 
 <*
  Update camera movement/rotation
 *>
 extern fn void Camera.updatePro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @extern("UpdateCameraPro");
-def updateCameraPro = Camera.updatePro;
+alias updateCameraPro = Camera.updatePro;

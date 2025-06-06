@@ -2,7 +2,7 @@ import std::io;
 import std::core::runtime;
 import rl @public;
 
-fn void! test_encode_data_base64() {
+fn void? test_encode_data_base64() {
   io::printn();
 
   char[] str = "Hello, World";
