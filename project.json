@@ -1,6 +1,6 @@
 {
   // Language version of C3.
-  "langrev": "0.6.6",
+  "langrev": "0.7.2",
   // Warnings used for all targets.
   "warnings": [ "no-unused" ],
   // Directories where C3 library files may be found.
