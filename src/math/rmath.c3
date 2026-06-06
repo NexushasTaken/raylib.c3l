@@ -12,7 +12,6 @@ const EPSILON = 0.000001f;
 // NOTE: Helper types to be used instead of array return types for *ToFloat functions
 alias Float3 = float[3];
 alias Float16 = float[<16>];
-alias Quaternionf = quaternion::Quaternion{float};
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Utils math
@@ -1722,20 +1721,20 @@ fn Matrix matrixRotateZYX(Vector3 angle) {
 	Matrix result;
 
 	float cz = math::cos(angle.z);
-	float sz = math::sin(angle.z);
+	float _sz = math::sin(angle.z);
 	float cy = math::cos(angle.y);
 	float sy = math::sin(angle.y);
 	float cx = math::cos(angle.x);
 	float sx = math::sin(angle.x);
 
 	result.m0 = cz*cy;
-	result.m4 = cz*sy*sx - cx*sz;
-	result.m8 = sz*sx + cz*cx*sy;
+	result.m4 = cz*sy*sx - cx*_sz;
+	result.m8 = _sz*sx + cz*cx*sy;
 	result.m12 = 0;
 
-	result.m1 = cy*sz;
-	result.m5 = cz*cx + sz*sy*sx;
-	result.m9 = cx*sz*sy - cz*sx;
+	result.m1 = cy*_sz;
+	result.m5 = cz*cx + _sz*sy*sx;
+	result.m9 = cx*_sz*sy - cz*sx;
 	result.m13 = 0;
 
 	result.m2 = -sy;

@@ -23,30 +23,30 @@ alias AudioCallback = fn void(void* buffer_data, uint frames);
 <*
  Initialize audio device and context
 *>
-extern fn void initAudioDevice() @extern("InitAudioDevice");
+extern fn void initAudioDevice() @cname("InitAudioDevice");
 
 <*
  Close the audio device and context
 *>
-extern fn void closeAudioDevice() @extern("CloseAudioDevice");
+extern fn void closeAudioDevice() @cname("CloseAudioDevice");
 
 <*
  Check if audio device has been initialized successfully
 *>
-extern fn bool isAudioDeviceReady() @extern("IsAudioDeviceReady");
+extern fn bool isAudioDeviceReady() @cname("IsAudioDeviceReady");
 
 <*
  // TODO: is max volume 1.0f is allowed?
  Set master volume (listener)
  @require volume >= 0.0f
 *>
-extern fn void setMasterVolume(float volume) @extern("SetMasterVolume");
+extern fn void setMasterVolume(float volume) @cname("SetMasterVolume");
 
 <*
  Get master volume (listener)
  @ensure return >= 0.0f
 *>
-extern fn float getMasterVolume() @extern("GetMasterVolume");
+extern fn float getMasterVolume() @cname("GetMasterVolume");
 
 // Wave/Sound loading/unloading functions
 //------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ extern fn float getMasterVolume() @extern("GetMasterVolume");
 <*
  Load wave data from file
 *>
-extern fn Wave loadWave(ZString file_name) @extern("LoadWave");
+extern fn Wave loadWave(ZString file_name) @cname("LoadWave");
 
 <*
  Load wave from memory buffer, fileType refers to extension: i.e. '.wav'
@@ -66,66 +66,66 @@ fn Wave loadWaveFromMemory(ZString file_type, String file_data) @inline {
 <*
  Checks if wave data is valid (data loaded and parameters)
 *>
-extern fn bool Wave.isReady(Wave wave) @extern("IsWaveReady");
+extern fn bool Wave.isReady(Wave wave) @cname("IsWaveReady");
 alias isWaveReady = Wave.isReady;
 
 <*
  Load sound from file
 *>
-extern fn Sound loadSound(ZString file_name) @extern("LoadSound");
+extern fn Sound loadSound(ZString file_name) @cname("LoadSound");
 
 <*
  Load sound from wave data
 *>
-extern fn Sound loadSoundFromWave(Wave wave) @extern("LoadSoundFromWave");
+extern fn Sound loadSoundFromWave(Wave wave) @cname("LoadSoundFromWave");
 
 <*
  Create a new sound that shares the same sample data as the source sound, does not own the sound data
 *>
-extern fn Sound Sound.loadAlias(Sound source) @extern("LoadSoundAlias");
+extern fn Sound Sound.loadAlias(Sound source) @cname("LoadSoundAlias");
 alias loadSoundAlias = Sound.loadAlias;
 
 <*
  Checks if a sound is valid (data loaded and buffers initialized)
 *>
-extern fn bool Sound.isReady(Sound sound) @extern("IsSoundReady");
+extern fn bool Sound.isReady(Sound sound) @cname("IsSoundReady");
 alias isSoundReady = Sound.isReady;
 
 <*
  Update sound buffer with new data
 *>
-extern fn void Sound.update(Sound sound, void* data, int sample_count) @extern("UpdateSound");
+extern fn void Sound.update(Sound sound, void* data, int sample_count) @cname("UpdateSound");
 alias updateSound = Sound.update;
 
 <*
  Unload wave data
 *>
-extern fn void Wave.unload(Wave wave) @extern("UnloadWave");
+extern fn void Wave.unload(Wave wave) @cname("UnloadWave");
 alias unloadWave = Wave.unload;
 
 <*
  Unload sound
 *>
-extern fn void Sound.unload(Sound sound) @extern("UnloadSound");
+extern fn void Sound.unload(Sound sound) @cname("UnloadSound");
 alias unloadSound = Sound.unload;
 
 // TODO: Test this
 <*
  Unload a sound alias (does not deallocate sample data)
 *>
-extern fn void Sound.unloadAlias(Sound def) @extern("UnloadSoundAlias");
+extern fn void Sound.unloadAlias(Sound def) @cname("UnloadSoundAlias");
 alias unloadSoundAlias = Sound.unloadAlias;
 
 <*
  Export wave data to file, returns true on success
 *>
-extern fn bool Wave.export(Wave wave, ZString file_name) @extern("ExportWave");
+extern fn bool Wave.export(Wave wave, ZString file_name) @cname("ExportWave");
 alias exportWave = Wave.export;
 
 <*
  Export wave sample data to code (.h), returns true on success
 *>
-extern fn bool Wave.exportAsCode(Wave wave, ZString file_name) @extern("ExportWaveAsCode");
+extern fn bool Wave.exportAsCode(Wave wave, ZString file_name) @cname("ExportWaveAsCode");
 alias exportWaveAsCode = Wave.exportAsCode;
 
 // Wave/Sound management functions
@@ -134,82 +134,82 @@ alias exportWaveAsCode = Wave.exportAsCode;
 <*
  Play a sound
 *>
-extern fn void Sound.play(Sound sound) @extern("PlaySound");
+extern fn void Sound.play(Sound sound) @cname("PlaySound");
 alias playSound = Sound.play;
 
 <*
  Stop playing a sound
 *>
-extern fn void Sound.stop(Sound sound) @extern("StopSound");
+extern fn void Sound.stop(Sound sound) @cname("StopSound");
 alias stopSound = Sound.stop;
 
 <*
  Pause a sound
 *>
-extern fn void Sound.pause(Sound sound) @extern("PauseSound");
+extern fn void Sound.pause(Sound sound) @cname("PauseSound");
 alias pauseSound = Sound.pause;
 
 <*
  Resume a paused sound
 *>
-extern fn void Sound.resume(Sound sound) @extern("ResumeSound");
+extern fn void Sound.resume(Sound sound) @cname("ResumeSound");
 alias resumeSound = Sound.resume;
 
 <*
  Check if a sound is currently playing
 *>
-extern fn bool Sound.isPlaying(Sound sound) @extern("IsSoundPlaying");
+extern fn bool Sound.isPlaying(Sound sound) @cname("IsSoundPlaying");
 alias isSoundPlaying = Sound.isPlaying;
 
 <*
  Set volume for a sound (1.0 is max level)
  @require volume >= 0.0f && volume <= 1.0f
 *>
-extern fn void Sound.setVolume(Sound sound, float volume) @extern("SetSoundVolume");
+extern fn void Sound.setVolume(Sound sound, float volume) @cname("SetSoundVolume");
 alias setSoundVolume = Sound.setVolume;
 
 <*
  Set pitch for a sound (1.0 is base level)
  @require pitch >= 0.0f
 *>
-extern fn void Sound.setPitch(Sound sound, float pitch) @extern("SetSoundPitch");
+extern fn void Sound.setPitch(Sound sound, float pitch) @cname("SetSoundPitch");
 alias setSoundPitch = Sound.setPitch;
 
 <*
  Set pan for a sound (0.5 is center)
  @require pan >= 0.0f && pan <= 1.0f
 *>
-extern fn void Sound.setPan(Sound sound, float pan) @extern("SetSoundPan");
+extern fn void Sound.setPan(Sound sound, float pan) @cname("SetSoundPan");
 alias setSoundPan = Sound.setPan;
 
 <*
  Copy a wave to a new wave
 *>
-extern fn Wave Wave.copy(Wave wave) @extern("WaveCopy");
+extern fn Wave Wave.copy(Wave wave) @cname("WaveCopy");
 alias waveCopy = Wave.copy;
 
 <*
  Crop a wave to defined frames range
 *>
-extern fn void Wave.crop(Wave *wave, int init_frame, int final_frame) @extern("WaveCrop");
+extern fn void Wave.crop(Wave *wave, int init_frame, int final_frame) @cname("WaveCrop");
 alias waveCrop = Wave.crop;
 
 <*
  Convert wave data to desired format
 *>
-extern fn void Wave.format(Wave* wave, int sample_rate, int sample_size, int channels) @extern("WaveFormat");
+extern fn void Wave.format(Wave* wave, int sample_rate, int sample_size, int channels) @cname("WaveFormat");
 alias waveFormat = Wave.format;
 
 <*
  Load samples data from wave as a 32bit float data array
 *>
-extern fn float* Wave.loadSamples(Wave wave) @extern("LoadWaveSamples");
+extern fn float* Wave.loadSamples(Wave wave) @cname("LoadWaveSamples");
 alias loadWaveSamples = Wave.loadSamples;
 
 <*
  Unload samples data loaded with LoadWaveSamples()
 *>
-extern fn void unloadWaveSamples(float* samples) @extern("UnloadWaveSamples");
+extern fn void unloadWaveSamples(float* samples) @cname("UnloadWaveSamples");
 
 // Music management functions
 //------------------------------------------------------------------------------------
@@ -217,98 +217,98 @@ extern fn void unloadWaveSamples(float* samples) @extern("UnloadWaveSamples");
 <*
  Load music stream from file
 *>
-extern fn Music loadMusicStream(ZString file_name) @extern("LoadMusicStream");
+extern fn Music loadMusicStream(ZString file_name) @cname("LoadMusicStream");
 
 <*
  Load music stream from data
 *>
-extern fn Music loadMusicStreamFromMemory(ZString file_type, ZString data, int data_size) @extern("LoadMusicStreamFromMemory");
+extern fn Music loadMusicStreamFromMemory(ZString file_type, ZString data, int data_size) @cname("LoadMusicStreamFromMemory");
 
 <*
  Checks if a music stream is valid (context and buffers initialized)
 *>
-extern fn bool Music.isValid(Music music) @extern("IsMusicValid");
+extern fn bool Music.isValid(Music music) @cname("IsMusicValid");
 alias isMusicValid = Music.isValid;
 
 <*
  Unload music stream
 *>
-extern fn void Music.unloadStream(Music music) @extern("UnloadMusicStream");
+extern fn void Music.unloadStream(Music music) @cname("UnloadMusicStream");
 alias unloadMusicStream = Music.unloadStream;
 
 <*
  Start music playing
 *>
-extern fn void Music.playStream(Music music) @extern("PlayMusicStream");
+extern fn void Music.playStream(Music music) @cname("PlayMusicStream");
 alias playMusicStream = Music.playStream;
 
 <*
  Check if music is playing
 *>
-extern fn bool Music.isStreamPlaying(Music music) @extern("IsMusicStreamPlaying");
+extern fn bool Music.isStreamPlaying(Music music) @cname("IsMusicStreamPlaying");
 alias isMusicStreamPlaying = Music.isStreamPlaying;
 
 <*
  Updates buffers for music streaming
 *>
-extern fn void Music.updateStream(Music music) @extern("UpdateMusicStream");
+extern fn void Music.updateStream(Music music) @cname("UpdateMusicStream");
 alias updateMusicStream = Music.updateStream;
 
 <*
  Stop music playing
 *>
-extern fn void Music.stopStream(Music music) @extern("StopMusicStream");
+extern fn void Music.stopStream(Music music) @cname("StopMusicStream");
 alias stopMusicStream = Music.stopStream;
 
 <*
  Pause music playing
 *>
-extern fn void Music.pauseStream(Music music) @extern("PauseMusicStream");
+extern fn void Music.pauseStream(Music music) @cname("PauseMusicStream");
 alias pauseMusicStream = Music.pauseStream;
 
 <*
  Resume playing paused music
 *>
-extern fn void Music.resumeStream(Music music) @extern("ResumeMusicStream");
+extern fn void Music.resumeStream(Music music) @cname("ResumeMusicStream");
 alias resumeMusicStream = Music.resumeStream;
 
 <*
  Seek music to a position (in seconds)
 *>
-extern fn void Music.seekStream(Music music, float position) @extern("SeekMusicStream");
+extern fn void Music.seekStream(Music music, float position) @cname("SeekMusicStream");
 alias seekMusicStream = Music.seekStream;
 
 <*
  Set volume for music (1.0 is max level)
  @require volume >= 0.0f && volume <= 1.0f
 *>
-extern fn void Music.setVolume(Music music, float volume) @extern("SetMusicVolume");
+extern fn void Music.setVolume(Music music, float volume) @cname("SetMusicVolume");
 alias setMusicVolume = Music.setVolume;
 
 <*
  Set pitch for a music (1.0 is base level)
  @require pitch >= 0.0f
 *>
-extern fn void Music.setPitch(Music music, float pitch) @extern("SetMusicPitch");
+extern fn void Music.setPitch(Music music, float pitch) @cname("SetMusicPitch");
 alias setMusicPitch = Music.setPitch;
 
 <*
  Set pan for a music (0.pan >= 0.0f5 is center)
  @require pan >= 0.0f && pan <= 1.0f
 *>
-extern fn void Music.setPan(Music music, float pan) @extern("SetMusicPan");
+extern fn void Music.setPan(Music music, float pan) @cname("SetMusicPan");
 alias setMusicPan = Music.setPan;
 
 <*
  Get music time length (in seconds)
 *>
-extern fn float Music.getTimeLength(Music music) @extern("GetMusicTimeLength");
+extern fn float Music.getTimeLength(Music music) @cname("GetMusicTimeLength");
 alias getMusicTimeLength = Music.getTimeLength;
 
 <*
  Get current music time played (in seconds)
 *>
-extern fn float Music.getTimePlayed(Music music) @extern("GetMusicTimePlayed");
+extern fn float Music.getTimePlayed(Music music) @cname("GetMusicTimePlayed");
 alias getMusicTimePlayed = Music.getTimePlayed;
 
 // AudioStream management functions
@@ -317,112 +317,112 @@ alias getMusicTimePlayed = Music.getTimePlayed;
 <*
  Load audio stream (to stream raw audio pcm data)
 *>
-extern fn AudioStream loadAudioStream(uint sample_rate, uint sample_size, uint channels) @extern("LoadAudioStream");
+extern fn AudioStream loadAudioStream(uint sample_rate, uint sample_size, uint channels) @cname("LoadAudioStream");
 
 <*
  Checks if an audio stream is valid (buffers initialized)
 *>
-extern fn bool AudioStream.isValid(AudioStream stream) @extern("IsAudioStreamValid");
+extern fn bool AudioStream.isValid(AudioStream stream) @cname("IsAudioStreamValid");
 alias isAudioStreamValid = AudioStream.isValid;
 
 <*
  Unload audio stream and free memory
 *>
-extern fn void AudioStream.unload(AudioStream stream) @extern("UnloadAudioStream");
+extern fn void AudioStream.unload(AudioStream stream) @cname("UnloadAudioStream");
 alias unloadAudioStream = AudioStream.unload;
 
 <*
  Update audio stream buffers with data
 *>
-extern fn void AudioStream.update(AudioStream stream, void* data, int frame_count) @extern("UpdateAudioStream");
+extern fn void AudioStream.update(AudioStream stream, void* data, int frame_count) @cname("UpdateAudioStream");
 alias updateAudioStream = AudioStream.update;
 
 <*
  Check if any audio stream buffers requires refill
 *>
-extern fn bool AudioStream.isProcessed(AudioStream stream) @extern("IsAudioStreamProcessed");
+extern fn bool AudioStream.isProcessed(AudioStream stream) @cname("IsAudioStreamProcessed");
 alias isAudioStreamProcessed = AudioStream.isProcessed;
 
 <*
  Play audio stream
 *>
-extern fn void AudioStream.play(AudioStream stream) @extern("PlayAudioStream");
+extern fn void AudioStream.play(AudioStream stream) @cname("PlayAudioStream");
 alias playAudioStream = AudioStream.play;
 
 <*
  Pause audio stream
 *>
-extern fn void AudioStream.pause(AudioStream stream) @extern("PauseAudioStream");
+extern fn void AudioStream.pause(AudioStream stream) @cname("PauseAudioStream");
 alias pauseAudioStream = AudioStream.pause;
 
 <*
  Resume audio stream
 *>
-extern fn void AudioStream.resume(AudioStream stream) @extern("ResumeAudioStream");
+extern fn void AudioStream.resume(AudioStream stream) @cname("ResumeAudioStream");
 alias resumeAudioStream = AudioStream.resume;
 
 <*
  Check if audio stream is playing
 *>
-extern fn bool AudioStream.isPlaying(AudioStream stream) @extern("IsAudioStreamPlaying");
+extern fn bool AudioStream.isPlaying(AudioStream stream) @cname("IsAudioStreamPlaying");
 alias isAudioStreamPlaying = AudioStream.isPlaying;
 
 <*
  Stop audio stream
 *>
-extern fn void AudioStream.stop(AudioStream stream) @extern("StopAudioStream");
+extern fn void AudioStream.stop(AudioStream stream) @cname("StopAudioStream");
 alias stopAudioStream = AudioStream.stop;
 
 <*
  Set volume for audio stream (1.0 is max level)
  @require volume >= 0.0f && volume <= 1.0f
 *>
-extern fn void AudioStream.setVolume(AudioStream stream, float volume) @extern("SetAudioStreamVolume");
+extern fn void AudioStream.setVolume(AudioStream stream, float volume) @cname("SetAudioStreamVolume");
 alias setAudioStreamVolume = AudioStream.setVolume;
 
 <*
  Set pitch for audio stream (1.0 is base level)
  @require pitch >= 0.0f
 *>
-extern fn void AudioStream.setPitch(AudioStream stream, float pitch) @extern("SetAudioStreamPitch");
+extern fn void AudioStream.setPitch(AudioStream stream, float pitch) @cname("SetAudioStreamPitch");
 alias setAudioStreamPitch = AudioStream.setPitch;
 
 <*
  Set pan for audio stream (0.5 is centered)
  @require pan >= 0.0f && pan <= 1.0f
 *>
-extern fn void AudioStream.setPan(AudioStream stream, float pan) @extern("SetAudioStreamPan");
+extern fn void AudioStream.setPan(AudioStream stream, float pan) @cname("SetAudioStreamPan");
 alias setAudioStreamPan = AudioStream.setPan;
 
 <*
  Default size for new audio streams
 *>
-extern fn void setAudioStreamBufferSizeDefault(int size) @extern("SetAudioStreamBufferSizeDefault");
+extern fn void setAudioStreamBufferSizeDefault(int size) @cname("SetAudioStreamBufferSizeDefault");
 
 <*
  Audio thread callback to request new data
 *>
-extern fn void AudioStream.setCallback(AudioStream stream, AudioCallback callback) @extern("SetAudioStreamCallback");
+extern fn void AudioStream.setCallback(AudioStream stream, AudioCallback callback) @cname("SetAudioStreamCallback");
 alias setAudioStreamCallback = AudioStream.setCallback;
 
 <*
  Attach audio stream processor to stream, receives the samples as 'float'
 *>
-extern fn void AudioStream.attachProcessor(AudioStream stream, AudioCallback processor) @extern("AttachAudioStreamProcessor");
+extern fn void AudioStream.attachProcessor(AudioStream stream, AudioCallback processor) @cname("AttachAudioStreamProcessor");
 alias attachAudioStreamProcessor = AudioStream.attachProcessor;
 
 <*
  Detach audio stream processor from stream
 *>
-extern fn void AudioStream.detachProcessor(AudioStream stream, AudioCallback processor) @extern("DetachAudioStreamProcessor");
+extern fn void AudioStream.detachProcessor(AudioStream stream, AudioCallback processor) @cname("DetachAudioStreamProcessor");
 alias detachAudioStreamProcessor = AudioStream.detachProcessor;
 
 <*
  Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'
 *>
-extern fn void attachAudioMixedProcessor(AudioCallback processor) @extern("AttachAudioMixedProcessor");
+extern fn void attachAudioMixedProcessor(AudioCallback processor) @cname("AttachAudioMixedProcessor");
 
 <*
  Detach audio stream processor from the entire audio pipeline
 *>
-extern fn void detachAudioMixedProcessor(AudioCallback processor) @extern("DetachAudioMixedProcessor");
+extern fn void detachAudioMixedProcessor(AudioCallback processor) @cname("DetachAudioMixedProcessor");

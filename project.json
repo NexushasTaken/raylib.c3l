@@ -1,6 +1,6 @@
 {
   // Language version of C3.
-  "langrev": "0.7.2",
+  "langrev": "0.8.0_3",
   // Warnings used for all targets.
   "warnings": [ "no-unused" ],
   // Directories where C3 library files may be found.
@@ -8,7 +8,7 @@
   // Libraries to use for all targets.
   "dependencies": [ "raylib" ],
   // Authors, optionally with email.
-  "authors": [ "NexushasTaken <nexushastaken@gmail.com" ],
+  "authors": [ "NexushasTaken <nexushastaken@gmail.com>" ],
   // Version of raylib
   "version": "5.5",
   // Sources compiled for all targets.

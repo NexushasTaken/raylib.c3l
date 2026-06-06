@@ -10,49 +10,49 @@ module rl;
 <*
  Get the default Font
 *>
-extern fn Font getFontDefault() @extern("GetFontDefault");
+extern fn Font getFontDefault() @cname("GetFontDefault");
 
 <*
  Load font from file into GPU memory (VRAM)
 *>
-extern fn Font loadFont(ZString file_name) @extern("LoadFont");
+extern fn Font loadFont(ZString file_name) @cname("LoadFont");
 
 <*
  Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character set, font size is provided in pixels height
 *>
-extern fn Font loadFontEx(ZString file_name, int font_size, int* codepoints, int codepoint_count) @extern("LoadFontEx");
+extern fn Font loadFontEx(ZString file_name, int font_size, int* codepoints, int codepoint_count) @cname("LoadFontEx");
 
 <*
  Load font from Image (XNA style)
 *>
-extern fn Font loadFontFromImage(Image image, Color key, int first_char) @extern("LoadFontFromImage");
+extern fn Font loadFontFromImage(Image image, Color key, int first_char) @cname("LoadFontFromImage");
 
 <*
  Load font from memory buffer, fileType refers to extension: i.e. '.ttf'
 *>
-extern fn Font loadFontFromMemory(ZString file_type, ZString file_data, int data_size, int fontSize, int *codepoints, int codepoint_count) @extern("LoadFontFromMemory");
+extern fn Font loadFontFromMemory(ZString file_type, ZString file_data, int data_size, int fontSize, int *codepoints, int codepoint_count) @cname("LoadFontFromMemory");
 
 <*
  Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 *>
-extern fn bool Font.isValid(Font font) @extern("IsFontValid");
+extern fn bool Font.isValid(Font font) @cname("IsFontValid");
 alias isFontValid = Font.isValid;
 
 // TODO: review
 <*
  Load font data for further use
 *>
-extern fn GlyphInfo* loadFontData(ZString file_data, int data_size, int font_size, int *codepoints, int codepoint_count, FontType type) @extern("LoadFontData");
+extern fn GlyphInfo* loadFontData(ZString file_data, int data_size, int font_size, int *codepoints, int codepoint_count, FontType type) @cname("LoadFontData");
 
 // TODO: glyphs/glyph_count as GlyphInfo[]
 <*
  Generate image font atlas using chars info
 *>
-extern fn Image genImageFontAtlas(GlyphInfo* glyphs, Rectangle **glyph_recs, int glyph_count, int fontSize, int padding, int pack_method) @extern("GenImageFontAtlas");
+extern fn Image genImageFontAtlas(GlyphInfo* glyphs, Rectangle **glyph_recs, int glyph_count, int fontSize, int padding, int pack_method) @cname("GenImageFontAtlas");
 
 <*
  Unload font chars info data (RAM)
- @require glyphs.len <= int.max
+ @require glyphs.len <= int::max
 *>
 fn void unloadFontData(GlyphInfo[] glyphs) @inline {
     __unload_font_data(glyphs.ptr, (int)glyphs.len);
@@ -61,13 +61,13 @@ fn void unloadFontData(GlyphInfo[] glyphs) @inline {
 <*
  Unload font from GPU memory (VRAM)
 *>
-extern fn void Font.unload(Font font) @extern("UnloadFont");
+extern fn void Font.unload(Font font) @cname("UnloadFont");
 alias unloadFont = Font.unload;
 
 <*
  Export font as code file, returns true on success
 *>
-extern fn bool Font.exportAsCode(Font font, ZString file_name) @extern("ExportFontAsCode");
+extern fn bool Font.exportAsCode(Font font, ZString file_name) @cname("ExportFontAsCode");
 alias exportFontAsCode = Font.exportAsCode;
 
 // Text drawing functions
@@ -76,32 +76,32 @@ alias exportFontAsCode = Font.exportAsCode;
 <*
  Draw current FPS
 *>
-extern fn void drawFps(int pos_x, int pos_y) @extern("DrawFPS");
+extern fn void drawFps(int pos_x, int pos_y) @cname("DrawFPS");
 
 <*
  Draw text (using default font)
 *>
-extern fn void drawText(ZString text, int pos_x, int pos_y, int font_size, Color color) @extern("DrawText");
+extern fn void drawText(ZString text, int pos_x, int pos_y, int font_size, Color color) @cname("DrawText");
 
 <*
  Draw text using font and additional parameters
 *>
-extern fn void drawTextEx(Font font, ZString text, Vector2 position, float font_size, float spacing, Color tint) @extern("DrawTextEx");
+extern fn void drawTextEx(Font font, ZString text, Vector2 position, float font_size, float spacing, Color tint) @cname("DrawTextEx");
 
 <*
  Draw text using Font and pro parameters (rotation)
 *>
-extern fn void drawTextPro(Font font, ZString text, Vector2 position, Vector2 origin, float rotation, float font_size, float spacing, Color tint) @extern("DrawTextPro");
+extern fn void drawTextPro(Font font, ZString text, Vector2 position, Vector2 origin, float rotation, float font_size, float spacing, Color tint) @cname("DrawTextPro");
 
 <*
  Draw one character (codepoint)
 *>
-extern fn void drawTextCodepoint(Font font, int codepoint, Vector2 position, float font_size, Color tint) @extern("DrawTextCodepoint");
+extern fn void drawTextCodepoint(Font font, int codepoint, Vector2 position, float font_size, Color tint) @cname("DrawTextCodepoint");
 
 <*
  Draw multiple character (codepoint)
 *>
-extern fn void drawTextCodepoints(Font font, int* codepoints, int codepoint_count, Vector2 position, float font_size, float spacing, Color tint) @extern("DrawTextCodepoints");
+extern fn void drawTextCodepoints(Font font, int* codepoints, int codepoint_count, Vector2 position, float font_size, float spacing, Color tint) @cname("DrawTextCodepoints");
 
 // Text font info functions
 //------------------------------------------------------------------------------------
@@ -109,32 +109,32 @@ extern fn void drawTextCodepoints(Font font, int* codepoints, int codepoint_coun
 <*
  Set vertical line spacing when drawing with line-breaks
 *>
-extern fn void setTextLineSpacing(int spacing) @extern("SetTextLineSpacing");
+extern fn void setTextLineSpacing(int spacing) @cname("SetTextLineSpacing");
 
 <*
  Measure string width for default font
 *>
-extern fn int measureText(ZString text, int font_size) @extern("MeasureText");
+extern fn int measureText(ZString text, int font_size) @cname("MeasureText");
 
 <*
  Measure string size for Font
 *>
-extern fn Vector2 measureTextEx(Font font, ZString text, float font_size, float spacing) @extern("MeasureTextEx");
+extern fn Vector2 measureTextEx(Font font, ZString text, float font_size, float spacing) @cname("MeasureTextEx");
 
 <*
  Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
 *>
-extern fn int getGlyphIndex(Font font, int codepoint) @extern("GetGlyphIndex");
+extern fn int getGlyphIndex(Font font, int codepoint) @cname("GetGlyphIndex");
 
 <*
  Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found
 *>
-extern fn GlyphInfo getGlyphInfo(Font font, int codepoint) @extern("GetGlyphInfo");
+extern fn GlyphInfo getGlyphInfo(Font font, int codepoint) @cname("GetGlyphInfo");
 
 <*
  Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found
 *>
-extern fn Rectangle getGlyphAtlasRec(Font font, int codepoint) @extern("GetGlyphAtlasRec");
+extern fn Rectangle getGlyphAtlasRec(Font font, int codepoint) @cname("GetGlyphAtlasRec");
 
 // Text codepoints management functions (unicode characters)
 //------------------------------------------------------------------------------------
@@ -142,47 +142,47 @@ extern fn Rectangle getGlyphAtlasRec(Font font, int codepoint) @extern("GetGlyph
 <*
  Load UTF-8 text encoded from codepoints array
 *>
-extern fn char* loadUTF8(int *codepoints, int length) @extern("LoadUTF8");
+extern fn char* loadUTF8(int *codepoints, int length) @cname("LoadUTF8");
 
 <*
  Unload UTF-8 text encoded from codepoints array
 *>
-extern fn void unloadUTF8(char* text) @extern("UnloadUTF8");
+extern fn void unloadUTF8(char* text) @cname("UnloadUTF8");
 
 <*
  Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
 *>
-extern fn int* loadCodepoints(ZString text, int *count) @extern("LoadCodepoints");
+extern fn int* loadCodepoints(ZString text, int *count) @cname("LoadCodepoints");
 
 <*
  Unload codepoints data from memory
 *>
-extern fn void unloadCodepoints(int* codepoints) @extern("UnloadCodepoints");
+extern fn void unloadCodepoints(int* codepoints) @cname("UnloadCodepoints");
 
 <*
  Get total number of codepoints in a UTF-8 encoded string
 *>
-extern fn int getCodepointCount(ZString text) @extern("GetCodepointCount");
+extern fn int getCodepointCount(ZString text) @cname("GetCodepointCount");
 
 <*
  Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 *>
-extern fn int getCodepoint(ZString text, int *codepoint_size) @extern("GetCodepoint");
+extern fn int getCodepoint(ZString text, int *codepoint_size) @cname("GetCodepoint");
 
 <*
  Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 *>
-extern fn int getCodepointNext(ZString text, int *codepoint_size) @extern("GetCodepointNext");
+extern fn int getCodepointNext(ZString text, int *codepoint_size) @cname("GetCodepointNext");
 
 <*
  Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 *>
-extern fn int getCodepointPrevious(ZString text, int *codepoint_size) @extern("GetCodepointPrevious");
+extern fn int getCodepointPrevious(ZString text, int *codepoint_size) @cname("GetCodepointPrevious");
 
 <*
  Encode one codepoint into UTF-8 byte array (array length returned as parameter)
 *>
-extern fn ZString codepointToUTF8(int codepoint, int *utf8_size) @extern("CodepointToUTF8");
+extern fn ZString codepointToUTF8(int codepoint, int *utf8_size) @cname("CodepointToUTF8");
 
 // Text strings management functions (no UTF-8 strings, only byte chars)
 // NOTE: Some strings allocate memory internally for returned strings, just be careful!
@@ -191,89 +191,89 @@ extern fn ZString codepointToUTF8(int codepoint, int *utf8_size) @extern("Codepo
 <*
  Copy one string to another, returns bytes copied
 *>
-extern fn int textCopy(ZString dst, ZString src) @extern("TextCopy");
+extern fn int textCopy(ZString dst, ZString src) @cname("TextCopy");
 
 <*
  Check if two text string are equal
 *>
-extern fn bool textIsEqual(ZString text1, ZString text2) @extern("TextIsEqual");
+extern fn bool textIsEqual(ZString text1, ZString text2) @cname("TextIsEqual");
 
 <*
  Get text length, checks for '\0' ending
 *>
-extern fn uint textLength(ZString text) @extern("TextLength");
+extern fn uint textLength(ZString text) @cname("TextLength");
 
 <*
  Text formatting with variables (sprintf() style)
 *>
-extern fn ZString textFormat(ZString text, ...) @extern("TextFormat");
+extern fn ZString textFormat(ZString text, ...) @cname("TextFormat");
 
 <*
  Get a piece of a text string
 *>
-extern fn ZString textSubtext(ZString text, int position, int length) @extern("TextSubtext");
+extern fn ZString textSubtext(ZString text, int position, int length) @cname("TextSubtext");
 
 <*
  Replace text string (WARNING: memory must be freed!)
 *>
-extern fn char *textReplace(ZString text, ZString replace, ZString by) @extern("TextReplace");
+extern fn char *textReplace(ZString text, ZString replace, ZString by) @cname("TextReplace");
 
 <*
  Insert text in a position (WARNING: memory must be freed!)
 *>
-extern fn char* textInsert(ZString text, ZString insert, int position) @extern("TextInsert");
+extern fn char* textInsert(ZString text, ZString insert, int position) @cname("TextInsert");
 
 <*
  Join text strings with delimiter
 *>
-extern fn ZString textJoin(ZString* text_list, int count, ZString delimiter) @extern("TextJoin");
+extern fn ZString textJoin(ZString* text_list, int count, ZString delimiter) @cname("TextJoin");
 
 <*
  Split text into multiple strings
 *>
-extern fn ZString *textSplit(ZString text, char delimiter, int* count) @extern("TextSplit");
+extern fn ZString *textSplit(ZString text, char delimiter, int* count) @cname("TextSplit");
 
 <*
  Append text at specific position and move cursor!
 *>
-extern fn void textAppend(char* text, ZString append, int* position) @extern("TextAppend");
+extern fn void textAppend(char* text, ZString append, int* position) @cname("TextAppend");
 
 <*
  Find first text occurrence within a string
 *>
-extern fn int textFindIndex(ZString text, ZString find) @extern("TextFindIndex");
+extern fn int textFindIndex(ZString text, ZString find) @cname("TextFindIndex");
 
 <*
  Get upper case version of provided string
 *>
-extern fn ZString textToUpper(ZString text) @extern("TextToUpper");
+extern fn ZString textToUpper(ZString text) @cname("TextToUpper");
 
 <*
  Get lower case version of provided string
 *>
-extern fn ZString textToLower(ZString text) @extern("TextToLower");
+extern fn ZString textToLower(ZString text) @cname("TextToLower");
 
 <*
  Get Pascal case notation version of provided string
 *>
-extern fn ZString textToPascal(ZString text) @extern("TextToPascal");
+extern fn ZString textToPascal(ZString text) @cname("TextToPascal");
 
 <*
  Get Snake case notation version of provided string
 *>
-extern fn ZString textToSnake(ZString text) @extern("TextToSnake");
+extern fn ZString textToSnake(ZString text) @cname("TextToSnake");
 
 <*
  Get Camel case notation version of provided string
 *>
-extern fn ZString textToCamel(ZString text) @extern("TextToCamel");
+extern fn ZString textToCamel(ZString text) @cname("TextToCamel");
 
 <*
  Get integer value from text (negative values not supported)
 *>
-extern fn int textToInteger(ZString text) @extern("TextToInteger");
+extern fn int textToInteger(ZString text) @cname("TextToInteger");
 
 <*
  Get float value from text (negative values not supported)
 *>
-extern fn float textToFloat(ZString text) @extern("TextToFloat");
+extern fn float textToFloat(ZString text) @cname("TextToFloat");
