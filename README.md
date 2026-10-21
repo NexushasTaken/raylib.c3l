@@ -24,15 +24,17 @@ Function docs are the same comments as raylib's C headers, so the [raylib cheats
 
 Bundled libraries exist for these targets. Only Linux has been tested with the current version.
 
-| Target        | Bundled library    | Tested             |
-| ------------- | ------------------ | ------------------ |
-| linux-x64     | :heavy_check_mark: | :heavy_check_mark: |
-| windows-x64   | :heavy_check_mark: |                    |
-| mingw-x64     | :heavy_check_mark: |                    |
-| macos-x64     | :heavy_check_mark: |                    |
-| macos-aarch64 | :heavy_check_mark: |                    |
-| freebsd-x64   | :heavy_check_mark: (raylib 5.5, not updated yet) |                    |
-| wasm32        | :heavy_check_mark: |                    |
+| Target          | Bundled library                                  | Tested             |
+| --------------- | ------------------------------------------------ | ------------------ |
+| linux-x64       | :heavy_check_mark:                               | :heavy_check_mark: |
+| linux-aarch64   | :heavy_check_mark:                               |                    |
+| windows-x64     | :heavy_check_mark:                               |                    |
+| windows-aarch64 | :heavy_check_mark:                               |                    |
+| mingw-x64       | :heavy_check_mark:                               |                    |
+| macos-x64       | :heavy_check_mark:                               |                    |
+| macos-aarch64   | :heavy_check_mark:                               |                    |
+| freebsd-x64     | :heavy_check_mark: (raylib 5.5, not updated yet) |                    |
+| wasm32          | :heavy_check_mark:                               |                    |
 
 ## Modules
 

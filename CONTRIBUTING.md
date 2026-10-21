@@ -154,13 +154,15 @@ When you add a wrapper with real logic (slices, lengths, allocations), add a tes
 | C3 target                   | Source                                                   |
 | --------------------------- | -------------------------------------------------------- |
 | linux-x64                   | `raylib-6.2_linux_amd64.tar.gz`                          |
+| linux-aarch64               | `raylib-6.2_linux_arm64.tar.gz`                          |
 | macos-x64, macos-aarch64    | `raylib-6.2_macos.tar.gz` (one universal library for both) |
 | windows-x64                 | `raylib-6.2_win64_msvc16.zip` (`raylib.lib`)             |
+| windows-aarch64             | `raylib-6.2_winarm64_msvc16.zip` (`raylib.lib`)          |
 | mingw-x64                   | `raylib-6.2_win64_mingw-w64.zip`                         |
 | wasm32                      | `raylib-6.2_webassembly.zip` (`libraylib.web.a`, installed as `libraylib.a`) |
 | freebsd-x64                 | no official release. Built by hand and committed as is (still raylib 5.5) |
 
-Skipped release assets: `win32_*` (C3 has no 32-bit Windows target), `linux_i386` (c3c reports linux-x86 as unsupported), and `linux_arm64` and `winarm64_*` (not added yet).
+Skipped release assets: `win32_*` (C3 has no 32-bit Windows target), `linux_i386` (c3c reports linux-x86 as unsupported).
 
 `just build_raylib` builds linux-x64 from `thirdparty/raylib` instead. Use it only for a custom build. Run `just fetch_libs linux-x64` afterwards to go back to the release build.
 

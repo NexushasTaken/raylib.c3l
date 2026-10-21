@@ -19,9 +19,11 @@ BASE_URL="https://github.com/raysan5/raylib/releases/download/$VERSION"
 # c3 target | release asset | sha256 of the asset | library inside lib/ | sha256 of the library | installed as
 ASSETS="
 linux-x64     linux_amd64.tar.gz  586bbc32f3596d439382b1c5dbc6c1c573eb7e1d00fe92be7d4deb116883720d libraylib.a     f0ac4cc3e9c1ceadae4ef6ead1f41a235ec333c5af21aa64aebd173c3b9dbcb1 libraylib.a
+linux-aarch64 linux_arm64.tar.gz  281f3456c9e11c090442f5c1ca923c2c272c8fe53e6693fcd22f07c52f76da5a libraylib.a     32f8bd29515ac02a43f9ecd842754c23f93377454b93fa45d2527ee51219bdb0 libraylib.a
 macos-x64     macos.tar.gz        100437734a44d56ed9d2a1c4b249dbfc6d6cc3477a45e306f9f56fe5f1e2b4ef libraylib.a     8b0c2a190adf0af2c5b176c041c2357bda3b13e2cacb4db6c00fe1d8da1c4c00 libraylib.a
 macos-aarch64 macos.tar.gz        100437734a44d56ed9d2a1c4b249dbfc6d6cc3477a45e306f9f56fe5f1e2b4ef libraylib.a     8b0c2a190adf0af2c5b176c041c2357bda3b13e2cacb4db6c00fe1d8da1c4c00 libraylib.a
 windows-x64   win64_msvc16.zip    8467b5dd6db4d7ab942f3148a3d30d93be6ed9b2fab88069d177e59604268ebd raylib.lib      e50c66cf2521659f6f866247858cbcbb256a4ac8e45a547b9179b5e204ce730d raylib.lib
+windows-aarch64 winarm64_msvc16.zip 027454a16018793c173fe20005100487c246235e61d2a096ec2e31357bad4ac6 raylib.lib    dded44f568e876ab64174fffc3273401f34b9b1a83c09eeb01fcc3a219e947ac raylib.lib
 mingw-x64     win64_mingw-w64.zip 48ba378d100fe7e13fc2c35d708764b855b815596f3b0a31746e37259283961f libraylib.a     ad05e94109e7690a07f8b8d9baa11025f809c3429e0d4252b36382db7f35dbe9 libraylib.a
 wasm32        webassembly.zip     5f77e0cc3f92de2c932e8b69c0b5adfe6d4afde1d313ee075133a5a3ca92e76c libraylib.web.a a6bd883872b6d2c528ca4068d3e6d6377ffc8b332357c54d36f8d894547d8840 libraylib.a
 "

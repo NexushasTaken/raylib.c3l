@@ -48,6 +48,7 @@
 - doc comments updated to the raylib 6.2 and raygui 5.0 headers.
 - `encodeDataBase64` still returns the string without the NULL terminator (raylib 6.2 now counts it in the output size).
 - bundled libraries are the raylib 6.2 release builds. freebsd-x64 is still raylib 5.5.
+- added linux-aarch64 and windows-aarch64 targets, using the raylib 6.2 release builds (not tested).
 - update bindings for c3 v0.8.5 (`@extern` -> `@cname`, `@if`/`$feature` -> `@feat`).
 - fix `rlgl::VertexBuffer` and `rlgl::DrawCall` layouts to match raylib v5.5.
 - fix `@blendMode` calling `beginShaderMode`/`endShaderMode` instead of `beginBlendMode`/`endBlendMode`.
