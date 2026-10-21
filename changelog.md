@@ -22,6 +22,7 @@
 - rename `isWaveReady`/`Wave.isReady` -> `isWaveValid`/`Wave.isValid` and `isSoundReady`/`Sound.isReady` -> `isSoundValid`/`Sound.isValid` (raylib v5.5 removed `IsWaveReady`/`IsSoundReady`).
 - removed `rmath::Quaternionf`, use `math::Quaternionf` instead.
 - `rlgl::loadTextureCubemap` now takes `mipmapCount`, `rlgl::loadFramebuffer` takes no arguments, and the last parameter of `rlgl::setVertexAttribute` is now `int offset`, matching raylib v5.5.
+- rename `rlgl::disable_color_blend` -> `rlgl::disableColorBlend`.
 - bundled libraries moved into [libs](./libs/).
 
 ### Changes

@@ -575,7 +575,7 @@ fn void enableColorBlend() @cname("rlEnableColorBlend");
 /**
  * Disable color blending
  */
-fn void disable_color_blend() @cname("rlDisableColorBlend");
+fn void disableColorBlend() @cname("rlDisableColorBlend");
 
 /**
  * Enable depth test
