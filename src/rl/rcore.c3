@@ -118,12 +118,12 @@ extern fn void minimizeWindow() @cname("MinimizeWindow");
 extern fn void restoreWindow() @cname("RestoreWindow");
 
 <*
- Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
+ Set icon for window (single image, RGBA 32bit)
 *>
 extern fn void setWindowIcon(Image image) @cname("SetWindowIcon");
 
 <*
- Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+ Set icon for window (multiple images, RGBA 32bit)
  @require images.len <= int::max
 *>
 fn void setWindowIcons(Image[] images) @inline {
@@ -131,7 +131,7 @@ fn void setWindowIcons(Image[] images) @inline {
 }
 
 <*
- Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)
+ Set title for window
 *>
 extern fn void setWindowTitle(ZString title) @cname("SetWindowTitle");
 
@@ -263,7 +263,7 @@ extern fn ZString getClipboardText() @cname("GetClipboardText");
 
 <*
  Get clipboard image content
- *>
+*>
 extern fn Image getClipboardImage() @cname("GetClipboardImage");
 
 <*
@@ -430,7 +430,7 @@ extern fn Shader loadShader(ZString vs_file_name, ZString fs_file_name) @cname("
 extern fn Shader loadShaderFromMemory(ZString vs_code, ZString fs_code) @cname("LoadShaderFromMemory");
 
 <*
- Check if a shader is ready (loaded on GPU)
+ Check if a shader is valid (loaded on GPU)
 *>
 extern fn bool Shader.isValid(Shader shader) @cname("IsShaderValid");
 alias isShaderValid = Shader.isValid;
@@ -1239,30 +1239,38 @@ alias updateCameraPro = Camera.updatePro;
 
 <*
  Rotates the camera around its up vector
+ Yaw is "looking left and right"
+ If rotateAroundTarget is false, the camera rotates around its position
+ Note: angle must be provided in radians
 *>
 extern fn void Camera.yaw(Camera* camera, float angle, bool rotate_around_target) @cname("CameraYaw");
 alias cameraYaw = Camera.yaw;
 
 <*
  Rotates the camera around its right vector, pitch is "looking up and down"
+ - lockView prevents camera overrotation (aka "somersaults")
+ - rotateAroundTarget defines if rotation is around target or around its position
+ - rotateUp rotates the up direction as well (typically only usefull in CAMERA_FREE)
+ NOTE: angle must be provided in radians
 *>
 extern fn void Camera.pitch(Camera* camera, float angle, bool lock_view, bool rotate_around_target, bool rotate_up) @cname("CameraPitch");
 alias cameraPitch = Camera.pitch;
 
 <*
- Returns the camera's forward vector (normalized)
+ Returns the cameras forward vector (normalized)
 *>
 extern fn Vector3 Camera.getForward(Camera* camera) @cname("GetCameraForward");
 alias getCameraForward = Camera.getForward;
 
 <*
- Returns the camera's up vector (normalized)
+ Returns the cameras up vector (normalized)
+ Note: The up vector might not be perpendicular to the forward vector
 *>
 extern fn Vector3 Camera.getUp(Camera* camera) @cname("GetCameraUp");
 alias getCameraUp = Camera.getUp;
 
 <*
- Returns the camera's right vector (normalized)
+ Returns the cameras right vector (normalized)
 *>
 extern fn Vector3 Camera.getRight(Camera* camera) @cname("GetCameraRight");
 alias getCameraRight = Camera.getRight;
@@ -1293,6 +1301,8 @@ alias cameraMoveToTarget = Camera.moveToTarget;
 
 <*
  Rotates the camera around its forward vector
+ Roll is "turning your head sideways to the left or right"
+ Note: angle must be provided in radians
 *>
 extern fn void Camera.roll(Camera* camera, float angle) @cname("CameraRoll");
 alias cameraRoll = Camera.roll;

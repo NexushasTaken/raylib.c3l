@@ -5,8 +5,8 @@ module rl;
 //----------------------------------------------------------------------------------
 
 <*
- Setup canvas (framebuffer) to start drawing, then calls [block].
- Drawing will end after [block] has finished.
+ Setup canvas (framebuffer) to start drawing, then runs the body.
+ Calls endDrawing() after the body has finished.
 *>
 macro void @drawing(;@body)
 {
@@ -16,8 +16,8 @@ macro void @drawing(;@body)
 }
 
 <*
- Setup 2D mode with custom camera to start 2D Mode, then calls [block].
- Mode2D will end after [block] has finished.
+ Begin 2D mode with custom camera (2D), then runs the body.
+ Calls endMode2D() after the body has finished.
 *>
 macro void @mode2D(Camera2D camera ;@body)
 {
@@ -27,8 +27,8 @@ macro void @mode2D(Camera2D camera ;@body)
 }
 
 <*
- Setup 3D mode with custom camera to start 2D Mode, then calls [block].
- Mode2D will end after [block] has finished.
+ Begin 3D mode with custom camera (3D), then runs the body.
+ Calls endMode3D() after the body has finished.
 *>
 macro void @mode3D(Camera3D camera ;@body)
 {
@@ -38,8 +38,8 @@ macro void @mode3D(Camera3D camera ;@body)
 }
 
 <*
- Setup texture mode to draw to render texture, then calls [block].
- texture mode will end after [block] has finished.
+ Begin drawing to render texture, then runs the body.
+ Calls endTextureMode() after the body has finished.
 *>
 macro void @textureMode(RenderTexture2D texture ;@body)
 {
@@ -48,10 +48,9 @@ macro void @textureMode(RenderTexture2D texture ;@body)
   @body();
 }
 
-
 <*
- Setup custom shqder mode then calls [block].
- shader mode will end after [block] has finished.
+ Begin custom shader drawing, then runs the body.
+ Calls endShaderMode() after the body has finished.
 *>
 macro void @shaderMode(Shader shader ;@body)
 {
@@ -61,8 +60,8 @@ macro void @shaderMode(Shader shader ;@body)
 }
 
 <*
- Setup blending mode, then calls [block].
- blend mode will end after [block] has finished.
+ Begin blending mode (alpha, additive, multiplied, subtract, custom), then runs the body.
+ Calls endBlendMode() after the body has finished.
 *>
 macro void @blendMode(BlendMode mode ;@body)
 {
@@ -72,8 +71,8 @@ macro void @blendMode(BlendMode mode ;@body)
 }
 
 <*
- Setup scissor mode then calls [block].
- scissor mode will end after [block] has finished.
+ Begin scissor mode (define screen area for following drawing), then runs the body.
+ Calls endScissorMode() after the body has finished.
 *>
 macro void @scissorMode(int x, int y, int width, int height ;@body)
 {
@@ -83,8 +82,8 @@ macro void @scissorMode(int x, int y, int width, int height ;@body)
 }
 
 <*
- Setup stereo rendering mode, then calls [block].
- stereo rendering mode will end after [block] has finished.
+ Begin stereo rendering (requires VR simulator), then runs the body.
+ Calls endVrStereoMode() after the body has finished.
 *>
 macro void @vrMode(VrStereoConfig config ;@body)
 {
@@ -95,12 +94,34 @@ macro void @vrMode(VrStereoConfig config ;@body)
 
 import std::math::vector;
 // TODO: find a better way to convert math::vector types to raylib Vector types and vice versa? and think a better name...
-// Vector convertion functions
+// Vector conversion functions
 
+<*
+ Convert a C3 float[<2>] vector to a raylib Vector2
+*>
 macro Vector2 float[<2>].to_rl(&self) => { self.x, self.y };
+
+<*
+ Convert a C3 float[<3>] vector to a raylib Vector3
+*>
 macro Vector3 float[<3>].to_rl(&self) => { self.x, self.y, self.z };
+
+<*
+ Convert a C3 float[<4>] vector to a raylib Vector4
+*>
 macro Vector4 float[<4>].to_rl(&self) => { self.x, self.y, self.z, self.w };
 
+<*
+ Convert a raylib Vector2 to a C3 float[<2>] vector
+*>
 macro float[<2>] Vector2.to_vecf(&self) => { self.x, self.y };
+
+<*
+ Convert a raylib Vector3 to a C3 float[<3>] vector
+*>
 macro float[<3>] Vector3.to_vecf(&self) => { self.x, self.y, self.z };
+
+<*
+ Convert a raylib Vector4 to a C3 float[<4>] vector
+*>
 macro float[<4>] Vector4.to_vecf(&self) => { self.x, self.y, self.z, self.w };

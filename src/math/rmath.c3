@@ -24,7 +24,9 @@ fn float clamp(float value, float min, float max) @inline {
 	return value.clamp(min, max);
 }
 
-// Get min value for each pair of components
+<*
+ Get min value for each pair of components
+*>
 fn Vector2 vector2_min(Vector2 v1, Vector2 v2) {
 	Vector2 result;
 
@@ -34,7 +36,9 @@ fn Vector2 vector2_min(Vector2 v1, Vector2 v2) {
 	return result;
 }
 
-// Get max value for each pair of components
+<*
+ Get max value for each pair of components
+*>
 fn Vector2 vector2_max(Vector2 v1, Vector2 v2) {
 	Vector2 result;
 
@@ -694,9 +698,9 @@ fn Vector3 vector3Reject(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Orthonormalize provided vectors
-// Makes vectors normalized and orthogonal to each other
 <*
+ Orthonormalize provided vectors
+ Makes vectors normalized and orthogonal to each other
  Gram-Schmidt function implementation
 *>
 fn void vector3OrthoNormalize(Vector3 *v1, Vector3 *v2) {
@@ -912,8 +916,8 @@ fn Vector3 vector3Max(Vector3 v1, Vector3 v2) {
 	return result;
 }
 
-// Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
 <*
+ Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c)
  NOTE: Assumes P is on the plane of the triangle
 *>
 fn Vector3 vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) {
@@ -937,8 +941,8 @@ fn Vector3 vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) {
 	return result;
 }
 
-// Projects a Vector3 from screen space into object space
 <*
+ Projects a Vector3 from screen space into object space
  NOTE: We are avoiding calling other raymath functions despite available
 *>
 fn Vector3 vector3Unproject(Vector3 source, Matrix projection, Matrix view) {
@@ -1043,8 +1047,8 @@ fn Vector3 vector3Invert(Vector3 v) {
 	return result;
 }
 
-// Clamp the components of the vector between
 <*
+ Clamp the components of the vector between
  min and max values specified by the given vectors
 *>
 fn Vector3 vector3Clamp(Vector3 v, Vector3 min, Vector3 max) {
@@ -1102,7 +1106,7 @@ fn bool vector3Equals(Vector3 p, Vector3 q) {
  v: normalized direction of the incoming ray
  n: normalized normal vector of the interface of two optical media
  r: ratio of the refractive index of the medium from where the ray comes
- to the refractive index of the medium on the other side of the surface
+    to the refractive index of the medium on the other side of the surface
 *>
 fn Vector3 vector3Refract(Vector3 v, Vector3 n, float r) {
 	Vector3 result;
@@ -1128,18 +1132,27 @@ fn Vector3 vector3Refract(Vector3 v, Vector3 n, float r) {
 // Module Functions Definition - Vector4 math
 //----------------------------------------------------------------------------------
 
+<*
+ Vector with components value 0.0f
+*>
 fn Vector4 vector4Zero()
 {
 	Vector4 result = { 0.0f, 0.0f, 0.0f, 0.0f };
 	return result;
 }
 
+<*
+ Vector with components value 1.0f
+*>
 fn Vector4 vector4One()
 {
 	Vector4 result = { 1.0f, 1.0f, 1.0f, 1.0f };
 	return result;
 }
 
+<*
+ Add two vectors
+*>
 fn Vector4 vector4Add(Vector4 v1, Vector4 v2)
 {
 	Vector4 result = {
@@ -1151,6 +1164,9 @@ fn Vector4 vector4Add(Vector4 v1, Vector4 v2)
 	return result;
 }
 
+<*
+ Add vector and float value
+*>
 fn Vector4 vector4AddValue(Vector4 v, float add)
 {
 	Vector4 result = {
@@ -1162,6 +1178,9 @@ fn Vector4 vector4AddValue(Vector4 v, float add)
 	return result;
 }
 
+<*
+ Subtract two vectors
+*>
 fn Vector4 vector4Subtract(Vector4 v1, Vector4 v2)
 {
 	Vector4 result = {
@@ -1173,6 +1192,9 @@ fn Vector4 vector4Subtract(Vector4 v1, Vector4 v2)
 	return result;
 }
 
+<*
+ Subtract vector by float value
+*>
 fn Vector4 vector4SubtractValue(Vector4 v, float add)
 {
 	Vector4 result = {
@@ -1184,25 +1206,36 @@ fn Vector4 vector4SubtractValue(Vector4 v, float add)
 	return result;
 }
 
+<*
+ Calculate vector length
+*>
 fn float vector4Length(Vector4 v)
 {
 	float result = math::sqrt((v.x*v.x) + (v.y*v.y) + (v.z*v.z) + (v.w*v.w));
 	return result;
 }
 
+<*
+ Calculate vector square length
+*>
 fn float vector4LengthSqr(Vector4 v)
 {
 	float result = (v.x*v.x) + (v.y*v.y) + (v.z*v.z) + (v.w*v.w);
 	return result;
 }
 
+<*
+ Calculate two vectors dot product
+*>
 fn float vector4DotProduct(Vector4 v1, Vector4 v2)
 {
 	float result = (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z + v1.w*v2.w);
 	return result;
 }
 
-// Calculate distance between two vectors
+<*
+ Calculate distance between two vectors
+*>
 fn float vector4Distance(Vector4 v1, Vector4 v2)
 {
 	float result = math::sqrt(
@@ -1211,7 +1244,9 @@ fn float vector4Distance(Vector4 v1, Vector4 v2)
 	return result;
 }
 
-// Calculate square distance between two vectors
+<*
+ Calculate square distance between two vectors
+*>
 fn float vector4DistanceSqr(Vector4 v1, Vector4 v2)
 {
 	float result =
@@ -1221,34 +1256,45 @@ fn float vector4DistanceSqr(Vector4 v1, Vector4 v2)
 	return result;
 }
 
+<*
+ Multiply vector by scalar
+*>
 fn Vector4 vector4Scale(Vector4 v, float scale)
 {
 	Vector4 result = { v.x*scale, v.y*scale, v.z*scale, v.w*scale };
 	return result;
 }
 
-// Multiply vector by vector
+<*
+ Multiply vector by vector
+*>
 fn Vector4 vector4Multiply(Vector4 v1, Vector4 v2)
 {
 	Vector4 result = { v1.x*v2.x, v1.y*v2.y, v1.z*v2.z, v1.w*v2.w };
 	return result;
 }
 
-// Negate vector
+<*
+ Negate vector
+*>
 fn Vector4 vector4Negate(Vector4 v)
 {
 	Vector4 result = { -v.x, -v.y, -v.z, -v.w };
 	return result;
 }
 
-// Divide vector by vector
+<*
+ Divide vector by vector
+*>
 fn Vector4 vector4Divide(Vector4 v1, Vector4 v2)
 {
 	Vector4 result = { v1.x/v2.x, v1.y/v2.y, v1.z/v2.z, v1.w/v2.w };
 	return result;
 }
 
-// Normalize provided vector
+<*
+ Normalize provided vector
+*>
 fn Vector4 vector4Normalize(Vector4 v)
 {
 	Vector4 result;
@@ -1266,7 +1312,9 @@ fn Vector4 vector4Normalize(Vector4 v)
 	return result;
 }
 
-// Get min value for each pair of components
+<*
+ Get min value for each pair of components
+*>
 fn Vector4 vector4Min(Vector4 v1, Vector4 v2)
 {
 	Vector4 result;
@@ -1279,7 +1327,9 @@ fn Vector4 vector4Min(Vector4 v1, Vector4 v2)
 	return result;
 }
 
-// Get max value for each pair of components
+<*
+ Get max value for each pair of components
+*>
 fn Vector4 vector4Max(Vector4 v1, Vector4 v2)
 {
 	Vector4 result;
@@ -1292,7 +1342,9 @@ fn Vector4 vector4Max(Vector4 v1, Vector4 v2)
 	return result;
 }
 
-// Calculate linear interpolation between two vectors
+<*
+ Calculate linear interpolation between two vectors
+*>
 fn Vector4 vector4Lerp(Vector4 v1, Vector4 v2, float amount)
 {
 	Vector4 result;
@@ -1305,7 +1357,9 @@ fn Vector4 vector4Lerp(Vector4 v1, Vector4 v2, float amount)
 	return result;
 }
 
-// Move Vector towards target
+<*
+ Move Vector towards target
+*>
 fn Vector4 vector4MoveTowards(Vector4 v, Vector4 target, float maxDistance)
 {
 	Vector4 result;
@@ -1328,14 +1382,18 @@ fn Vector4 vector4MoveTowards(Vector4 v, Vector4 target, float maxDistance)
 	return result;
 }
 
-// Invert the given vector
+<*
+ Invert the given vector
+*>
 fn Vector4 vector4Invert(Vector4 v)
 {
 	Vector4 result = { 1.0f/v.x, 1.0f/v.y, 1.0f/v.z, 1.0f/v.w };
 	return result;
 }
 
-// Check whether two given vectors are almost equal
+<*
+ Check whether two given vectors are almost equal
+*>
 fn bool vector4Equals(Vector4 p, Vector4 q)
 {
 	bool result = ((math::abs(p.x - q.x)) <= (EPSILON*math::max(1.0f, math::max(math::abs(p.x), math::abs(q.x))))) &&
@@ -1940,6 +1998,9 @@ fn Float16 matrixToFloatV(Matrix mat) {
 // Module Functions Definition - Quaternion math
 //----------------------------------------------------------------------------------
 
+<*
+ Convert a raylib Quaternion to a C3 math::Quaternionf
+*>
 fn Quaternionf quaternionToQuatf(Quaternion q) {
 	Quaternionf result = { q.x, q.y, q.z, q.w };
 

@@ -628,7 +628,7 @@ extern fn Color Color.fade(Color color, float alpha) @cname("Fade");
 alias fade = Color.fade;
 
 <*
- Get hexadecimal value for a Color
+ Get hexadecimal value for a Color (0xRRGGBBAA)
 *>
 extern fn int Color.toInt(Color color) @cname("ColorToInt");
 alias colorToInt = Color.toInt;

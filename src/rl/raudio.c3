@@ -35,8 +35,8 @@ extern fn void closeAudioDevice() @cname("CloseAudioDevice");
 *>
 extern fn bool isAudioDeviceReady() @cname("IsAudioDeviceReady");
 
+// TODO: is max volume 1.0f is allowed?
 <*
- // TODO: is max volume 1.0f is allowed?
  Set master volume (listener)
  @require volume >= 0.0f
 *>
@@ -293,7 +293,7 @@ extern fn void Music.setPitch(Music music, float pitch) @cname("SetMusicPitch");
 alias setMusicPitch = Music.setPitch;
 
 <*
- Set pan for a music (0.pan >= 0.0f5 is center)
+ Set pan for a music (0.5 is center)
  @require pan >= 0.0f && pan <= 1.0f
 *>
 extern fn void Music.setPan(Music music, float pan) @cname("SetMusicPan");

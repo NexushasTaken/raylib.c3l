@@ -222,7 +222,7 @@ extern fn void Mesh.unload(Mesh mesh) @cname("UnloadMesh");
 alias unloadMesh = Mesh.unload;
 
 <*
- Draw a 3D mesh with material and transform
+ Draw a 3d mesh with material and transform
 *>
 extern fn void drawMesh(Mesh mesh, Material material, Matrix transform) @cname("DrawMesh");
 
@@ -372,7 +372,7 @@ fn ModelAnimation[] loadModelAnimations(ZString file_name) @inline {
 }
 
 <*
- Update model animation pose
+ Update model animation pose (CPU)
 *>
 extern fn void Model.updateAnimation(Model model, ModelAnimation anim, int frame) @cname("UpdateModelAnimation");
 alias updateModelAnimation = Model.updateAnimation;
