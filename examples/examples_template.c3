@@ -71,7 +71,6 @@
 
 module examples_template;
 import rl;
-import std::math::vector;
 
 //------------------------------------------------------------------------------------
 // Program main entry point

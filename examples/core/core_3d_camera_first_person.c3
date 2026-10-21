@@ -10,7 +10,7 @@
 *   Copyright (c) 2015-2023 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
-module core_3d_first_person;
+module core_3d_camera_first_person;
 import rl;
 
 const MAX_COLUMNS = 20;
@@ -181,18 +181,15 @@ fn int main(String[] args)
             rl::drawRectangleLines(600, 5, 195, 100, rl::BLUE);
 
             rl::drawText("Camera status:", 610, 15, 10, rl::BLACK);
-			@pool()
-			{
-				rl::drawText(rl::textFormat("- Mode: %s", (cameraMode == rl::CAMERA_FREE) ? "FREE" :
-															(cameraMode == rl::CAMERA_FIRST_PERSON) ? "FIRST_PERSON" :
-															(cameraMode == rl::CAMERA_THIRD_PERSON) ? "THIRD_PERSON" :
-															(cameraMode == rl::CAMERA_ORBITAL) ? "ORBITAL" : "CUSTOM"), 610, 30, 10, rl::BLACK);
-				rl::drawText(rl::textFormat("- Projection: %s", (camera.projection == rl::CAMERA_PERSPECTIVE) ? "PERSPECTIVE" :
-															(camera.projection == rl::CAMERA_ORTHOGRAPHIC) ? "ORTHOGRAPHIC" : "CUSTOM"), 610, 45, 10, rl::BLACK);
-				rl::drawText(rl::textFormat("- Position: (%06.3f, %06.3f, %06.3f)", camera.position.x, camera.position.y, camera.position.z), 610, 60, 10, rl::BLACK);
-				rl::drawText(rl::textFormat("- Target: (%06.3f, %06.3f, %06.3f)", camera.target.x, camera.target.y, camera.target.z), 610, 75, 10, rl::BLACK);
-				rl::drawText(rl::textFormat("- Up: (%06.3f, %06.3f, %06.3f)", camera.up.x, camera.up.y, camera.up.z), 610, 90, 10, rl::BLACK);
-			};
+			rl::drawText(rl::textFormat("- Mode: %s", (cameraMode == rl::CAMERA_FREE) ? "FREE" :
+														(cameraMode == rl::CAMERA_FIRST_PERSON) ? "FIRST_PERSON" :
+														(cameraMode == rl::CAMERA_THIRD_PERSON) ? "THIRD_PERSON" :
+														(cameraMode == rl::CAMERA_ORBITAL) ? "ORBITAL" : "CUSTOM"), 610, 30, 10, rl::BLACK);
+			rl::drawText(rl::textFormat("- Projection: %s", (camera.projection == rl::CAMERA_PERSPECTIVE) ? "PERSPECTIVE" :
+														(camera.projection == rl::CAMERA_ORTHOGRAPHIC) ? "ORTHOGRAPHIC" : "CUSTOM"), 610, 45, 10, rl::BLACK);
+			rl::drawText(rl::textFormat("- Position: (%06.3f, %06.3f, %06.3f)", camera.position.x, camera.position.y, camera.position.z), 610, 60, 10, rl::BLACK);
+			rl::drawText(rl::textFormat("- Target: (%06.3f, %06.3f, %06.3f)", camera.target.x, camera.target.y, camera.target.z), 610, 75, 10, rl::BLACK);
+			rl::drawText(rl::textFormat("- Up: (%06.3f, %06.3f, %06.3f)", camera.up.x, camera.up.y, camera.up.z), 610, 90, 10, rl::BLACK);
 		};
         //----------------------------------------------------------------------------------
     }

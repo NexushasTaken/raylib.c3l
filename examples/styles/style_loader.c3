@@ -31,12 +31,13 @@ fn void load_style(
 
     // Copy char recs data from global fontRecs
     // NOTE: Required to avoid issues if trying to free font
-    font.recs = mem::new_array(rl::Rectangle, font.glyph_count).ptr;
+    // NOTE: raygui frees these with free(), so they must come from raylib's allocator, not a C3 one
+    font.recs = rl::memAlloc((uint)(font.glyph_count * rl::Rectangle::size));
     mem::copy(font.recs, recs.ptr, font.glyph_count * rl::Rectangle::size);
 
     // Copy font char info data from global fontChars
     // NOTE: Required to avoid issues if trying to free font
-    font.glyphs = mem::new_array(rl::GlyphInfo, font.glyph_count).ptr;
+    font.glyphs = rl::memAlloc((uint)(font.glyph_count * rl::GlyphInfo::size));
     mem::copy(font.glyphs, chars.ptr, font.glyph_count * rl::GlyphInfo::size);
 
     raygui::setFont(font);

@@ -22,8 +22,8 @@
 *
 *
 *   DEPENDENCIES:
-*       raylib 4.5          - Windowing/input management and drawing
-*       raygui 3.5          - Immediate-mode GUI controls with custom styling and icons
+*       raylib 5.5          - Windowing/input management and drawing
+*       raygui 4.0          - Immediate-mode GUI controls with custom styling and icons
 *
 *   COMPILATION (Windows - MinGW):
 *       gcc -o $(NAME_PART).exe $(FILE_NAME) -I../../src -lraylib -lopengl32 -lgdi32 -std=c99
@@ -35,8 +35,6 @@
 **********************************************************************************************/
 
 module controls_test_suite;
-import std::io;
-import std::collections;
 import rl;
 import raygui;
 
@@ -119,8 +117,8 @@ fn int main()
 	bool showMessageBox = false;
 
 
-	char[] textInput = mem::temp_array(char, 256);
-	char[] textInputFileName = mem::temp_array(char, 256);
+	char[256] textInput;
+	char[256] textInputFileName;
 	bool showTextInputBox = false;
 
 	float alpha = 1.0f;
@@ -305,20 +303,20 @@ fn int main()
 					140
 				  },
 				  raygui::iconText(raygui::GuiIconName.ICON_FILE_SAVE, "Save file as..."),
-				  "Introduce output file name:", "Ok;Cancel", textInput, null);
+				  "Introduce output file name:", "Ok;Cancel", textInput[..], null);
 
 
 				if (result == 1)
 				{
 					// TODO: Validate textInput value and save
 
-					rl::textCopy((ZString)textInputFileName.ptr, (ZString)textInput.ptr);
+					rl::textCopy((ZString)&textInputFileName, (ZString)&textInput);
 				}
 
 				if ((result == 0) || (result == 1) || (result == 2))
 				{
 					showTextInputBox = false;
-					rl::textCopy((ZString)textInput.ptr, "\0");
+					rl::textCopy((ZString)&textInput, "\0");
 				}
 			}
 			//----------------------------------------------------------------------------------
