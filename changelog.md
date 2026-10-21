@@ -55,6 +55,7 @@
 - fix `@blendMode` calling `beginShaderMode`/`endShaderMode` instead of `beginBlendMode`/`endBlendMode`.
 - added the remaining rcamera bindings: `Camera.yaw`, `Camera.pitch`, `Camera.roll`, `Camera.moveForward`, `Camera.moveUp`, `Camera.moveRight`, `Camera.moveToTarget`, `Camera.getForward`, `Camera.getUp`, `Camera.getRight`, `Camera.getViewMatrix` and `Camera.getProjectionMatrix` (each with a `camera*`/`getCamera*` alias).
 - `rmath` functions are now bindings to raylib's own raymath functions instead of a C3 copy of them. The API is unchanged, except `clamp` now matches raylib when `min > max`.
+- added `rlgl::READ_FRAMEBUFFER` and `rlgl::DRAW_FRAMEBUFFER`, the targets for `rlgl::bindFramebuffer`.
 - added rlgl v5.5 bindings: `setClipPlanes`, `getCullDistanceNear`, `getCullDistanceFar`, `getActiveFramebuffer`, `bindFramebuffer`, `colorMask` and `setUniformMatrices`.
 - added freebsd-x64 target to [manifest.json](manifest.json).
 - added mingw-x64 target to [manifest.json](manifest.json).

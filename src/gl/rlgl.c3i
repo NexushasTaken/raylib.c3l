@@ -91,6 +91,9 @@ const BLEND_DST_ALPHA                      = 0x80CA;      // GL_BLEND_DST_ALPHA
 const BLEND_SRC_ALPHA                      = 0x80CB;      // GL_BLEND_SRC_ALPHA
 const BLEND_COLOR                          = 0x8005;      // GL_BLEND_COLOR
 
+const READ_FRAMEBUFFER                     = 0x8CA8;      // GL_READ_FRAMEBUFFER
+const DRAW_FRAMEBUFFER                     = 0x8CA9;      // GL_DRAW_FRAMEBUFFER
+
 
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
