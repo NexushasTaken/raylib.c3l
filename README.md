@@ -98,7 +98,7 @@ or build it directly with `c3c build core_2d_camera`.
 - `just build_raylib` builds the linux-x64 `libraylib.a` from `thirdparty/raylib` instead, if you want a custom build.
 - `just dist` packages the library into `dist/raylib.c3l`.
 
-See the [changelog](./changelog.md) for changes between versions.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how the project is laid out and how to change it, and the [changelog](./changelog.md) for changes between versions.
 
 # Future goals
 - Testing on more platforms.
