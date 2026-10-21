@@ -164,6 +164,18 @@ When you add a wrapper with real logic (slices, lengths, allocations), add a tes
 
 Skipped release assets: `win32_*` (C3 has no 32-bit Windows target), `linux_i386` (c3c reports linux-x86 as unsupported).
 
+### Building freebsd-x64
+
+raylib has no FreeBSD release, so the library has to be built on FreeBSD itself (a VM works). raylib's Makefile detects FreeBSD, uses `clang`, and looks for X11 headers in `/usr/local/include`. These steps follow that Makefile but have not been tried for 6.2 yet:
+
+```sh
+pkg install git gmake xorg-libraries mesa-libs   # raylib's Makefile needs GNU make
+git clone --depth 1 --branch 6.2 https://github.com/raysan5/raylib
+gmake -C raylib/src PLATFORM=PLATFORM_DESKTOP RAYLIB_MODULE_RAYGUI=FALSE
+```
+
+Copy `raylib/src/libraylib.a` to `libs/freebsd-x64/` and commit it. Keep `RAYLIB_MODULE_RAYGUI=FALSE`, because raygui is compiled from `c-src/raygui.c` (see the table at the top).
+
 `just build_raylib` builds linux-x64 from `thirdparty/raylib` instead. Use it only for a custom build. Run `just fetch_libs linux-x64` afterwards to go back to the release build.
 
 ## Updating raylib or raygui
