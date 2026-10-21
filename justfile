@@ -6,6 +6,10 @@ RAYGUI := "FALSE"
 sync_c_src:
   cp -v {{RAYLIB_SRC}}/raylib.h {{RAYGUI_SRC}}/raygui.h ./c-src/
 
+# Download the prebuilt raylib libraries from the GitHub release into libs
+fetch_libs *TARGETS:
+  ./scripts/fetch_libs.sh {{TARGETS}}
+
 build_raylib: sync_c_src
   make -C {{RAYLIB_SRC}} clean
   make -C {{RAYLIB_SRC}} RAYLIB_MODULE_RAYGUI={{RAYGUI}} all

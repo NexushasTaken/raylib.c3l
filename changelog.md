@@ -33,6 +33,8 @@
 - `rmath` functions are now bindings to raylib's own raymath functions instead of a C3 copy of them. The API is unchanged, except `clamp` now matches raylib when `min > max`.
 - added rlgl v5.5 bindings: `setClipPlanes`, `getCullDistanceNear`, `getCullDistanceFar`, `getActiveFramebuffer`, `bindFramebuffer`, `colorMask` and `setUniformMatrices`.
 - added freebsd-x64 target to [manifest.json](manifest.json).
+- added mingw-x64 target to [manifest.json](manifest.json).
+- bundled libraries for linux-x64, macos-x64, macos-aarch64, windows-x64, mingw-x64 and wasm32 are now the official raylib 5.5 release builds, fetched with `just fetch_libs`.
 - `just dist` now includes `c-src`.
 - updated examples to the current API.
 - unit tests now use `@test`, run them with `c3c test`.

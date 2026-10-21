@@ -27,6 +27,7 @@ Bundled libraries exist for these targets. Only Linux has been tested with the c
 | ------------- | ------------------ | ------------------ |
 | linux-x64     | :heavy_check_mark: | :heavy_check_mark: |
 | windows-x64   | :heavy_check_mark: |                    |
+| mingw-x64     | :heavy_check_mark: |                    |
 | macos-x64     | :heavy_check_mark: |                    |
 | macos-aarch64 | :heavy_check_mark: |                    |
 | freebsd-x64   | :heavy_check_mark: |                    |
@@ -93,7 +94,8 @@ or build it directly with `c3c build core_2d_camera`.
 # Development
 
 - `c3c test` runs the unit tests in [test/unit](./test/unit/).
-- `just build_raylib` rebuilds the linux-x64 `libraylib.a` from `thirdparty/raylib` (with raygui).
+- `just fetch_libs` downloads the prebuilt libraries from the [raylib 5.5 release](https://github.com/raysan5/raylib/releases/tag/5.5) into [libs](./libs/) (pass target names to fetch only some, e.g. `just fetch_libs linux-x64`). freebsd-x64 has no official release, so its library is kept as is.
+- `just build_raylib` builds the linux-x64 `libraylib.a` from `thirdparty/raylib` instead, if you want a custom build.
 - `just dist` packages the library into `dist/raylib.c3l`.
 
 See the [changelog](./changelog.md) for changes between versions.
