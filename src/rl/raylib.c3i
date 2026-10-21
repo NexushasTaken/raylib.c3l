@@ -92,3 +92,12 @@ extern fn void __unload_image_palette(Color* colors) @cname("UnloadImagePalette"
 extern fn void __image_draw_triangle_fan(Image* dst, Vector2* points, int point_count, Color color) @cname("ImageDrawTriangleFan");
 extern fn void __image_draw_triangle_strip(Image* dst, Vector2* points, int point_count, Color color) @cname("ImageDrawTriangleStrip");
 //------------------------------------------------------------------------------------
+
+// rmath.c3
+//------------------------------------------------------------------------------------
+extern fn int __float_equals(float x, float y) @cname("FloatEquals") @private;
+extern fn int __vector2_equals(Vector2 p, Vector2 q) @cname("Vector2Equals") @private;
+extern fn int __vector3_equals(Vector3 p, Vector3 q) @cname("Vector3Equals") @private;
+extern fn int __vector4_equals(Vector4 p, Vector4 q) @cname("Vector4Equals") @private;
+extern fn int __quaternion_equals(Quaternion p, Quaternion q) @cname("QuaternionEquals") @private;
+//------------------------------------------------------------------------------------
