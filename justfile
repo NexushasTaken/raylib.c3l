@@ -1,7 +1,8 @@
 RAYLIB_SRC := "./thirdparty/raylib/src"
-RAYGUI := "TRUE"
+RAYGUI := "FALSE"
 
 build_raylib:
+  make -C {{RAYLIB_SRC}} clean
   make -C {{RAYLIB_SRC}} RAYLIB_MODULE_RAYGUI={{RAYGUI}} all
   mkdir -p ./libs/linux-x64 && cp -v {{RAYLIB_SRC}}/libraylib.a ./libs/linux-x64/libraylib.a
 
