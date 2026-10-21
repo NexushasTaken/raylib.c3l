@@ -13,7 +13,7 @@ You need:
 ```sh
 git clone https://github.com/NexushasTaken/raylib.c3l
 cd raylib.c3l
-git submodule update --init    # thirdparty/raylib (6.2) and thirdparty/raygui (4.0)
+git submodule update --init    # thirdparty/raylib (6.2) and thirdparty/raygui (5.0)
 c3c test                       # should pass
 just run_example core core_2d_camera
 ```
@@ -30,7 +30,7 @@ src/gl/           module rlgl, behind the ENABLE_RLGL feature
 src/gui/          module raygui, behind the ENABLE_RAYGUI feature
 c-src/            C files shipped in the package: raylib.h and raygui.h (copied from thirdparty), raygui.c
 libs/<target>/    prebuilt raylib static libraries, one folder per C3 target
-thirdparty/       git submodules: raylib 6.2 and raygui 4.0 sources (not shipped)
+thirdparty/       git submodules: raylib 6.2 and raygui 5.0 sources (not shipped)
 scripts/          fetch_libs.sh
 examples/         C3 ports of raylib/raygui examples, each one a target in project.json
 test/unit/        unit tests, run with `c3c test`

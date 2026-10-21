@@ -1,6 +1,6 @@
 # raylib.c3l
 
-raylib.c3l is a set of C3 bindings for [raylib](http://www.raylib.com/) 6.2, with optional [rlgl](https://github.com/raysan5/raylib/blob/master/src/rlgl.h) and [raygui](https://github.com/raysan5/raygui) 4.0 bindings.
+raylib.c3l is a set of C3 bindings for [raylib](http://www.raylib.com/) 6.2, with optional [rlgl](https://github.com/raysan5/raylib/blob/master/src/rlgl.h) and [raygui](https://github.com/raysan5/raygui) 5.0 bindings.
 
 C libraries are easy to call from C3 directly, but these bindings also try to use C3 features where they make raylib nicer to use:
 - **Methods and aliases**: functions that act on a type are C3 methods, and each one also has a plain alias, so `image.loadColors()` and `rl::loadImageColors(image)` both work.
@@ -17,7 +17,7 @@ Function docs are the same comments as raylib's C headers, so the [raylib cheats
 ## Requirements
 
 - C3 compiler 0.8.5
-- raylib 6.2 and raygui 4.0 (prebuilt static libraries are bundled in [libs](./libs/), so you don't need to build them)
+- raylib 6.2 and raygui 5.0 (prebuilt raylib libraries are bundled in [libs](./libs/) and raygui is compiled from [c-src](./c-src/), so you don't need to build them)
 - on Linux, libX11 (raylib 6.2 links it for clipboard images)
 
 ## Supported Platforms

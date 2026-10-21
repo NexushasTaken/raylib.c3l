@@ -276,7 +276,8 @@ fn int main()
 			if (showMessageBox)
 			{
 				rl::drawRectangle(0, 0, rl::getScreenWidth(), rl::getScreenHeight(), rl::fade(rl::RAYWHITE, 0.8f));
-				int result = raygui::messageBox(
+				int btn_active = -1;
+				raygui::messageBox(
 				  (Rectangle) {
 					(float)rl::getScreenWidth()/2 - 125,
 					(float)rl::getScreenHeight()/2 - 50,
@@ -285,17 +286,19 @@ fn int main()
 				  },
 				  raygui::iconText(ICON_EXIT, "Close Window"),
 				  "Do you really want to exit?",
-				  "Yes;No"
+				  "Yes;No",
+				  &btn_active
 				);
 
-				if ((result == 0) || (result == 2)) { showMessageBox = false; }
-				else if (result == 1) { exitWindow = true; }
+				if ((btn_active == 0) || (btn_active == 2)) { showMessageBox = false; }
+				else if (btn_active == 1) { exitWindow = true; }
 			}
 
 			if (showTextInputBox)
 			{
 				rl::drawRectangle(0, 0, rl::getScreenWidth(), rl::getScreenHeight(), rl::fade(rl::RAYWHITE, 0.8f));
-				int result = raygui::textInputBox(
+				int btn_active = -1;
+				raygui::textInputBox(
 				  (Rectangle) {
 					(float)rl::getScreenWidth()/2 - 120,
 					(float)rl::getScreenHeight()/2 - 60,
@@ -303,17 +306,17 @@ fn int main()
 					140
 				  },
 				  raygui::iconText(raygui::GuiIconName.ICON_FILE_SAVE, "Save file as..."),
-				  "Introduce output file name:", "Ok;Cancel", textInput[..], null);
+				  "Introduce output file name:", textInput[..], "Ok;Cancel", &btn_active, null);
 
 
-				if (result == 1)
+				if (btn_active == 1)
 				{
 					// TODO: Validate textInput value and save
 
 					rl::textCopy((ZString)&textInputFileName, (ZString)&textInput);
 				}
 
-				if ((result == 0) || (result == 1) || (result == 2))
+				if ((btn_active == 0) || (btn_active == 1) || (btn_active == 2))
 				{
 					showTextInputBox = false;
 					rl::textCopy((ZString)&textInput, "\0");

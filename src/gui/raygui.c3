@@ -1,10 +1,10 @@
 /******************************************************************************************
 *
-*   raygui v4.0 - A simple and easy-to-use immediate-mode gui library
+*   raygui v5.0 - A simple and easy-to-use immediate-mode gui library
 *
 *   DESCRIPTION:
 *       raygui is a tools-dev-focused immediate-mode-gui library based on raylib but also
-*       available as a standalone library, as long as input and drawing functions are provided.
+*       available as a standalone library, as long as input and drawing functions are provided
 *
 *   FEATURES:
 *       - Immediate-mode gui, minimal retained data
@@ -26,8 +26,8 @@
 *   NOTES:
 *       - WARNING: GuiLoadStyle() and GuiLoadStyle{Custom}() functions, allocate memory for
 *         font atlas recs and glyphs, freeing that memory is (usually) up to the user,
-*         no unload function is explicitly provided... but note that GuiLoadStyleDefaulf() unloads
-*         by default any previously loaded font (texture, recs, glyphs).
+*         no unload function is explicitly provided... but note that GuiLoadStyleDefault() unloads
+*         by default any previously loaded font (texture, recs, glyphs)
 *       - Global UI alpha (guiAlpha) is applied inside GuiDrawRectangle() and GuiDrawText() functions
 *
 *   CONTROLS PROVIDED:
@@ -37,7 +37,7 @@
 *       - Line
 *       - Panel         --> StatusBar
 *       - ScrollPanel   --> StatusBar
-*       - TabBar        --> Button
+*       - TabBar        --> Toggle, Button
 *
 *     # Basic Controls
 *       - Label
@@ -65,7 +65,7 @@
 *       - MessageBox    --> Window, Label, Button
 *       - TextInputBox  --> Window, Label, TextBox, Button
 *
-*     It also provides a set of functions for styling the controls based on its properties (size, color).
+*     It also provides a set of functions for styling the controls based on its properties (size, color)
 *
 *
 *   RAYGUI STYLE (guiStyle):
@@ -77,14 +77,14 @@
 *
 *           static unsigned int guiStyle[RAYGUI_MAX_CONTROLS*(RAYGUI_MAX_PROPS_BASE + RAYGUI_MAX_PROPS_EXTENDED)];
 *
-*       guiStyle size is by default: 16*(16 + 8) = 384*4 = 1536 bytes = 1.5 KB
+*       guiStyle size is by default: 16*(16 + 8) = 384 int = 384*4 bytes = 1536 bytes = 1.5 KB
 *
 *       Note that the first set of BASE properties (by default guiStyle[0..15]) belong to the generic style
 *       used for all controls, when any of those base values is set, it is automatically populated to all
-*       controls, so, specific control values overwriting generic style should be set after base values.
+*       controls, so, specific control values overwriting generic style should be set after base values
 *
-*       After the first BASE set we have the EXTENDED properties (by default guiStyle[16..23]), those
-*       properties are actually common to all controls and can not be overwritten individually (like BASE ones)
+*       After the first BASE properties set, the EXTENDED properties set is defined (by default guiStyle[16..23]),
+*       those properties are actually common to all controls and can not be overwritten individually (like BASE ones)
 *       Some of those properties are: TEXT_SIZE, TEXT_SPACING, LINE_COLOR, BACKGROUND_COLOR
 *
 *       Custom control properties can be defined using the EXTENDED properties for each independent control.
@@ -100,7 +100,7 @@
 *       Every icon is codified in binary form, using 1 bit per pixel, so, every 16x16 icon
 *       requires 8 integers (16*16/32) to be stored in memory.
 *
-*       When the icon is draw, actually one quad per pixel is drawn if the bit for that pixel is set.
+*       When the icon is draw, actually one quad per pixel is drawn if the bit for that pixel is set
 *
 *       The global icons array size is fixed and depends on the number of icons and size:
 *
@@ -112,20 +112,20 @@
 *
 *   RAYGUI LAYOUT:
 *       raygui currently does not provide an auto-layout mechanism like other libraries,
-*       layouts must be defined manually on controls drawing, providing the right bounds Rectangle for it.
+*       layouts must be defined manually on controls drawing, providing the right bounds Rectangle for it
 *
 *       TOOL: rGuiLayout is a visual tool to create raygui layouts: github.com/raysan5/rguilayout
 *
 *   CONFIGURATION:
 *       #define RAYGUI_IMPLEMENTATION
-*           Generates the implementation of the library into the included file.
+*           Generates the implementation of the library into the included file
 *           If not defined, the library is in header only mode and can be included in other headers
-*           or source files without problems. But only ONE file should hold the implementation.
+*           or source files without problems. But only ONE file should hold the implementation
 *
 *       #define RAYGUI_STANDALONE
 *           Avoid raylib.h header inclusion in this file. Data types defined on raylib are defined
 *           internally in the library and input management and drawing functions must be provided by
-*           the user (check library implementation for further details).
+*           the user (check library implementation for further details)
 *
 *       #define RAYGUI_NO_ICONS
 *           Avoid including embedded ricons data (256 icons, 16x16 pixels, 1-bit per pixel, 2KB)
@@ -134,13 +134,52 @@
 *           Includes custom ricons.h header defining a set of custom icons,
 *           this file can be generated using rGuiIcons tool
 *
+*       #define RAYGUI_FONT_ICONS_BAKING
+*           On gui font loading from style file, append the icons to font atlas image, so,
+*           icons can be drawn along the text as a texture, instead of using shapes to draw them
+*
 *       #define RAYGUI_DEBUG_RECS_BOUNDS
 *           Draw control bounds rectangles for debug
-* 
+*
 *       #define RAYGUI_DEBUG_TEXT_BOUNDS
 *           Draw text bounds rectangles for debug
 *
 *   VERSIONS HISTORY:
+*       5.0 (20-Jul-2026) ADDED: NEW control: GuiTabBar()
+*                         ADDED: Support up to 512 icons (v500)
+*                         ADDED: Support icons baking into font atlas image
+*                         ADDED: guiControlExclusiveMode and guiControlExclusiveRec for exclusive modes
+*                         ADDED: GuiValueBoxFloat(), with floats support
+*                         ADDED: GuiDropdonwBox() properties: DROPDOWN_ARROW_HIDDEN, DROPDOWN_ROLL_UP
+*                         ADDED: GuiListView() property: LIST_ITEMS_BORDER_WIDTH
+*                         ADDED: GuiLoadIconsFromMemory(), used by GuiLoadIcons()
+*                         ADDED: Macros for inputs customization, raylib decoupling
+*                         ADDED: Control result return values: 1-RESULT_PRESSED, 2-RESULT_CHANGED, >2-Control_custom
+*                         REMOVED: GuiSpinner() from controls list, using BUTTON + VALUEBOX properties
+*                         REMOVED: GuiSliderPro(), functionality was redundant
+*                         REMOVED: TextSplit() raylib function requirement on RAYGUI_STANDALONE
+*                         REDESIGNED: WARNING: GuiLoadStyleFromMemory() to support icons baking into font atlas
+*                         REDESIGNED: GuiToggleGroup() to process rows/cols with no need for GuiTextSplit()
+*                         REDESIGNED: GuiColorPanel(), improved HSV <-> RGBA convertion
+*                         REDESIGNED: WARNING: TEXT_LINE_SPACING does not consider text height, only lines spacing
+*                         REDESIGNED: WARNING: GuiMessageBox(), added parameter for btn return, unify result
+*                         REDESIGNED: WARNING: GuiTextInputBox(), added parameter for btn return, unify result
+*                         REVIEWED: GuiLoadIconsFromMemory(), fixed memory issues
+*                         REVIEWED: Controls using text labels to use LABEL properties
+*                         REVIEWED: Replaced sprintf() by snprintf() for more safety
+*                         REVIEWED: GuiTabBar(), close tab with mouse middle button
+*                         REVIEWED: GuiScrollPanel(), scroll speed proportional to content
+*                         REVIEWED: GuiDropdownBox(), support roll up and hidden arrow
+*                         REVIEWED: GuiTextBox(), cursor position initialization
+*                         REVIEWED: GuiSliderPro(), control value change check
+*                         REVIEWED: GuiGrid(), simplified implementation
+*                         REVIEWED: GuiIconText(), increase buffer size and reviewed padding
+*                         REVIEWED: GuiDrawText(), improved wrap mode drawing
+*                         REVIEWED: GuiScrollBar(), minor tweaks
+*                         REVIEWED: GuiProgressBar(), improved borders computing
+*                         REVIEWED: GuiTextBox(), multiple improvements: autocursor and more
+*                         REVIEWED: Functions descriptions, removed wrong return value reference
+*
 *       4.0 (12-Sep-2023) ADDED: GuiToggleSlider()
 *                         ADDED: GuiColorPickerHSV() and GuiColorPanelHSV()
 *                         ADDED: Multiple new icons, mostly compiler related
@@ -241,16 +280,16 @@
 *       1.4 (15-Jun-2017) Rewritten all GUI functions (removed useless ones)
 *       1.3 (12-Jun-2017) Complete redesign of style system
 *       1.1 (01-Jun-2017) Complete review of the library
-*       1.0 (07-Jun-2016) Converted to header-only by Ramon Santamaria.
-*       0.9 (07-Mar-2016) Reviewed and tested by Albert Martos, Ian Eito, Sergio Martinez and Ramon Santamaria.
-*       0.8 (27-Aug-2015) Initial release. Implemented by Kevin Gato, Daniel Nicolás and Ramon Santamaria.
+*       1.0 (07-Jun-2016) Converted to header-only by Ramon Santamaria
+*       0.9 (07-Mar-2016) Reviewed and tested by Albert Martos, Ian Eito, Sergio Martinez and Ramon Santamaria
+*       0.8 (27-Aug-2015) Initial release. Implemented by Kevin Gato, Daniel Nicolás and Ramon Santamaria
 *
 *   DEPENDENCIES:
-*       raylib 4.6-dev      Inputs reading (keyboard/mouse), shapes drawing, font loading and text drawing
+*       raylib 6.1-dev  - Inputs reading (keyboard/mouse), shapes drawing, font loading and text drawing
 *
 *   STANDALONE MODE:
 *       By default raygui depends on raylib mostly for the inputs and the drawing functionality but that dependency can be disabled
-*       with the config flag RAYGUI_STANDALONE. In that case is up to the user to provide another backend to cover library needs.
+*       with the config flag RAYGUI_STANDALONE. In that case is up to the user to provide another backend to cover library needs
 *
 *       The following functions should be redefined for a custom backend:
 *
@@ -291,7 +330,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2014-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2014-2026 Ramon Santamaria (@raysan5)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -312,10 +351,10 @@
 module raygui @feat(ENABLE_RAYGUI);
 import rl;
 
-const RAYGUI_VERSION_MAJOR = 4;
+const RAYGUI_VERSION_MAJOR = 5;
 const RAYGUI_VERSION_MINOR = 0;
 const RAYGUI_VERSION_PATCH = 0;
-const RAYGUI_VERSION = "4.0";
+const RAYGUI_VERSION = "5.0";
 
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -328,6 +367,13 @@ struct GuiStyleProp {
 	ushort property_id; // Property identifier
 	int property_value; // Property value
 }
+
+// Gui control result
+alias GuiResult = int;
+const GuiResult RESULT_NONE      = 0;
+const GuiResult RESULT_PRESSED   = 1;
+const GuiResult RESULT_CHANGED   = 2;
+const GuiResult RESULT_TAB_CLOSE = 4; // GuiTabBar(), tab close request
 
 // Gui control state
 alias GuiState = int;
@@ -357,6 +403,7 @@ const GuiTextWrapMode TEXT_WRAP_CHAR = 1;
 const GuiTextWrapMode TEXT_WRAP_WORD = 2;
 
 // Gui controls
+// NOTE: Up to 16 controls supported or 32 controls (v500)
 alias GuiControl = int;
 // Default -> populates to all controls when set
 const GuiControl DEFAULT     = 0;
@@ -371,14 +418,16 @@ const GuiControl COMBOBOX    = 7;
 const GuiControl DROPDOWNBOX = 8;
 const GuiControl TEXTBOX     = 9;  // Used also for: TEXTBOXMULTI
 const GuiControl VALUEBOX    = 10;
-const GuiControl SPINNER     = 11; // Uses: BUTTON, VALUEBOX
+const GuiControl TABBAR      = 11;
 const GuiControl LISTVIEW    = 12;
 const GuiControl COLORPICKER = 13;
 const GuiControl SCROLLBAR   = 14;
 const GuiControl STATUSBAR   = 15;
+// NOTE: More controls can be added if required
 
-// Gui base properties for every control
-// NOTE: RAYGUI_MAX_PROPS_BASE properties (by default 16 properties)
+// Controls BASE properties for every control (RAYGUI_MAX_PROPS_BASE = 16)
+// NOTE: Properties required for all controls, DEFAULT control sets
+// default values for them but they can be overriden per control
 alias GuiControlProperty = int;
 const GuiControlProperty BORDER_COLOR_NORMAL   = 0;      // Control border color in STATE_NORMAL
 const GuiControlProperty BASE_COLOR_NORMAL     = 1;      // Control base color in STATE_NORMAL
@@ -393,32 +442,39 @@ const GuiControlProperty BORDER_COLOR_DISABLED = 9;      // Control border color
 const GuiControlProperty BASE_COLOR_DISABLED   = 10;     // Control base color in STATE_DISABLED
 const GuiControlProperty TEXT_COLOR_DISABLED   = 11;     // Control text color in STATE_DISABLED
 const GuiControlProperty BORDER_WIDTH          = 12;     // Control border size, 0 for no border
-//const GuiControlProperty TEXT_SIZE;                      // Control text size (glyphs max height) -> GLOBAL for all controls
-//const GuiControlProperty TEXT_SPACING;                   // Control text spacing between glyphs -> GLOBAL for all controls
-//const GuiControlProperty TEXT_LINE_SPACING;              // Control text spacing between lines -> GLOBAL for all controls
 const GuiControlProperty TEXT_PADDING          = 13;     // Control text padding, not considering border
-const GuiControlProperty TEXT_ALIGNMENT        = 14;     // Control text horizontal alignment inside control text bound (after border and padding)
+const GuiControlProperty TEXT_ALIGNMENT        = 14;     // Control text horizontal alignment inside control text bound (after border and padding): 0-Left, 1-Center, 2-Right
+const GuiControlProperty BASEPROP16            = 15;     // Not used yet...
 
-// Gui extended properties depend on control
-// NOTE: RAYGUI_MAX_PROPS_EXTENDED properties (by default, max 8 properties)
+// WARNING: Some properties have been chosen to be global with DEFAULT - EXTENDED properties:
+//    - TEXT_SIZE,                  // Control text size (glyphs max height)
+//    - TEXT_SPACING,               // Control text spacing between glyphs
+//    - TEXT_LINE_SPACING,          // Control text spacing between lines
+//    - TEXT_WRAP_MODE              // Control text wrap-mode inside text bounds
+//
+// While other properties can be setup per globally (DEFAULT) or per control:
+//    - TEXT_PADDING                // Control text padding, not considering border
+//    - TEXT_ALIGNMENT              // Control text horizontal alignment inside control text bound
+
+// Controls EXTENDED properties (RAYGUI_MAX_PROPS_EXTENDED = 8)
+// WARNING: Only 8 slots vailable for those properties per control, including DEFAULT
 //----------------------------------------------------------------------------------
-// DEFAULT extended properties
-// NOTE: Those properties are common to all controls or global
-// WARNING: We only have 8 slots for those properties by default!!! -> New global control: TEXT?
+// DEFAULT control, extended properties
+// NOTE: Those properties are global for all controls, they can not be setup per control
 alias GuiDefaultProperty = int;
 const GuiDefaultProperty TEXT_SIZE               = 16; // Text size (glyphs max height)
 const GuiDefaultProperty TEXT_SPACING            = 17; // Text spacing between glyphs
 const GuiDefaultProperty LINE_COLOR              = 18; // Line control color
 const GuiDefaultProperty BACKGROUND_COLOR        = 19; // Background color
 const GuiDefaultProperty TEXT_LINE_SPACING       = 20; // Text spacing between lines
-const GuiDefaultProperty TEXT_ALIGNMENT_VERTICAL = 21; // Text vertical alignment inside text bounds (after border and padding)
+const GuiDefaultProperty TEXT_ALIGNMENT_VERTICAL = 21; // Text vertical alignment inside text bounds (after border and padding): 0-Top, 1-Middle, 2-Bottom
 const GuiDefaultProperty TEXT_WRAP_MODE          = 22; // Text wrap-mode inside text bounds
-//const GuiDefaultProperty TEXT_DECORATION;              // Text decoration: 0-None, 1-Underline, 2-Line-through, 3-Overline
-//const GuiDefaultProperty TEXT_DECORATION_THICK;        // Text decoration line thikness
+const GuiDefaultProperty EXTPROP08               = 23; // Not used yet...
 
 // Toggle/ToggleGroup
 alias GuiToggleProperty = int;
-const GuiToggleProperty GROUP_PADDING = 16; // ToggleGroup separation between toggles
+const GuiToggleProperty GROUP_PADDING    = 16; // ToggleGroup separation between toggles
+const GuiToggleProperty GROUP_WIDTH_FULL = 17; // ToggleGroup bounds width considers all items: 0-Width per item, 1-Full width
 
 // Slider/SliderBar
 alias GuiSliderProperty = int;
@@ -428,6 +484,7 @@ const GuiSliderProperty SLIDER_PADDING = 17; // Slider/SliderBar internal bar pa
 // ProgressBar
 alias GuiProgressBarProperty = int;
 const GuiProgressBarProperty PROGRESS_PADDING = 16; // ProgressBar internal padding
+const GuiProgressBarProperty PROGRESS_SIDE    = 17; // ProgressBar increment side: 0-Left->Right, 1-Right->Left
 
 // ScrollBar
 alias GuiScrollBarProperty = int;
@@ -451,33 +508,43 @@ const GuiComboBoxProperty COMBO_BUTTON_SPACING = 17; // ComboBox button separati
 alias GuiDropdownBoxProperty = int;
 const GuiDropdownBoxProperty ARROW_PADDING = 16;          // DropdownBox arrow separation from border and items
 const GuiDropdownBoxProperty DROPDOWN_ITEMS_SPACING = 17; // DropdownBox items separation
+const GuiDropdownBoxProperty DROPDOWN_ARROW_HIDDEN  = 18; // DropdownBox arrow hidden
+const GuiDropdownBoxProperty DROPDOWN_ROLL_UP       = 19; // DropdownBox roll up flag: 0-Roll down, 1-Roll up
 
 // TextBox/TextBoxMulti/ValueBox/Spinner
 alias GuiTextBoxProperty = int;
-const GuiTextBoxProperty TEXT_READONLY = 16; // TextBox in read-only mode: 0-text editable, 1-text no-editable
+const GuiTextBoxProperty TEXT_READONLY = 16; // TextBox in read-only mode: 0-Text editable, 1-Text read-only
 
-// Spinner
-alias GuiSpinnerProperty = int;
-const GuiSpinnerProperty SPIN_BUTTON_WIDTH   = 16; // Spinner left/right buttons width
-const GuiSpinnerProperty SPIN_BUTTON_SPACING = 17; // Spinner buttons separation
+// ValueBox/Spinner
+alias GuiValueBoxProperty = int;
+const GuiValueBoxProperty SPINNER_BUTTON_WIDTH   = 16; // Spinner left/right buttons width
+const GuiValueBoxProperty SPINNER_BUTTON_SPACING = 17; // Spinner buttons separation
+
+// TabBar
+alias GuiTabBarProperty = int;
+const GuiTabBarProperty TAB_ITEMS_WIDTH  = 16; // TabBar tab items width
+const GuiTabBarProperty TAB_CLOSE_BUTTON = 17; // TabBar tab close button: 0-Not shown, 1-Shown
+const GuiTabBarProperty TAB_LINE_SIDE    = 18; // TabBar tabs side: 0-Bottom, 1-Top
+
+const SCROLLBAR_LEFT_SIDE  = 0;
+const SCROLLBAR_RIGHT_SIDE = 1;
 
 // ListView
 alias GuiListViewProperty = int;
 const GuiListViewProperty LIST_ITEMS_HEIGHT  = 16; // ListView items height
 const GuiListViewProperty LIST_ITEMS_SPACING = 17; // ListView items separation
 const GuiListViewProperty SCROLLBAR_WIDTH    = 18; // ListView scrollbar size (usually width)
-const GuiListViewProperty SCROLLBAR_SIDE     = 19; // ListView scrollbar side (0-SCROLLBAR_LEFT_SIDE, 1-SCROLLBAR_RIGHT_SIDE)
+const GuiListViewProperty SCROLLBAR_SIDE     = 19; // ListView scrollbar side: 0-Left side, 1-Right Side
+const GuiListViewProperty LIST_ITEMS_BORDER_NORMAL = 20; // ListView items border enabled in normal state
+const GuiListViewProperty LIST_ITEMS_BORDER_WIDTH  = 21; // ListView items border width
 
 // ColorPicker
 alias GuiColorPickerProperty = int;
-const GuiColorPickerProperty COLOR_SELECTOR_SIZE      = 16;
+const GuiColorPickerProperty COLOR_SELECTOR_SIZE      = 16; // ColorPicker selector square size
 const GuiColorPickerProperty HUEBAR_WIDTH             = 17; // ColorPicker right hue bar width
 const GuiColorPickerProperty HUEBAR_PADDING           = 18; // ColorPicker right hue bar separation from panel
 const GuiColorPickerProperty HUEBAR_SELECTOR_HEIGHT   = 19; // ColorPicker right hue bar selector height
 const GuiColorPickerProperty HUEBAR_SELECTOR_OVERFLOW = 20; // ColorPicker right hue bar selector overflow
-
-const SCROLLBAR_LEFT_SIDE  = 0;
-const SCROLLBAR_RIGHT_SIDE = 1;
 
 // TODO: remove functions name 'gui_' prefix?
 //------------------------------------------------------------------------------------
@@ -563,6 +630,14 @@ extern fn int getStyle(int control, int property) @cname("GuiGetStyle");
 extern fn void loadStyle(ZString file_name) @cname("GuiLoadStyle");
 
 <*
+ Load style from memory (binary only)
+ @require file_data.len <= int::max
+*>
+fn void loadStyleFromMemory(char[] file_data) @inline {
+    raygui::__gui_load_style_from_memory(file_data.ptr, (int)file_data.len);
+}
+
+<*
  Load style default over global style
 *>
 extern fn void loadStyleDefault() @cname("GuiLoadStyleDefault");
@@ -611,9 +686,26 @@ extern fn uint* getIcons() @cname("GuiGetIcons") @feat(!RAYGUI_NO_ICONS);
 extern fn char** loadIcons(ZString file_name, bool load_icons_name) @cname("GuiLoadIcons") @feat(!RAYGUI_NO_ICONS);
 
 <*
+ Load raygui icons file (.rgi) from memory into internal icons data
+ @require file_data.len <= int::max
+*>
+fn char** loadIconsFromMemory(char[] file_data, bool load_icons_name) @inline @feat(!RAYGUI_NO_ICONS) {
+    return raygui::__gui_load_icons_from_memory(file_data.ptr, (int)file_data.len, load_icons_name);
+}
+
+<*
  Draw icon using pixel size at specified position
 *>
 extern fn void drawIcon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @cname("GuiDrawIcon") @feat(!RAYGUI_NO_ICONS);
+
+//------------------------------------------------------------------------------------
+// Utility functions
+//------------------------------------------------------------------------------------
+
+<*
+ Get text width considering gui style and icon size (if required)
+*>
+extern fn int getTextWidth(ZString text) @cname("GuiGetTextWidth");
 
 //------------------------------------------------------------------------------------
 // Controls
@@ -642,15 +734,6 @@ extern fn int line(rl::Rectangle bounds, ZString text) @cname("GuiLine");
 extern fn int panel(rl::Rectangle bounds, ZString text) @cname("GuiPanel");
 
 <*
- Tab Bar control, returns TAB to be closed or -1
- @require text.len <= int::max
- @param [&inout] active
-*>
-fn int tabBar(rl::Rectangle bounds, ZString[] text, int* active) @inline {
-  return raygui::__gui_tab_bar(bounds, text.ptr, (int)text.len, active);
-}
-
-<*
  Scroll Panel control
  @param [inout] scroll
  @param [&inout] view
@@ -662,7 +745,7 @@ extern fn int scrollPanel(rl::Rectangle bounds, ZString text, rl::Rectangle cont
 //------------------------------------------------------------------------------------
 
 <*
- Label control, shows text
+ Label control
 *>
 extern fn int label(rl::Rectangle bounds, ZString text) @cname("GuiLabel");
 
@@ -672,24 +755,24 @@ extern fn int label(rl::Rectangle bounds, ZString text) @cname("GuiLabel");
 extern fn int button(rl::Rectangle bounds, ZString text) @cname("GuiButton");
 
 <*
- Label button control, show true when clicked
+ Label button control, returns true when clicked
 *>
 extern fn int labelButton(rl::Rectangle bounds, ZString text) @cname("GuiLabelButton");
 
 <*
- Toggle Button control, returns true when active
+ Toggle Button control
  @param [&inout] active
 *>
 extern fn int toggle(rl::Rectangle bounds, ZString text, bool* active) @cname("GuiToggle");
 
 <*
- Toggle Group control, returns active toggle index
+ Toggle Group control
  @param [&inout] active
 *>
 extern fn int toggleGroup(rl::Rectangle bounds, ZString text, int* active) @cname("GuiToggleGroup");
 
 <*
- Toggle Slider control, returns true when clicked
+ Toggle Slider control
  @param [&inout] active
 *>
 extern fn int toggleSlider(rl::Rectangle bounds, ZString text, int* active) @cname("GuiToggleSlider");
@@ -701,19 +784,19 @@ extern fn int toggleSlider(rl::Rectangle bounds, ZString text, int* active) @cna
 extern fn int checkBox(rl::Rectangle bounds, ZString text, bool* checked) @cname("GuiCheckBox");
 
 <*
- Combo Box control, returns selected item index
+ Combo Box control
  @param [&inout] active
 *>
 extern fn int comboBox(rl::Rectangle bounds, ZString text, int* active) @cname("GuiComboBox");
 
 <*
- Dropdown Box control, returns selected item
+ Dropdown Box control
  @param [&inout] active
 *>
 extern fn int dropdownBox(rl::Rectangle bounds, ZString text, int* active, bool edit_mode) @cname("GuiDropdownBox");
 
 <*
- Spinner control, returns selected value
+ Spinner control
  @param [&inout] value
 *>
 extern fn int spinner(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @cname("GuiSpinner");
@@ -725,6 +808,12 @@ extern fn int spinner(rl::Rectangle bounds, ZString text, int* value, int min_va
 extern fn int valueBox(rl::Rectangle bounds, ZString text, int* value, int min_value, int max_value, bool edit_mode) @cname("GuiValueBox");
 
 <*
+ Value box control for float values
+ @param [&inout] value
+*>
+extern fn int valueBoxFloat(rl::Rectangle bounds, ZString text, char* text_value, float* value, bool edit_mode) @cname("GuiValueBoxFloat");
+
+<*
  Text Box control, updates input text
  @require text.len <= int::max
 *>
@@ -733,19 +822,19 @@ fn int textBox(rl::Rectangle bounds, char[] text, bool edit_mode) @inline {
 }
 
 <*
- Slider control, returns selected value
+ Slider control
  @param [&inout] value
 *>
 extern fn int slider(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @cname("GuiSlider");
 
 <*
- Slider Bar control, returns selected value
+ Slider Bar control
  @param [&inout] value
 *>
 extern fn int sliderBar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @cname("GuiSliderBar");
 
 <*
- Progress Bar control, shows current progress value
+ Progress Bar control
  @param [&inout] value
 *>
 extern fn int progressBar(rl::Rectangle bounds, ZString text_left, ZString text_right, float* value, float min_value, float max_value) @cname("GuiProgressBar");
@@ -761,7 +850,7 @@ extern fn int statusBar(rl::Rectangle bounds, ZString text) @cname("GuiStatusBar
 extern fn int dummyRec(rl::Rectangle bounds, ZString text) @cname("GuiDummyRec");
 
 <*
- Grid control, returns mouse cell position
+ Grid control
  @param [out] mouse_cell
 *>
 extern fn int grid(rl::Rectangle bounds, ZString text, float spacing, int subdivs, rl::Vector2* mouse_cell) @cname("GuiGrid");
@@ -771,14 +860,14 @@ extern fn int grid(rl::Rectangle bounds, ZString text, float spacing, int subdiv
 //------------------------------------------------------------------------------------
 
 <*
- List View control, returns selected list item index
+ List View control
  @param [&inout] scroll_index
  @param [&inout] active
 *>
 extern fn int listView(rl::Rectangle bounds, ZString text, int* scroll_index, int* active) @cname("GuiListView");
 
 <*
- List View with extended parameters
+ List View control, using text entries list and returning focus entry
  @require text.len <= int::max
  @param [&inout] scroll_index
  @param [&inout] active
@@ -789,22 +878,42 @@ fn int listViewEx(rl::Rectangle bounds, ZString[] text, int* scroll_index, int* 
 }
 
 <*
- Message Box control, displays a message
+ Tab Bar control
+ @param [&inout] hscroll
+ @param [&inout] active
 *>
-extern fn int messageBox(rl::Rectangle bounds, ZString title, ZString message, ZString buttons) @cname("GuiMessageBox");
+extern fn int tabBar(rl::Rectangle bounds, ZString text, int* hscroll, int* active) @cname("GuiTabBar");
+
+<*
+ Tab Bar control, using text entries list and returning focus entry
+ @require text.len <= int::max
+ @param [&inout] hscroll
+ @param [&inout] active
+ @param [&inout] focus
+*>
+fn int tabBarEx(rl::Rectangle bounds, ZString[] text, int* hscroll, int* active, int* focus) @inline {
+    return raygui::__gui_tab_bar_ex(bounds, text.ptr, (int)text.len, hscroll, active, focus);
+}
+
+<*
+ Message Box control, displays a message
+ @param [&inout] btn_active
+*>
+extern fn int messageBox(rl::Rectangle bounds, ZString title, ZString message, ZString btn_text, int* btn_active) @cname("GuiMessageBox");
 
 // TODO: find a better type for param 'text'
 <*
  Text Input Box control, ask for text, supports secret
  @require text.len <= int::max
+ @param [&inout] btn_active
  @param [in] secret_view_active
 *>
-fn int textInputBox(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char[] text, bool* secret_view_active) @inline {
-    return raygui::__gui_text_input_box(bounds, title, message, buttons, text.ptr, (int)text.len, secret_view_active);
+fn int textInputBox(rl::Rectangle bounds, ZString title, ZString message, char[] text, ZString btn_text, int* btn_active, bool* secret_view_active) @inline {
+    return raygui::__gui_text_input_box(bounds, title, message, text.ptr, (int)text.len, btn_text, btn_active, secret_view_active);
 }
 
 <*
- Color Picker control (multiple color controls)
+ Color Picker control, includes Color bar controls
  @param [inout] color
 *>
 extern fn int colorPicker(rl::Rectangle bounds, ZString text, Color* color) @cname("GuiColorPicker");
@@ -828,13 +937,13 @@ extern fn int colorBarAlpha(rl::Rectangle bounds, ZString text, float* alpha) @c
 extern fn int colorBarHue(rl::Rectangle bounds, ZString text, float* value) @cname("GuiColorBarHue");
 
 <*
- Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+ Color Picker control, using Hue-Saturation-Value color data, includes Color bar controls
  @param [&inout] color_hsv
 *>
 extern fn int colorPickerHsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @cname("GuiColorPickerHSV");
 
 <*
- Color Panel control that returns HSV color value, used by GuiColorPickerHSV()
+ Color Panel control, using Hue-Saturation-Value color data
  @param [&inout] color_hsv
 *>
 extern fn int colorPanelHsv(rl::Rectangle bounds, ZString text, rl::Vector3* color_hsv) @cname("GuiColorPanelHSV");
@@ -1064,44 +1173,45 @@ enum GuiIconName : int {
     ICON_FOLDER,
     ICON_FILE,
     ICON_SAND_TIMER,
-    ICON_220,
-    ICON_221,
-    ICON_222,
-    ICON_223,
-    ICON_224,
-    ICON_225,
-    ICON_226,
-    ICON_227,
-    ICON_228,
-    ICON_229,
-    ICON_230,
-    ICON_231,
-    ICON_232,
-    ICON_233,
-    ICON_234,
-    ICON_235,
-    ICON_236,
-    ICON_237,
-    ICON_238,
-    ICON_239,
-    ICON_240,
-    ICON_241,
-    ICON_242,
-    ICON_243,
-    ICON_244,
-    ICON_245,
-    ICON_246,
-    ICON_247,
-    ICON_248,
-    ICON_249,
-    ICON_250,
-    ICON_251,
-    ICON_252,
-    ICON_253,
-    ICON_254,
-    ICON_255,
+    ICON_WARNING,
+    ICON_HELP_BOX,
+    ICON_INFO_BOX,
+    ICON_PRIORITY,
+    ICON_LAYERS_ISO,
+    ICON_LAYERS2,
+    ICON_MLAYERS,
+    ICON_MAPS,
+    ICON_HOT,
+    ICON_LABEL,
+    ICON_NAME_ID,
+    ICON_SLICING,
+    ICON_MANUAL_CONTROL,
+    ICON_COLLISION,
+    ICON_CIRCLE_ADD,
+    ICON_CIRCLE_ADD_FILL,
+    ICON_CIRCLE_WARNING,
+    ICON_CIRCLE_WARNING_FILL,
+    ICON_BOX_MORE,
+    ICON_BOX_MORE_FILL,
+    ICON_BOX_MINUS,
+    ICON_BOX_MINUS_FILL,
+    ICON_UNION,
+    ICON_INTERSECTION,
+    ICON_DIFFERENCE,
+    ICON_SPHERE,
+    ICON_CYLINDER,
+    ICON_CONE,
+    ICON_ELLIPSOID,
+    ICON_CAPSULE,
+    ICON_FILETYPE_FONT,
+    ICON_FILETYPE_3D,
+    ICON_FILETYPE_CODE_XML,
+    ICON_FILETYPE_CODE_C,
+    ICON_FILETYPE_CODE_PYTHON,
+    ICON_FILETYPE_CODE_JS,
+    ICON_FILETYPE_ICON
 }
 
 // TODO: find a way to make this work
 //$assert((int)GuiIconName.ICON_NONE == 0);
-//$assert((int)GuiIconName.ICON_255 == 255);
+//$assert((int)GuiIconName.ICON_FILETYPE_ICON == 256);

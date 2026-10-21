@@ -1,15 +1,19 @@
 module raygui @feat(ENABLE_RAYGUI);
 import rl;
 
-// Controls
-extern fn int __gui_tab_bar(rl::Rectangle bounds, char** text, int count, int* active) @cname("GuiTabBar") @private;
+// Styles loading functions
+extern fn void __gui_load_style_from_memory(char* file_data, int data_size) @cname("GuiLoadStyleFromMemory") @private;
+
+// Icons functionality
+extern fn char** __gui_load_icons_from_memory(char* file_data, int data_size, bool load_icons_name) @cname("GuiLoadIconsFromMemory") @private @feat(!RAYGUI_NO_ICONS);
 
 // Basic controls set
 extern fn int __gui_text_box(rl::Rectangle bounds, char* text, int text_size, bool edit_mode) @cname("GuiTextBox");
 
 // Advance controls set
 extern fn int __gui_list_view_ex(rl::Rectangle bounds, char** text, int count, int *scroll_index, int *active, int *focus) @cname("GuiListViewEx") @private;
-extern fn int __gui_text_input_box(rl::Rectangle bounds, ZString title, ZString message, ZString buttons, char *text, int text_max_size, bool *secret_view_active) @cname("GuiTextInputBox") @private;
+extern fn int __gui_tab_bar_ex(rl::Rectangle bounds, char** text, int count, int *hscroll, int *active, int *focus) @cname("GuiTabBarEx") @private;
+extern fn int __gui_text_input_box(rl::Rectangle bounds, ZString title, ZString message, char *text, int text_size, ZString btn_text, int *btn_active, bool *secret_view_active) @cname("GuiTextInputBox") @private;
 
 
 module rl;

@@ -30,6 +30,11 @@
   - `SHADER_UNIFORM_SAMPLER2D` is now 12, and `SHADER_LOC_BONE_MATRICES` is replaced by `SHADER_LOC_MATRIX_BONETRANSFORMS`.
   - rlgl: `loadShaderProgram` now takes the shader code strings (it replaces `loadShaderCode`), the old id version is `loadShaderProgramEx`, `compileShader` -> `loadShader`, `loadComputeShaderProgram` -> `loadShaderProgramCompute`.
 - linux-x64 now also links `X11`.
+- updated to raygui 5.0. Changes that follow raygui's own API changes:
+  - `tabBar` now takes the tabs as one `;`-separated string plus an `int* hscroll`. The old slice version is `tabBarEx`, which also takes `hscroll` and `focus`.
+  - `messageBox` takes an extra `int* btn_active` (the pressed button is written there). `textInputBox` parameters are now `(bounds, title, message, text, btn_text, btn_active, secret_view_active)`.
+  - control `SPINNER` (11) is replaced by `TABBAR`. `GuiSpinnerProperty`/`SPIN_BUTTON_WIDTH`/`SPIN_BUTTON_SPACING` are now `GuiValueBoxProperty`/`SPINNER_BUTTON_WIDTH`/`SPINNER_BUTTON_SPACING`.
+  - icons `ICON_220` to `ICON_255` got real names (e.g. `ICON_WARNING`), and `ICON_FILETYPE_ICON` (256) was added.
 - `SaveFileDataCallback` takes `int data_size` (was `uint`) and `LoadFileDataCallback` returns `char*` (was `ZString`), matching the C typedefs.
 - rename `isWaveReady`/`Wave.isReady` -> `isWaveValid`/`Wave.isValid` and `isSoundReady`/`Sound.isReady` -> `isSoundValid`/`Sound.isValid` (raylib v5.5 removed `IsWaveReady`/`IsSoundReady`).
 - removed `rmath::Quaternionf`, use `math::Quaternionf` instead.
@@ -39,7 +44,8 @@
 
 ### Changes
 - added raylib 6.2 bindings: file functions (`fileRename`, `fileRemove`, `fileCopy`, `fileMove`, `fileTextReplace`, `fileTextFindIndex`, `isFileHidden`, `isPathDirectory`, `isPathAbsolute`, `getDirectoryFileCount`, `getDirectoryFileCountEx`), `computeSHA256`, `getKeyName`, new shapes (`drawLineDashed`, `drawTriangleGradient`, `drawTriangleLinesEx`, `drawCircleSectorLinesEx`, `drawCircleLinesEx`, `drawEllipseV`, `drawEllipseLinesV`, `drawEllipseLinesEx`, `drawRingLinesEx`), new image drawing (`Image.drawLineStrip`, `Image.drawRectanglePro`, `Image.drawRectangleLinesEx`, `Image.drawRectangleGradientEx`, `Image.drawCircleGradient`, `Image.drawImage`, `Image.drawImageEx`, `Image.drawImageRec`, `Image.drawTextPro`), `loadRenderTextureEx`, text functions (`measureTextCodepoints`, `loadTextLines`, `unloadTextLines`, `textRemoveSpaces`, `getTextBetween`, `textReplaceAlloc`, `textReplaceBetween`, `textReplaceBetweenAlloc`, `textInsertAlloc`), `Model.updateAnimationEx`, `vector2CrossProduct`, `matrixMultiplyValue`, `matrixCompose`, `SHADER_UNIFORM_UINT`/`UIVEC2`/`UIVEC3`/`UIVEC4`, `SHADER_LOC_VERTEX_INSTANCETRANSFORM`, and rlgl `disablePointMode`, `setPointSize`, `getPointSize`, `getProcAddress`, `copyFramebuffer`, `resizeFramebuffer`, `unloadShader` and `OPENGL_SOFTWARE`.
-- doc comments updated to the raylib 6.2 headers.
+- added raygui 5.0 bindings: `loadStyleFromMemory`, `loadIconsFromMemory`, `getTextWidth`, `valueBoxFloat`, `GuiResult`, `GuiTabBarProperty` and the new style properties (`BASEPROP16`, `EXTPROP08`, `GROUP_WIDTH_FULL`, `PROGRESS_SIDE`, `DROPDOWN_ARROW_HIDDEN`, `DROPDOWN_ROLL_UP`, `LIST_ITEMS_BORDER_NORMAL`, `LIST_ITEMS_BORDER_WIDTH`).
+- doc comments updated to the raylib 6.2 and raygui 5.0 headers.
 - `encodeDataBase64` still returns the string without the NULL terminator (raylib 6.2 now counts it in the output size).
 - bundled libraries are the raylib 6.2 release builds. freebsd-x64 is still raylib 5.5.
 - update bindings for c3 v0.8.5 (`@extern` -> `@cname`, `@if`/`$feature` -> `@feat`).
