@@ -28,7 +28,8 @@
 - update bindings for c3 v0.8.5 (`@extern` -> `@cname`, `@if`/`$feature` -> `@feat`).
 - fix `rlgl::VertexBuffer` and `rlgl::DrawCall` layouts to match raylib v5.5.
 - fix `@blendMode` calling `beginShaderMode`/`endShaderMode` instead of `beginBlendMode`/`endBlendMode`.
-- added `cameraYaw`/`Camera.yaw` and `cameraPitch`/`Camera.pitch`.
+- added the remaining rcamera bindings: `Camera.yaw`, `Camera.pitch`, `Camera.roll`, `Camera.moveForward`, `Camera.moveUp`, `Camera.moveRight`, `Camera.moveToTarget`, `Camera.getForward`, `Camera.getUp`, `Camera.getRight`, `Camera.getViewMatrix` and `Camera.getProjectionMatrix` (each with a `camera*`/`getCamera*` alias).
+- added rlgl v5.5 bindings: `setClipPlanes`, `getCullDistanceNear`, `getCullDistanceFar`, `getActiveFramebuffer`, `bindFramebuffer`, `colorMask` and `setUniformMatrices`.
 - added freebsd-x64 target to [manifest.json](manifest.json).
 - `just dist` now includes `c-src`.
 - updated examples to the current API.

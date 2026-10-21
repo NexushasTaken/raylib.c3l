@@ -356,6 +356,21 @@ fn void ortho(double left, double right, double bottom, double top, double znear
  */
 fn void viewport(int x, int y, int width, int height) @cname("rlViewport");
 
+/**
+ * Set clip planes distances
+ */
+fn void setClipPlanes(double nearPlane, double farPlane) @cname("rlSetClipPlanes");
+
+/**
+ * Get cull plane distance near
+ */
+fn double getCullDistanceNear() @cname("rlGetCullDistanceNear");
+
+/**
+ * Get cull plane distance far
+ */
+fn double getCullDistanceFar() @cname("rlGetCullDistanceFar");
+
 //------------------------------------------------------------------------------------
 // Functions Declaration - Vertex level operations
 //------------------------------------------------------------------------------------
@@ -531,6 +546,11 @@ fn void enableFramebuffer(uint id) @cname("rlEnableFramebuffer");
 fn void disableFramebuffer() @cname("rlDisableFramebuffer");
 
 /**
+ * Get the currently active render texture (fbo), 0 for default framebuffer
+ */
+fn uint getActiveFramebuffer() @cname("rlGetActiveFramebuffer");
+
+/**
  * Activate multiple draw color buffers
  */
 fn void activeDrawBuffers(int count) @cname("rlActiveDrawBuffers");
@@ -539,6 +559,11 @@ fn void activeDrawBuffers(int count) @cname("rlActiveDrawBuffers");
  * Blit active framebuffer to main framebuffer
  */
 fn void blitFramebuffer(int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight, int bufferMask) @cname("rlBlitFramebuffer");
+
+/**
+ * Bind framebuffer (FBO)
+ */
+fn void bindFramebuffer(uint target, uint framebuffer) @cname("rlBindFramebuffer");
 
 // General render state
 
@@ -581,6 +606,11 @@ fn void enableBackfaceCulling() @cname("rlEnableBackfaceCulling");
  * Disable backface culling
  */
 fn void disableBackfaceCulling() @cname("rlDisableBackfaceCulling");
+
+/**
+ * Color mask control
+ */
+fn void colorMask(bool r, bool g, bool b, bool a) @cname("rlColorMask");
 
 /**
  * Set face culling mode
@@ -941,6 +971,11 @@ fn void setUniform(int locIndex, void *value, int uniformType, int count) @cname
  * Set shader value matrix
  */
 fn void setUniformMatrix(int locIndex, Matrix mat) @cname("rlSetUniformMatrix");
+
+/**
+ * Set shader value matrices
+ */
+fn void setUniformMatrices(int locIndex, Matrix *mat, int count) @cname("rlSetUniformMatrices");
 
 /**
  * Set shader value sampler

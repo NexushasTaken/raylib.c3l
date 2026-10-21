@@ -1248,3 +1248,63 @@ alias cameraYaw = Camera.yaw;
 *>
 extern fn void Camera.pitch(Camera* camera, float angle, bool lock_view, bool rotate_around_target, bool rotate_up) @cname("CameraPitch");
 alias cameraPitch = Camera.pitch;
+
+<*
+ Returns the camera's forward vector (normalized)
+*>
+extern fn Vector3 Camera.getForward(Camera* camera) @cname("GetCameraForward");
+alias getCameraForward = Camera.getForward;
+
+<*
+ Returns the camera's up vector (normalized)
+*>
+extern fn Vector3 Camera.getUp(Camera* camera) @cname("GetCameraUp");
+alias getCameraUp = Camera.getUp;
+
+<*
+ Returns the camera's right vector (normalized)
+*>
+extern fn Vector3 Camera.getRight(Camera* camera) @cname("GetCameraRight");
+alias getCameraRight = Camera.getRight;
+
+<*
+ Moves the camera in its forward direction
+*>
+extern fn void Camera.moveForward(Camera* camera, float distance, bool move_in_world_plane) @cname("CameraMoveForward");
+alias cameraMoveForward = Camera.moveForward;
+
+<*
+ Moves the camera in its up direction
+*>
+extern fn void Camera.moveUp(Camera* camera, float distance) @cname("CameraMoveUp");
+alias cameraMoveUp = Camera.moveUp;
+
+<*
+ Moves the camera target in its current right direction
+*>
+extern fn void Camera.moveRight(Camera* camera, float distance, bool move_in_world_plane) @cname("CameraMoveRight");
+alias cameraMoveRight = Camera.moveRight;
+
+<*
+ Moves the camera position closer/farther to/from the camera target
+*>
+extern fn void Camera.moveToTarget(Camera* camera, float delta) @cname("CameraMoveToTarget");
+alias cameraMoveToTarget = Camera.moveToTarget;
+
+<*
+ Rotates the camera around its forward vector
+*>
+extern fn void Camera.roll(Camera* camera, float angle) @cname("CameraRoll");
+alias cameraRoll = Camera.roll;
+
+<*
+ Returns the camera view matrix
+*>
+extern fn Matrix Camera.getViewMatrix(Camera* camera) @cname("GetCameraViewMatrix");
+alias getCameraViewMatrix = Camera.getViewMatrix;
+
+<*
+ Returns the camera projection matrix
+*>
+extern fn Matrix Camera.getProjectionMatrix(Camera* camera, float aspect) @cname("GetCameraProjectionMatrix");
+alias getCameraProjectionMatrix = Camera.getProjectionMatrix;
