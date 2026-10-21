@@ -118,7 +118,7 @@ The C3 side must match the C side exactly. The compiler can't check this, so a m
 - **C `bool` vs `int`:** when C returns `int` but means a boolean (raymath's `*Equals`, most raygui controls), bind it as `int` in a private extern and wrap it, for example `fn bool floatEquals(...) => __float_equals(...) != 0;`. Binding it straight as `bool` can break on wasm.
 - **`float16` (raymath's `MatrixToFloatV`)** is a struct holding `float[16]`. C3's `float[<16>]` is a SIMD vector, which is a different ABI. That is why `matrixToFloatV` is written in C3 instead of bound.
 - **Enums and flags:** check the value type and the numbers against the C header.
-- **Features:** anything for rlgl or raygui goes in modules marked `@feat(ENABLE_RLGL)` or `@feat(ENABLE_RAYGUI)`. Icon functions also use `@feat(!RAYGUI_NO_ICONS)`.
+- **Features:** anything for rlgl or raygui goes in modules marked `@feat(ENABLE_RLGL)` or `@feat(ENABLE_RAYGUI)`. Icon functions also use `@feat(!RAYGUI_NO_ICONS)`. Features only reach C3 code: c3c compiles a library's C sources with the manifest's `cflags` alone, so `c-src/raygui.c` is always built with the default icons. raygui 5.0 also fails to compile with `-DRAYGUI_NO_ICONS` (`GuiFontIconBaking()` is not guarded), so don't add that define to the manifest.
 
 ## Checking a change
 

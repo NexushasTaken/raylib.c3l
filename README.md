@@ -44,7 +44,7 @@ Bundled libraries exist for these targets. Only Linux has been tested with the c
 | `rlgl`   | rlgl, raylib's OpenGL abstraction layer                          | `ENABLE_RLGL`    |
 | `raygui` | raygui immediate-mode GUI controls                               | `ENABLE_RAYGUI`  |
 
-raygui icons can be turned off with `RAYGUI_NO_ICONS`, or replaced with your own using `RAYGUI_CUSTOM_ICONS`.
+raygui icons can be turned off with `RAYGUI_NO_ICONS`, or replaced with your own using `RAYGUI_CUSTOM_ICONS`. Both only change the C3 side: the icon functions are left out and icon ids become plain `int`s. The bundled raygui C code is always built with its default icons, because c3c can't pass a feature to a library's C sources, so `#NNN#` icon codes in text still draw the built-in icons.
 
 # Installation
 
