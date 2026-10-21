@@ -66,8 +66,8 @@ fn Wave loadWaveFromMemory(ZString file_type, String file_data) @inline {
 <*
  Checks if wave data is valid (data loaded and parameters)
 *>
-extern fn bool Wave.isReady(Wave wave) @cname("IsWaveReady");
-alias isWaveReady = Wave.isReady;
+extern fn bool Wave.isValid(Wave wave) @cname("IsWaveValid");
+alias isWaveValid = Wave.isValid;
 
 <*
  Load sound from file
@@ -88,8 +88,8 @@ alias loadSoundAlias = Sound.loadAlias;
 <*
  Checks if a sound is valid (data loaded and buffers initialized)
 *>
-extern fn bool Sound.isReady(Sound sound) @cname("IsSoundReady");
-alias isSoundReady = Sound.isReady;
+extern fn bool Sound.isValid(Sound sound) @cname("IsSoundValid");
+alias isSoundValid = Sound.isValid;
 
 <*
  Update sound buffer with new data

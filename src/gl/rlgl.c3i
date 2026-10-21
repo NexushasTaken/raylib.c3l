@@ -1,4 +1,4 @@
-module rlgl @if($feature(ENABLE_RLGL));
+module rlgl @feat(ENABLE_RLGL);
 import rl;
 
 const GRAPHICS_API_OPENGL_33 = true;
@@ -101,15 +101,17 @@ struct VertexBuffer { // rlVertexBuffer
 
 	float* vertices;            // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
 	float* texcoords;           // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+	float* normals;             // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
 	char* colors;               // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
 
-	uint *indices               // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-	@if($defined(env::GRAPHICS_API_OPENGL_11) || $defined(env::GRAPHICS_API_OPENGL_33));
-	ushort *indices             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
-	@if($defined(env::GRAPHICS_API_OPENGL_ES2));
+	// NOTE: raylib for the web (wasm32) is built with OpenGL ES2
+	uint* indices               // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+	@feat(!WASM & !GRAPHICS_API_OPENGL_ES2);
+	ushort* indices             // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+	@feat(WASM | GRAPHICS_API_OPENGL_ES2);
 
 	uint vaoId;                 // OpenGL Vertex Array Object id
-	uint[4] vboId;              // OpenGL Vertex Buffer Objects id (4 types of vertex data)
+	uint[5] vboId;              // OpenGL Vertex Buffer Objects id (5 types of vertex data)
 }
 
 // Draw call type
@@ -124,8 +126,8 @@ struct DrawCall {
 	//unsigned int shaderId;    // Shader id to be used on the draw -> Using RLGL.currentShaderId
 	uint textureId;             // Texture id to be used on the draw -> Use to create new draw call if changes
 
-	Matrix projection;          // Projection matrix for this draw -> Using RLGL.projection by default
-	Matrix modelview;           // Modelview matrix for this draw -> Using RLGL.modelview by default
+	//Matrix projection;        // Projection matrix for this draw -> Using RLGL.projection by default
+	//Matrix modelview;         // Modelview matrix for this draw -> Using RLGL.modelview by default
 }
 
 // rlRenderBatch type
@@ -460,12 +462,12 @@ fn void disableVertexAttribute(uint index) @cname("rlDisableVertexAttribute");
 /**
  * Enable attribute state pointer
  */
-fn void enableStatePointer(int vertexAttribType, void *buffer) @cname("rlEnableStatePointer") @if($defined(GRAPHICS_API_OPENGL_11));
+fn void enableStatePointer(int vertexAttribType, void *buffer) @cname("rlEnableStatePointer") @feat(GRAPHICS_API_OPENGL_11);
 
 /**
  * Disable attribute state pointer
  */
-fn void disableStatePointer(int vertexAttribType) @cname("rlDisableStatePointer") @if($defined(GRAPHICS_API_OPENGL_11));
+fn void disableStatePointer(int vertexAttribType) @cname("rlDisableStatePointer") @feat(GRAPHICS_API_OPENGL_11);
 
 // Textures state
 
@@ -812,7 +814,7 @@ fn void updateVertexBuffer(uint bufferId, void *data, int dataSize, int offset) 
 fn void updateVertexBufferElements(uint id, void *data, int dataSize, int offset) @cname("rlUpdateVertexBufferElements");
 fn void unloadVertexArray(uint vaoId) @cname("rlUnloadVertexArray");
 fn void unloadVertexBuffer(uint vboId) @cname("rlUnloadVertexBuffer");
-fn void setVertexAttribute(uint index, int compSize, int type, bool normalized, int stride, void *pointer) @cname("rlSetVertexAttribute");
+fn void setVertexAttribute(uint index, int compSize, int type, bool normalized, int stride, int offset) @cname("rlSetVertexAttribute");
 fn void setVertexAttributeDivisor(uint index, int divisor) @cname("rlSetVertexAttributeDivisor");
 
 /**
@@ -839,7 +841,7 @@ fn uint loadTextureDepth(int width, int height, bool useRenderBuffer) @cname("rl
 /**
  * Load texture cubemap
  */
-fn uint loadTextureCubemap(void *data, int size, int format) @cname("rlLoadTextureCubemap");
+fn uint loadTextureCubemap(void *data, int size, int format, int mipmapCount) @cname("rlLoadTextureCubemap");
 
 /**
  * Update GPU texture with new data
@@ -881,7 +883,7 @@ fn char *readScreenPixels(int width, int height) @cname("rlReadScreenPixels");
 /**
  * Load an empty framebuffer
  */
-fn uint loadFramebuffer(int width, int height) @cname("rlLoadFramebuffer");
+fn uint loadFramebuffer() @cname("rlLoadFramebuffer");
 
 /**
  * Attach texture/renderbuffer to a framebuffer

@@ -309,7 +309,7 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
-module raygui @if($feature(ENABLE_RAYGUI));
+module raygui @feat(ENABLE_RAYGUI);
 import rl;
 
 const RAYGUI_VERSION_MAJOR = 4;
@@ -598,22 +598,22 @@ extern fn ZString iconText(GuiIconName icon_id, ZString text) @cname("GuiIconTex
 <*
  Set default icon drawing size
 *>
-extern fn void setIconScale(int scale) @cname("GuiSetIconScale") @if(!$feature(RAYGUI_NO_ICONS));
+extern fn void setIconScale(int scale) @cname("GuiSetIconScale") @feat(!RAYGUI_NO_ICONS);
 
 <*
  Get raygui icons data pointer
 *>
-extern fn uint* getIcons() @cname("GuiGetIcons") @if(!$feature(RAYGUI_NO_ICONS));
+extern fn uint* getIcons() @cname("GuiGetIcons") @feat(!RAYGUI_NO_ICONS);
 
 <*
  Load raygui icons file (.rgi) into internal icons data
 *>
-extern fn char** loadIcons(ZString file_name, bool load_icons_name) @cname("GuiLoadIcons") @if(!$feature(RAYGUI_NO_ICONS));
+extern fn char** loadIcons(ZString file_name, bool load_icons_name) @cname("GuiLoadIcons") @feat(!RAYGUI_NO_ICONS);
 
 <*
  Draw icon using pixel size at specified position
 *>
-extern fn void drawIcon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @cname("GuiDrawIcon") @if(!$feature(RAYGUI_NO_ICONS));
+extern fn void drawIcon(GuiIconName icon_id, int pos_x, int pos_y, int pixel_size, rl::Color color) @cname("GuiDrawIcon") @feat(!RAYGUI_NO_ICONS);
 
 //------------------------------------------------------------------------------------
 // Controls
@@ -841,7 +841,7 @@ extern fn int colorPanelHsv(rl::Rectangle bounds, ZString text, rl::Vector3* col
 
 //----------------------------------------------------------------------------------------------------------
 
-module raygui @if(!$feature(RAYGUI_NO_ICONS) && !$feature(RAYGUI_CUSTOM_ICONS));
+module raygui @feat(!RAYGUI_NO_ICONS & !RAYGUI_CUSTOM_ICONS);
 
 enum GuiIconName : int {
     ICON_NONE,

@@ -1,5 +1,6 @@
 {
   "provides" : "raylib",
+  "linklib-dir": "libs",
   "sources": [
     "./src/gl/**",
     "./src/gui/**",
@@ -18,6 +19,10 @@
       "linked-libraries" : ["raylib", "Cocoa.framework", "OpenGL.framework", "CoreVideo.framework", "GLUT.framework", "IOKit.framework", "c"]
     },
     "linux-x64" : {
+      "dependencies" : [],
+      "linked-libraries" : ["raylib", "c"]
+    },
+    "freebsd-x64" : {
       "dependencies" : [],
       "linked-libraries" : ["raylib", "c"]
     },

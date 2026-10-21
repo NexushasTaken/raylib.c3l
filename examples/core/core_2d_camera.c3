@@ -42,7 +42,7 @@ fn int main(String[] args)
 
 		spacing += (int)building.width;
 
-		buildColors[i] = Color {
+		buildColors[i] = (Color) {
 				(char)rl::getRandomValue(200, 240),
 				(char)rl::getRandomValue(200, 240),
 				(char)rl::getRandomValue(200, 250),
@@ -51,8 +51,8 @@ fn int main(String[] args)
 	}
 
 	rl::Camera2D camera = {
-			.target = rl::Vector2 { player.x + 20.0f, player.y + 20.0f },
-			.offset = rl::Vector2 { SCREEN_WIDTH/2.0f, SCREEN_HEIGHT/2.0f },
+			.target = (rl::Vector2) { player.x + 20.0f, player.y + 20.0f },
+			.offset = (rl::Vector2) { SCREEN_WIDTH/2.0f, SCREEN_HEIGHT/2.0f },
 			.rotation = 0.0f,
 			.zoom = 1.0f,
 		};
@@ -70,7 +70,7 @@ fn int main(String[] args)
 		else if (rl::isKeyDown(rl::KEY_LEFT)) { player.x -= 2; }
 
 		// Camera target follows player
-		camera.target = Vector2 { player.x + 20, player.y + 20 };
+		camera.target = (Vector2) { player.x + 20, player.y + 20 };
 
 		// Camera rotation controls
 		if (rl::isKeyDown(rl::KEY_A)) { camera.rotation--; }

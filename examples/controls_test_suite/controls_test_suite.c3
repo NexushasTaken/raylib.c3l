@@ -112,15 +112,15 @@ fn int main()
 	//----------------------------------------------------------------------------------
 
 	// Custom GUI font loading
-	//rl::Font font = rl::load_font_ex("fonts/rainyhearts16.ttf", 12, 0, 0);
-	//raygui::set_font(font);
+	//rl::Font font = rl::loadFontEx("fonts/rainyhearts16.ttf", 12, 0, 0);
+	//raygui::setFont(font);
 
 	bool exitWindow = false;
 	bool showMessageBox = false;
 
 
-	char[] textInput = mem::temp_new_array(char, 256);
-	char[] textInputFileName = mem::temp_new_array(char, 256);
+	char[] textInput = mem::temp_array(char, 256);
+	char[] textInputFileName = mem::temp_array(char, 256);
 	bool showTextInputBox = false;
 
 	float alpha = 1.0f;
@@ -190,7 +190,7 @@ fn int main()
 		//----------------------------------------------------------------------------------
 		rl::@drawing()
 		{
-			rl::clearBackground(rl::getColor(raygui::getStyle(raygui::DEFAULT, raygui::BACKGROUND_COLOR)));
+			rl::clearBackground(rl::getColor((uint)raygui::getStyle(raygui::DEFAULT, raygui::BACKGROUND_COLOR)));
 
 			// raygui: controls drawing
 			//----------------------------------------------------------------------------------
@@ -199,79 +199,79 @@ fn int main()
 
 			// First GUI column
 			//raygui::setStyle(raygui::CHECKBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			raygui::checkBox(Rectangle { 25, 108, 15, 15 }, "FORCE CHECK!", &forceSquaredChecked);
+			raygui::checkBox((Rectangle) { 25, 108, 15, 15 }, "FORCE CHECK!", &forceSquaredChecked);
 
 			raygui::setStyle(raygui::TEXTBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_CENTER);
 			//raygui::setStyle(raygui::VALUEBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			if (raygui::spinner(Rectangle { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
-			if (raygui::valueBox(Rectangle { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
+			if (raygui::spinner((Rectangle) { 25, 135, 125, 30 }, null, &spinner001Value, 0, 100, spinnerEditMode)) { spinnerEditMode = !spinnerEditMode; }
+			if (raygui::valueBox((Rectangle) { 25, 175, 125, 30 }, null, &valueBox002Value, 0, 100, valueBoxEditMode)) { valueBoxEditMode = !valueBoxEditMode; }
 			raygui::setStyle(raygui::TEXTBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			if (raygui::textBox(Rectangle { 25, 215, 125, 30 }, textBoxText[..], textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
+			if (raygui::textBox((Rectangle) { 25, 215, 125, 30 }, textBoxText[..], textBoxEditMode)) { textBoxEditMode = !textBoxEditMode; }
 
 			raygui::setStyle(raygui::BUTTON, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_CENTER);
 
-			if (raygui::button(Rectangle { 25, 255, 125, 30 }, raygui::iconText(raygui::GuiIconName.ICON_FILE_SAVE, "Save File"))) { showTextInputBox = true; }
+			if (raygui::button((Rectangle) { 25, 255, 125, 30 }, raygui::iconText(raygui::GuiIconName.ICON_FILE_SAVE, "Save File"))) { showTextInputBox = true; }
 
-			raygui::groupBox(Rectangle { 25, 310, 125, 150 }, "STATES");
+			raygui::groupBox((Rectangle) { 25, 310, 125, 150 }, "STATES");
 			//raygui::lock();
-			raygui::setState(raygui::STATE_NORMAL); if (raygui::button(Rectangle { 30, 320, 115, 30 }, "NORMAL")) { }
-			raygui::setState(raygui::STATE_FOCUSED); if (raygui::button(Rectangle { 30, 355, 115, 30 }, "FOCUSED")) { }
-			raygui::setState(raygui::STATE_PRESSED); if (raygui::button(Rectangle { 30, 390, 115, 30 }, "#15#PRESSED")) { }
-			raygui::setState(raygui::STATE_DISABLED); if (raygui::button(Rectangle { 30, 425, 115, 30 }, "DISABLED")) { }
+			raygui::setState(raygui::STATE_NORMAL); if (raygui::button((Rectangle) { 30, 320, 115, 30 }, "NORMAL")) { }
+			raygui::setState(raygui::STATE_FOCUSED); if (raygui::button((Rectangle) { 30, 355, 115, 30 }, "FOCUSED")) { }
+			raygui::setState(raygui::STATE_PRESSED); if (raygui::button((Rectangle) { 30, 390, 115, 30 }, "#15#PRESSED")) { }
+			raygui::setState(raygui::STATE_DISABLED); if (raygui::button((Rectangle) { 30, 425, 115, 30 }, "DISABLED")) { }
 			raygui::setState(raygui::STATE_NORMAL);
 			//raygui::unlock();
 
-			raygui::comboBox(Rectangle { 25, 480, 125, 30 }, "default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal", &visualStyleActive);
+			raygui::comboBox((Rectangle) { 25, 480, 125, 30 }, "default;Jungle;Lavanda;Dark;Bluish;Cyber;Terminal", &visualStyleActive);
 
 			// NOTE: GuiDropdownBox must draw after any other control that can be covered on unfolding
 			raygui::unlock();
 			raygui::setStyle(raygui::DROPDOWNBOX, raygui::TEXT_PADDING, 4);
 			raygui::setStyle(raygui::DROPDOWNBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			if (raygui::dropdownBox(Rectangle { 25, 65, 125, 30 }, "#01#ONE;#02#TWO;#03#THREE;#04#FOUR", &dropdownBox001Active, dropDown001EditMode)) dropDown001EditMode = !dropDown001EditMode;
+			if (raygui::dropdownBox((Rectangle) { 25, 65, 125, 30 }, "#01#ONE;#02#TWO;#03#THREE;#04#FOUR", &dropdownBox001Active, dropDown001EditMode)) dropDown001EditMode = !dropDown001EditMode;
 			raygui::setStyle(raygui::DROPDOWNBOX, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_CENTER);
 			raygui::setStyle(raygui::DROPDOWNBOX, raygui::TEXT_PADDING, 0);
 
-			if (raygui::dropdownBox(Rectangle { 25, 25, 125, 30 }, "ONE;TWO;THREE", &dropdownBox000Active, dropDown000EditMode)) dropDown000EditMode = !dropDown000EditMode;
+			if (raygui::dropdownBox((Rectangle) { 25, 25, 125, 30 }, "ONE;TWO;THREE", &dropdownBox000Active, dropDown000EditMode)) dropDown000EditMode = !dropDown000EditMode;
 
 			// Second GUI column
-			raygui::listView(Rectangle { 165, 25, 140, 124 }, "Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey", &listViewScrollIndex, &listViewActive);
-			raygui::listViewEx(Rectangle { 165, 162, 140, 184 }, listViewExList, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
+			raygui::listView((Rectangle) { 165, 25, 140, 124 }, "Charmander;Bulbasaur;#18#Squirtel;Pikachu;Eevee;Pidgey", &listViewScrollIndex, &listViewActive);
+			raygui::listViewEx((Rectangle) { 165, 162, 140, 184 }, listViewExList, &listViewExScrollIndex, &listViewExActive, &listViewExFocus);
 
-			//raygui::toggle(Rectangle { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
-			raygui::toggleGroup(Rectangle { 165, 360, 140, 24 }, "#1#ONE\n#3#TWO\n#8#THREE\n#23#", &toggleGroupActive);
+			//raygui::toggle((Rectangle) { 165, 400, 140, 25 }, "#1#ONE", &toggleGroupActive);
+			raygui::toggleGroup((Rectangle) { 165, 360, 140, 24 }, "#1#ONE\n#3#TWO\n#8#THREE\n#23#", &toggleGroupActive);
 			//raygui::disable();
 			raygui::setStyle(raygui::SLIDER, raygui::SLIDER_PADDING, 2);
-			raygui::toggleSlider(Rectangle { 165, 480, 140, 30 }, "ON;OFF", &toggleSliderActive);
+			raygui::toggleSlider((Rectangle) { 165, 480, 140, 30 }, "ON;OFF", &toggleSliderActive);
 			raygui::setStyle(raygui::SLIDER, raygui::SLIDER_PADDING, 0);
 
 			// Third GUI column
-			raygui::panel(Rectangle { 320, 25, 225, 140 }, "Panel Info");
-			raygui::colorPicker(Rectangle { 320, 185, 196, 192 }, null, &colorPickerValue);
+			raygui::panel((Rectangle) { 320, 25, 225, 140 }, "Panel Info");
+			raygui::colorPicker((Rectangle) { 320, 185, 196, 192 }, null, &colorPickerValue);
 
 			//GuiDisable();
-			raygui::slider(Rectangle { 355, 400, 165, 20 }, "TEST", rl::textFormat("%2.2f", sliderValue), &sliderValue, -50, 100);
-			raygui::sliderBar(Rectangle { 320, 430, 200, 20 }, null, rl::textFormat("%i", (int)sliderBarValue), &sliderBarValue, 0, 100);
+			raygui::slider((Rectangle) { 355, 400, 165, 20 }, "TEST", rl::textFormat("%2.2f", sliderValue), &sliderValue, -50, 100);
+			raygui::sliderBar((Rectangle) { 320, 430, 200, 20 }, null, rl::textFormat("%i", (int)sliderBarValue), &sliderBarValue, 0, 100);
 
-			raygui::progressBar(Rectangle { 320, 460, 200, 20 }, null, rl::textFormat("%i%%", (int)(progressValue*100)), &progressValue, 0.0f, 1.0f);
+			raygui::progressBar((Rectangle) { 320, 460, 200, 20 }, null, rl::textFormat("%i%%", (int)(progressValue*100)), &progressValue, 0.0f, 1.0f);
 			raygui::enable();
 
 			// NOTE: View rectangle could be used to perform some scissor test
 			Rectangle view;
-			raygui::scrollPanel(Rectangle { 560, 25, 102, 354 }, null, Rectangle { 560, 25, 300, 1200 }, &viewScroll, &view);
+			raygui::scrollPanel((Rectangle) { 560, 25, 102, 354 }, null, (Rectangle) { 560, 25, 300, 1200 }, &viewScroll, &view);
 
 			Vector2 mouseCell;
-			raygui::grid(Rectangle  { 560, 25 + 180 + 195, 100, 120 }, null, 20, 3, &mouseCell);
+			raygui::grid((Rectangle) { 560, 25 + 180 + 195, 100, 120 }, null, 20, 3, &mouseCell);
 
-			raygui::colorBarAlpha(Rectangle { 320, 490, 200, 30 }, null, &alphaValue);
+			raygui::colorBarAlpha((Rectangle) { 320, 490, 200, 30 }, null, &alphaValue);
 
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT_VERTICAL, raygui::TEXT_ALIGN_TOP); // WARNING: Word-wrap does not work as expected in case of no-top alignment
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_WRAP_MODE, raygui::TEXT_WRAP_WORD);          // WARNING: If wrap mode enabled, text editing is not supported
-			if (raygui::textBox(Rectangle { 678, 25, 258, 492 }, textBoxMultiText[..], textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
+			if (raygui::textBox((Rectangle) { 678, 25, 258, 492 }, textBoxMultiText[..], textBoxMultiEditMode)) { textBoxMultiEditMode = !textBoxMultiEditMode; }
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_WRAP_MODE, raygui::TEXT_WRAP_NONE);
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT_VERTICAL, raygui::TEXT_ALIGN_MIDDLE);
 
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_LEFT);
-			raygui::statusBar(Rectangle { 0, (float)rl::getScreenHeight() - 20, (float)rl::getScreenWidth(), 20 }, "This is a status bar");
+			raygui::statusBar((Rectangle) { 0, (float)rl::getScreenHeight() - 20, (float)rl::getScreenWidth(), 20 }, "This is a status bar");
 			raygui::setStyle(raygui::DEFAULT, raygui::TEXT_ALIGNMENT, raygui::TEXT_ALIGN_CENTER);
 			//raygui::setStyle(raygui::STATUSBAR, raygui::TEXT_INDENTATION, 20);
 
@@ -279,7 +279,7 @@ fn int main()
 			{
 				rl::drawRectangle(0, 0, rl::getScreenWidth(), rl::getScreenHeight(), rl::fade(rl::RAYWHITE, 0.8f));
 				int result = raygui::messageBox(
-				  Rectangle {
+				  (Rectangle) {
 					(float)rl::getScreenWidth()/2 - 125,
 					(float)rl::getScreenHeight()/2 - 50,
 					250,
@@ -298,7 +298,7 @@ fn int main()
 			{
 				rl::drawRectangle(0, 0, rl::getScreenWidth(), rl::getScreenHeight(), rl::fade(rl::RAYWHITE, 0.8f));
 				int result = raygui::textInputBox(
-				  Rectangle {
+				  (Rectangle) {
 					(float)rl::getScreenWidth()/2 - 120,
 					(float)rl::getScreenHeight()/2 - 60,
 					240,

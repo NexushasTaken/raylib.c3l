@@ -1,6 +1,6 @@
 {
   // Language version of C3.
-  "langrev": "0.8.0_3",
+  "langrev": "0.8.5",
   // Warnings used for all targets.
   "warnings": [ "no-unused" ],
   // Directories where C3 library files may be found.
@@ -67,20 +67,9 @@
       "features": [ "ENABLE_RAYGUI", ],
     },
 
-    // Unit tests
-    "test_data_compression": {
-      "type": "executable",
-      "sources": [ "./test/unit/test_data_compression.c3" ],
-    },
-    "test_data_encoder": {
-      "type": "executable",
-      "sources": [ "./test/unit/test_data_encoder.c3" ],
-    },
-    "test_export_data_as_code": {
-      "type": "executable",
-      "sources": [ "./test/unit/test_export_data_as_code.c3" ],
-    },
   },
+  // Unit tests, run with `c3c test`.
+  "test-sources": [ "./test/unit/**" ],
   // Global settings.
   // CPU name, used for optimizations in the LLVM backend.
   "cpu": "generic",

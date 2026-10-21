@@ -1236,3 +1236,15 @@ alias updateCamera = Camera.update;
 *>
 extern fn void Camera.updatePro(Camera* camera, Vector3 movement, Vector3 rotation, float zoom) @cname("UpdateCameraPro");
 alias updateCameraPro = Camera.updatePro;
+
+<*
+ Rotates the camera around its up vector
+*>
+extern fn void Camera.yaw(Camera* camera, float angle, bool rotate_around_target) @cname("CameraYaw");
+alias cameraYaw = Camera.yaw;
+
+<*
+ Rotates the camera around its right vector, pitch is "looking up and down"
+*>
+extern fn void Camera.pitch(Camera* camera, float angle, bool lock_view, bool rotate_around_target, bool rotate_up) @cname("CameraPitch");
+alias cameraPitch = Camera.pitch;

@@ -1,4 +1,4 @@
-module raygui @if($feature(ENABLE_RAYGUI));
+module raygui @feat(ENABLE_RAYGUI);
 import rl;
 
 // Controls
