@@ -64,7 +64,7 @@ fn Wave loadWaveFromMemory(ZString file_type, String file_data) @inline {
 }
 
 <*
- Checks if wave data is valid (data loaded and parameters)
+ Check if wave data is valid (data loaded and parameters)
 *>
 extern fn bool Wave.isValid(Wave wave) @cname("IsWaveValid");
 alias isWaveValid = Wave.isValid;
@@ -80,21 +80,21 @@ extern fn Sound loadSound(ZString file_name) @cname("LoadSound");
 extern fn Sound loadSoundFromWave(Wave wave) @cname("LoadSoundFromWave");
 
 <*
- Create a new sound that shares the same sample data as the source sound, does not own the sound data
+ Load sound alias, new sound that shares the same sample data as the source sound, does not own the sound data
 *>
 extern fn Sound Sound.loadAlias(Sound source) @cname("LoadSoundAlias");
 alias loadSoundAlias = Sound.loadAlias;
 
 <*
- Checks if a sound is valid (data loaded and buffers initialized)
+ Check if sound is valid (data loaded and buffers initialized)
 *>
 extern fn bool Sound.isValid(Sound sound) @cname("IsSoundValid");
 alias isSoundValid = Sound.isValid;
 
 <*
- Update sound buffer with new data
+ Update sound buffer with new data (default data format: 32 bit float, stereo)
 *>
-extern fn void Sound.update(Sound sound, void* data, int sample_count) @cname("UpdateSound");
+extern fn void Sound.update(Sound sound, void* data, int frame_count) @cname("UpdateSound");
 alias updateSound = Sound.update;
 
 <*
@@ -111,7 +111,7 @@ alias unloadSound = Sound.unload;
 
 // TODO: Test this
 <*
- Unload a sound alias (does not deallocate sample data)
+ Unload sound alias (does not deallocate sample data)
 *>
 extern fn void Sound.unloadAlias(Sound def) @cname("UnloadSoundAlias");
 alias unloadSoundAlias = Sound.unloadAlias;
@@ -156,7 +156,7 @@ extern fn void Sound.resume(Sound sound) @cname("ResumeSound");
 alias resumeSound = Sound.resume;
 
 <*
- Check if a sound is currently playing
+ Check if sound is currently playing
 *>
 extern fn bool Sound.isPlaying(Sound sound) @cname("IsSoundPlaying");
 alias isSoundPlaying = Sound.isPlaying;
@@ -176,7 +176,7 @@ extern fn void Sound.setPitch(Sound sound, float pitch) @cname("SetSoundPitch");
 alias setSoundPitch = Sound.setPitch;
 
 <*
- Set pan for a sound (0.5 is center)
+ Set pan for a sound (-1.0 left, 0.0 center, 1.0 right)
  @require pan >= 0.0f && pan <= 1.0f
 *>
 extern fn void Sound.setPan(Sound sound, float pan) @cname("SetSoundPan");
@@ -225,7 +225,7 @@ extern fn Music loadMusicStream(ZString file_name) @cname("LoadMusicStream");
 extern fn Music loadMusicStreamFromMemory(ZString file_type, ZString data, int data_size) @cname("LoadMusicStreamFromMemory");
 
 <*
- Checks if a music stream is valid (context and buffers initialized)
+ Check if music stream is valid (context and buffers initialized)
 *>
 extern fn bool Music.isValid(Music music) @cname("IsMusicValid");
 alias isMusicValid = Music.isValid;
@@ -249,7 +249,7 @@ extern fn bool Music.isStreamPlaying(Music music) @cname("IsMusicStreamPlaying")
 alias isMusicStreamPlaying = Music.isStreamPlaying;
 
 <*
- Updates buffers for music streaming
+ Update buffers for music streaming
 *>
 extern fn void Music.updateStream(Music music) @cname("UpdateMusicStream");
 alias updateMusicStream = Music.updateStream;
@@ -286,14 +286,14 @@ extern fn void Music.setVolume(Music music, float volume) @cname("SetMusicVolume
 alias setMusicVolume = Music.setVolume;
 
 <*
- Set pitch for a music (1.0 is base level)
+ Set pitch for music (1.0 is base level)
  @require pitch >= 0.0f
 *>
 extern fn void Music.setPitch(Music music, float pitch) @cname("SetMusicPitch");
 alias setMusicPitch = Music.setPitch;
 
 <*
- Set pan for a music (0.5 is center)
+ Set pan for music (-1.0 left, 0.0 center, 1.0 right)
  @require pan >= 0.0f && pan <= 1.0f
 *>
 extern fn void Music.setPan(Music music, float pan) @cname("SetMusicPan");
@@ -320,7 +320,7 @@ alias getMusicTimePlayed = Music.getTimePlayed;
 extern fn AudioStream loadAudioStream(uint sample_rate, uint sample_size, uint channels) @cname("LoadAudioStream");
 
 <*
- Checks if an audio stream is valid (buffers initialized)
+ Check if an audio stream is valid (buffers initialized)
 *>
 extern fn bool AudioStream.isValid(AudioStream stream) @cname("IsAudioStreamValid");
 alias isAudioStreamValid = AudioStream.isValid;
@@ -388,7 +388,7 @@ extern fn void AudioStream.setPitch(AudioStream stream, float pitch) @cname("Set
 alias setAudioStreamPitch = AudioStream.setPitch;
 
 <*
- Set pan for audio stream (0.5 is centered)
+ Set pan for audio stream (-1.0 left, 0.0 center, 1.0 right)
  @require pan >= 0.0f && pan <= 1.0f
 *>
 extern fn void AudioStream.setPan(AudioStream stream, float pan) @cname("SetAudioStreamPan");
@@ -406,7 +406,7 @@ extern fn void AudioStream.setCallback(AudioStream stream, AudioCallback callbac
 alias setAudioStreamCallback = AudioStream.setCallback;
 
 <*
- Attach audio stream processor to stream, receives the samples as 'float'
+ Attach audio stream processor to stream, receives frames x 2 samples as 'float' (stereo)
 *>
 extern fn void AudioStream.attachProcessor(AudioStream stream, AudioCallback processor) @cname("AttachAudioStreamProcessor");
 alias attachAudioStreamProcessor = AudioStream.attachProcessor;
@@ -418,7 +418,7 @@ extern fn void AudioStream.detachProcessor(AudioStream stream, AudioCallback pro
 alias detachAudioStreamProcessor = AudioStream.detachProcessor;
 
 <*
- Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'
+ Attach audio stream processor to the entire audio pipeline, receives frames x 2 samples as 'float' (stereo)
 *>
 extern fn void attachAudioMixedProcessor(AudioCallback processor) @cname("AttachAudioMixedProcessor");
 

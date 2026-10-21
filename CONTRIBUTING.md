@@ -13,7 +13,7 @@ You need:
 ```sh
 git clone https://github.com/NexushasTaken/raylib.c3l
 cd raylib.c3l
-git submodule update --init    # thirdparty/raylib (5.5) and thirdparty/raygui (4.0)
+git submodule update --init    # thirdparty/raylib (6.2) and thirdparty/raygui (4.0)
 c3c test                       # should pass
 just run_example core core_2d_camera
 ```
@@ -30,7 +30,7 @@ src/gl/           module rlgl, behind the ENABLE_RLGL feature
 src/gui/          module raygui, behind the ENABLE_RAYGUI feature
 c-src/            C files shipped in the package: raylib.h and raygui.h (copied from thirdparty), raygui.c
 libs/<target>/    prebuilt raylib static libraries, one folder per C3 target
-thirdparty/       git submodules: raylib 5.5 and raygui 4.0 sources (not shipped)
+thirdparty/       git submodules: raylib 6.2 and raygui 4.0 sources (not shipped)
 scripts/          fetch_libs.sh
 examples/         C3 ports of raylib/raygui examples, each one a target in project.json
 test/unit/        unit tests, run with `c3c test`
@@ -114,7 +114,7 @@ alias loadImageColors = Image.loadColors;
 
 The C3 side must match the C side exactly. The compiler can't check this, so a mistake shows up as a crash or garbage values at runtime.
 
-- **Structs** must have the same fields, order and types as raylib 5.5. If raylib changes a struct, compare it against `c-src/raylib.h` or `rlgl.h`.
+- **Structs** must have the same fields, order and types as raylib 6.2. If raylib changes a struct, compare it against `c-src/raylib.h` or `rlgl.h`.
 - **C `bool` vs `int`:** when C returns `int` but means a boolean (raymath's `*Equals`, most raygui controls), bind it as `int` in a private extern and wrap it, for example `fn bool floatEquals(...) => __float_equals(...) != 0;`. Binding it straight as `bool` can break on wasm.
 - **`float16` (raymath's `MatrixToFloatV`)** is a struct holding `float[16]`. C3's `float[<16>]` is a SIMD vector, which is a different ABI. That is why `matrixToFloatV` is written in C3 instead of bound.
 - **Enums and flags:** check the value type and the numbers against the C header.
@@ -153,14 +153,14 @@ When you add a wrapper with real logic (slices, lengths, allocations), add a tes
 
 | C3 target                   | Source                                                   |
 | --------------------------- | -------------------------------------------------------- |
-| linux-x64                   | `raylib-5.5_linux_amd64.tar.gz`                          |
-| macos-x64, macos-aarch64    | `raylib-5.5_macos.tar.gz` (one universal library for both) |
-| windows-x64                 | `raylib-5.5_win64_msvc16.zip` (`raylib.lib`)             |
-| mingw-x64                   | `raylib-5.5_win64_mingw-w64.zip`                         |
-| wasm32                      | `raylib-5.5_webassembly.zip`                             |
-| freebsd-x64                 | no official release. Built by hand and committed as is  |
+| linux-x64                   | `raylib-6.2_linux_amd64.tar.gz`                          |
+| macos-x64, macos-aarch64    | `raylib-6.2_macos.tar.gz` (one universal library for both) |
+| windows-x64                 | `raylib-6.2_win64_msvc16.zip` (`raylib.lib`)             |
+| mingw-x64                   | `raylib-6.2_win64_mingw-w64.zip`                         |
+| wasm32                      | `raylib-6.2_webassembly.zip` (`libraylib.web.a`, installed as `libraylib.a`) |
+| freebsd-x64                 | no official release. Built by hand and committed as is (still raylib 5.5) |
 
-Skipped release assets: `win32_*` (C3 has no 32-bit Windows target) and `linux_i386` (c3c reports linux-x86 as unsupported).
+Skipped release assets: `win32_*` (C3 has no 32-bit Windows target), `linux_i386` (c3c reports linux-x86 as unsupported), and `linux_arm64` and `winarm64_*` (not added yet).
 
 `just build_raylib` builds linux-x64 from `thirdparty/raylib` instead. Use it only for a custom build. Run `just fetch_libs linux-x64` afterwards to go back to the release build.
 
@@ -178,7 +178,7 @@ Skipped release assets: `win32_*` (C3 has no 32-bit Windows target) and `linux_i
    git diff HEAD -- c-src/raylib.h
    ```
    For `rlgl.h`, `raymath.h` and `rcamera.h`, diff them between the two tags inside `thirdparty/raylib`.
-4. In `scripts/fetch_libs.sh`, set `VERSION` and replace every hash. Get the hashes by downloading each asset once and running `sha256sum` on the archive and on the library inside it. GitHub publishes no digests for these assets.
+4. In `scripts/fetch_libs.sh`, set `VERSION` and replace every hash. Check the library file names too: if a release renames one (6.2 ships `libraylib.web.a` for wasm), set the "installed as" column so it still lands under the name `manifest.json` links. Get the hashes by downloading each asset once and running `sha256sum` on the archive and on the library inside it. GitHub publishes no digests for these assets.
 5. `just fetch_libs`, then run all the checks in [Checking a change](#checking-a-change).
 6. Rebuild freebsd-x64 by hand, or write in the changelog that it is still on the old version.
 7. Update the version numbers in `README.md`.

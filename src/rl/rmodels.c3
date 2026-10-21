@@ -23,7 +23,7 @@ extern fn void drawPoint3D(Vector3 position, Color color) @cname("DrawPoint3D");
 extern fn void drawCircle3D(Vector3 center, float radius, Vector3 rotation_axis, float rotation_angle, Color color) @cname("DrawCircle3D");
 
 <*
- Draw a color-filled triangle (vertex in counter-clockwise order!)
+ Draw a color-filled triangle, counter-clockwise vertex order
 *>
 extern fn void drawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color) @cname("DrawTriangle3D");
 
@@ -61,7 +61,7 @@ extern fn void drawCubeWiresV(Vector3 position, Vector3 size, Color color) @cnam
 extern fn void drawSphere(Vector3 center_pos, float radius, Color color) @cname("DrawSphere");
 
 <*
- Draw sphere with extended parameters
+ Draw sphere with defined rings and slices
 *>
 extern fn void drawSphereEx(Vector3 center_pos, float radius, int rings, int slices, Color color) @cname("DrawSphereEx");
 
@@ -73,7 +73,7 @@ extern fn void drawSphereWires(Vector3 center_pos, float radius, int rings, int 
 <*
  Draw a cylinder/cone
 *>
-extern fn void drawCylinder(Vector3 position, float radius_top, float radius_bottom, float height, int slices, Color color) @cname("DrawCylinder");
+extern fn void drawCylinder(Vector3 position, float radius_top, float radius_bottom, float height, int sides, Color color) @cname("DrawCylinder");
 
 <*
  Draw a cylinder with base at startPos and top at endPos
@@ -83,7 +83,7 @@ extern fn void drawCylinderEx(Vector3 start_pos, Vector3 end_pos, float start_ra
 <*
  Draw a cylinder/cone wires
 *>
-extern fn void drawCylinderWires(Vector3 position, float radius_top, float radius_bottom, float height, int slices, Color color) @cname("DrawCylinderWires");
+extern fn void drawCylinderWires(Vector3 position, float radius_top, float radius_bottom, float height, int sides, Color color) @cname("DrawCylinderWires");
 
 <*
  Draw a cylinder wires with base at startPos and top at endPos
@@ -93,12 +93,12 @@ extern fn void drawCylinderWiresEx(Vector3 startPos, Vector3 end_pos, float star
 <*
  Draw a capsule with the center of its sphere caps at startPos and endPos
 *>
-extern fn void drawCapsule(Vector3 start_pos, Vector3 endPos, float radius, int slices, int rings, Color color) @cname("DrawCapsule");
+extern fn void drawCapsule(Vector3 start_pos, Vector3 endPos, float radius, int rings, int slices, Color color) @cname("DrawCapsule");
 
 <*
  Draw capsule wireframe with the center of its sphere caps at startPos and endPos
 *>
-extern fn void drawCapsuleWires(Vector3 start_pos, Vector3 endPos, float radius, int slices, int rings, Color color) @cname("DrawCapsuleWires");
+extern fn void drawCapsuleWires(Vector3 start_pos, Vector3 endPos, float radius, int rings, int slices, Color color) @cname("DrawCapsuleWires");
 
 <*
  Draw a plane XZ
@@ -133,7 +133,7 @@ extern fn Model loadModel(ZString file_name) @cname("LoadModel");
 extern fn Model loadModelFromMesh(Mesh mesh) @cname("LoadModelFromMesh");
 
 <*
- Check if a model is valid (loaded in GPU, VAO/VBOs)
+ Check if model is valid (loaded in GPU, VAO/VBOs)
 *>
 extern fn bool isModelValid(Model model) @cname("IsModelValid");
 
@@ -156,7 +156,7 @@ extern fn BoundingBox getModelBoundingBox(Model model) @cname("GetModelBoundingB
 extern fn void drawModel(Model model, Vector3 position, float scale, Color tint) @cname("DrawModel");
 
 <*
- Draw a model with extended parameters
+ Draw a model with custom transform
 *>
 extern fn void drawModelEx(Model model, Vector3 position, Vector3 rotation_axis, float rotation_angle, Vector3 scale, Color tint) @cname("DrawModelEx");
 
@@ -166,19 +166,9 @@ extern fn void drawModelEx(Model model, Vector3 position, Vector3 rotation_axis,
 extern fn void drawModelWires(Model model, Vector3 position, float scale, Color tint) @cname("DrawModelWires");
 
 <*
- Draw a model wires (with texture if set) with extended parameters
+ Draw a model wires with custom transform
 *>
 extern fn void drawModelWiresEx(Model model, Vector3 position, Vector3 rotation_axis, float rotation_angle, Vector3 scale, Color tint) @cname("DrawModelWiresEx");
-
-<*
- Draw a model as points
-*>
-extern fn void drawModelPoints(Model model, Vector3 position, float scale, Color tint) @cname("DrawModelPoints");
-
-<*
- Draw a model as points with extended parameters
-*>
-extern fn void drawModelPointsEx(Model model, Vector3 position, Vector3 rotation_axis, float rotationAngle, Vector3 scale, Color tint) @cname("DrawModelPointsEx");
 
 <*
  Draw bounding box (wires)
@@ -191,14 +181,14 @@ extern fn void drawBoundingBox(BoundingBox box, Color color) @cname("DrawBoundin
 extern fn void drawBillboard(Camera camera, Texture2D texture, Vector3 position, float size, Color tint) @cname("DrawBillboard");
 
 <*
- Draw a billboard texture defined by source
+ Draw a billboard texture defined by rectangle
 *>
-extern fn void drawBillboardRec(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint) @cname("DrawBillboardRec");
+extern fn void drawBillboardRec(Camera camera, Texture2D texture, Rectangle rec, Vector3 position, Vector2 size, Color tint) @cname("DrawBillboardRec");
 
 <*
- Draw a billboard texture defined by source and rotation
+ Draw a billboard texture defined by source rectangle with scaling and rotation
 *>
-extern fn void drawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint) @cname("DrawBillboardPro");
+extern fn void drawBillboardPro(Camera camera, Texture2D texture, Rectangle rec, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint) @cname("DrawBillboardPro");
 
 // Mesh management functions
 //------------------------------------------------------------------------------------
@@ -335,7 +325,7 @@ fn Material[] loadMaterials(ZString file_name) @inline {
 extern fn Material loadMaterialDefault() @cname("LoadMaterialDefault");
 
 <*
- Check if a material is valid (shader assigned, map textures loaded in GPU)
+ Check if material is valid (shader assigned, map textures loaded in GPU)
 *>
 extern fn bool Material.isValid(Material material) @cname("IsMaterialValid");
 alias isMaterialValid = Material.isValid;
@@ -372,22 +362,16 @@ fn ModelAnimation[] loadModelAnimations(ZString file_name) @inline {
 }
 
 <*
- Update model animation pose (CPU)
+ Update model animation pose (vertex buffers and bone matrices)
 *>
-extern fn void Model.updateAnimation(Model model, ModelAnimation anim, int frame) @cname("UpdateModelAnimation");
+extern fn void Model.updateAnimation(Model model, ModelAnimation anim, float frame) @cname("UpdateModelAnimation");
 alias updateModelAnimation = Model.updateAnimation;
 
 <*
- Update model animation mesh bone matrices (GPU skinning)
+ Update model animation pose, blending two animations
 *>
-extern fn void Model.updateAnimationBones(Model model, ModelAnimation anim, int frame) @cname("UpdateModelAnimationBones");
-alias updateModelAnimationBones = Model.updateAnimationBones;
-
-<*
- Unload animation data
-*>
-extern fn void ModelAnimation.unload(ModelAnimation anim) @cname("UnloadModelAnimation");
-alias unloadModelAnimation = ModelAnimation.unload;
+extern fn void Model.updateAnimationEx(Model model, ModelAnimation anim_a, float frame_a, ModelAnimation anim_b, float frame_b, float blend) @cname("UpdateModelAnimationEx");
+alias updateModelAnimationEx = Model.updateAnimationEx;
 
 <*
  Unload animation array data

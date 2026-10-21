@@ -126,7 +126,7 @@ struct Camera3D {
 	Vector3 position; // Camera position
 	Vector3 target;   // Camera target it looks-at
 	Vector3 up;       // Camera up vector (rotation over its axis)
-	float fovy;       // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+	float fovy;       // Camera field-of-view aperture in Y (degrees) in perspective, used as near plane height in world units in orthographic
 	int projection;   // Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
 }
 
@@ -134,10 +134,10 @@ alias Camera = Camera3D;    // Camera type fallback, defaults to Camera3D
 
 // Camera2D, defines position/orientation in 2d space
 struct Camera2D @packed {
-	Vector2 offset;         // Camera offset (displacement from target)
-	Vector2 target;         // Camera target (rotation and zoom origin)
-	float rotation;         // Camera rotation in degrees
-	float zoom;             // Camera zoom (scaling), should be 1.0f by default
+	Vector2 offset;         // Camera offset (screen space offset from window origin, unscaled by DPI, real pixel size)
+	Vector2 target;         // Camera target (world space target point that is mapped to screen space offset)
+	float rotation;         // Camera rotation in degrees (pivots around target)
+	float zoom;             // Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale
 }
 
 // Mesh, vertex data and vao/vbo
@@ -154,13 +154,15 @@ struct Mesh {
 	char* colors;           // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
 	ushort* indices;        // Vertex indices (in case vertex data comes indexed)
 
-	// Animation vertex data
+	// Skin data for animation
+	int bone_count;          // Number of bones (MAX: 256 bones)
+	char* bone_indices;      // Vertex bone indices, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+	float* bone_weights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+
+	// Runtime animation vertex data (CPU skinning)
+	// NOTE: In case of GPU skinning, not used, pointers are NULL
 	float* anim_vertices;    // Animated vertex positions (after bones transformations)
 	float* anim_normals;     // Animated normals (after bones transformations)
-	char* bone_ids;          // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning) (shader-location = 6)
-	float* bone_weights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
-	Matrix *bone_matrices;   // Bones animated transformation matrices
-	int bone_count;          // Number of bones
 
 	// OpenGL identifiers
 	uint vao_id;             // OpenGL Vertex Array Object id
@@ -194,10 +196,20 @@ struct Transform {
 	Vector3 scale;       // Scale
 }
 
+// Anim pose, an array of Transform[]
+alias ModelAnimPose = Transform*;
+
 // Bone, skeletal animation bone
 struct BoneInfo {
 	char[32] name;          // Bone name
 	int parent;             // Bone parent
+}
+
+// Skeleton, animation bones hierarchy
+struct ModelSkeleton {
+	uint bone_count;         // Number of bones
+	BoneInfo* bones;         // Bones information (skeleton)
+	ModelAnimPose bind_pose; // Bones base transformation (Transform[])
 }
 
 // Model, meshes, materials and animation data
@@ -211,18 +223,20 @@ struct Model {
 	int* mesh_material;   // Mesh material number
 
 	// Animation data
-	int bone_count;       // Number of bones
-	BoneInfo* bones;      // Bones information (skeleton)
-	Transform* bind_pose; // Bones base transformation (pose)
+	ModelSkeleton skeleton;  // Skeleton for animation
+
+	// Runtime animation data (CPU/GPU skinning)
+	ModelAnimPose current_pose; // Current animation pose (Transform[])
+	Matrix* bone_matrices;   // Bones animated transformation matrices
 }
 
-// ModelAnimation
+// ModelAnimation, contains a full animation sequence
 struct ModelAnimation {
-	int bone_count;          // Number of bones
-	int frame_count;         // Number of animation frames
-	BoneInfo* bones;         // Bones information (skeleton)
-	Transform** frame_poses; // Poses array by frame
 	char[32] name;           // Animation name
+
+	uint bone_count;         // Number of bones (per pose)
+	int keyframe_count;      // Number of animation key frames
+	ModelAnimPose* keyframe_poses; // Animation sequence keyframe poses [keyframe][pose]
 }
 
 // Ray, ray for raycasting
@@ -312,7 +326,6 @@ struct VrStereoConfig {
 
 // File path list
 struct FilePathList {
-	uint capacity;        // Filepaths max entries
 	uint count;           // Filepaths entries count
 	ZString* paths;         // Filepaths entries
 }

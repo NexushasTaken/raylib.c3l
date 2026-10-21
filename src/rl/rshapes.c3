@@ -11,7 +11,7 @@ module rl;
 <*
  Set texture and rectangle to be used on shapes drawing
 *>
-extern fn void setShapesTexture(Texture2D texture, Rectangle source) @cname("SetShapesTexture");
+extern fn void setShapesTexture(Texture2D texture, Rectangle rec) @cname("SetShapesTexture");
 
 <*
  Get texture that is used for shapes drawing
@@ -65,6 +65,11 @@ fn void drawLineStrip(Vector2[] points, Color color) {
 extern fn void drawLineBezier(Vector2 start_pos, Vector2 end_pos, float thick, Color color) @cname("DrawLineBezier");
 
 <*
+ Draw a dashed line
+*>
+extern fn void drawLineDashed(Vector2 start_pos, Vector2 end_pos, int dash_size, int space_size, Color color) @cname("DrawLineDashed");
+
+<*
  Draw a color-filled circle
 *>
 extern fn void drawCircle(int center_x, int center_y, float radius, Color color) @cname("DrawCircle");
@@ -80,9 +85,14 @@ extern fn void drawCircleSector(Vector2 center, float radius, float start_angle,
 extern fn void drawCircleSectorLines(Vector2 center, float radius, float start_angle, float end_angle, int segments, Color color) @cname("DrawCircleSectorLines");
 
 <*
+ Draw circle sector outline with thickness
+*>
+extern fn void drawCircleSectorLinesEx(Vector2 center, float radius, float start_angle, float end_angle, int segments, float thick, Color color) @cname("DrawCircleSectorLinesEx");
+
+<*
  Draw a gradient-filled circle
 *>
-extern fn void drawCircleGradient(int center_x, int center_y, float radius, Color inner, Color outer) @cname("DrawCircleGradient");
+extern fn void drawCircleGradient(Vector2 center, float radius, Color inner, Color outer) @cname("DrawCircleGradient");
 
 <*
  Draw a color-filled circle (Vector version)
@@ -100,14 +110,34 @@ extern fn void drawCircleLines(int center_x, int center_y, float radius, Color c
 extern fn void drawCircleLinesV(Vector2 center, float radius, Color color) @cname("DrawCircleLinesV");
 
 <*
+ Draw circle outline with line thickness
+*>
+extern fn void drawCircleLinesEx(Vector2 center, float radius, float thick, Color color) @cname("DrawCircleLinesEx");
+
+<*
  Draw ellipse
 *>
 extern fn void drawEllipse(int center_x, int center_y, float radius_h, float radius_v, Color color) @cname("DrawEllipse");
 
 <*
+ Draw ellipse (Vector version)
+*>
+extern fn void drawEllipseV(Vector2 center, float radius_h, float radius_v, Color color) @cname("DrawEllipseV");
+
+<*
  Draw ellipse outline
 *>
 extern fn void drawEllipseLines(int center_x, int center_y, float radius_h, float radius_v, Color color) @cname("DrawEllipseLines");
+
+<*
+ Draw ellipse outline (Vector version)
+*>
+extern fn void drawEllipseLinesV(Vector2 center, float radius_h, float radius_v, Color color) @cname("DrawEllipseLinesV");
+
+<*
+ Draw ellipse outline with line thickness
+*>
+extern fn void drawEllipseLinesEx(Vector2 center, float radius_h, float radius_v, float thick, Color color) @cname("DrawEllipseLinesEx");
 
 <*
  Draw ring
@@ -118,6 +148,11 @@ extern fn void drawRing(Vector2 center, float inner_radius, float outer_radius, 
  Draw ring outline
 *>
 extern fn void drawRingLines(Vector2 center, float inner_radius, float outer_radius, float start_angle, float end_angle, int segments, Color color) @cname("DrawRingLines");
+
+<*
+ Draw ring outline with line thickness
+*>
+extern fn void drawRingLinesEx(Vector2 center, float inner_radius, float outer_radius, float start_angle, float end_angle, int segments, float thick, Color color) @cname("DrawRingLinesEx");
 
 <*
  Draw a color-filled rectangle
@@ -150,9 +185,9 @@ extern fn void drawRectangleGradientV(int pos_x, int pos_y, int width, int heigh
 extern fn void drawRectangleGradientH(int pos_x, int pos_y, int width, int height, Color left, Color right) @cname("DrawRectangleGradientH");
 
 <*
- Draw a gradient-filled rectangle with custom vertex colors
+ Draw a gradient-filled rectangle with custom vertex colors, counter-clockwise color order
 *>
-extern fn void drawRectangleGradientEx(Rectangle rec, Color top_left, Color bottom_left, Color top_right, Color bottom_right) @cname("DrawRectangleGradientEx");
+extern fn void drawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, Color col4) @cname("DrawRectangleGradientEx");
 
 <*
  Draw rectangle outline
@@ -160,9 +195,9 @@ extern fn void drawRectangleGradientEx(Rectangle rec, Color top_left, Color bott
 extern fn void drawRectangleLines(int pos_x, int pos_y, int width, int height, Color color) @cname("DrawRectangleLines");
 
 <*
- Draw rectangle outline with extended parameters
+ Draw rectangle outline with line thickness
 *>
-extern fn void drawRectangleLinesEx(Rectangle rec, float line_thick, Color color) @cname("DrawRectangleLinesEx");
+extern fn void drawRectangleLinesEx(Rectangle rec, float thick, Color color) @cname("DrawRectangleLinesEx");
 
 <*
  Draw rectangle with rounded edges
@@ -176,19 +211,29 @@ extern fn void drawRectangleRounded(Rectangle rec, float roundness, int segments
 extern fn void drawRectangleRoundedLines(Rectangle rec, float roundness, int segments, Color color) @cname("DrawRectangleRoundedLines");
 
 <*
- Draw rectangle with rounded edges outline
+ Draw rectangle lines with rounded edges outline and line thickness
 *>
-extern fn void drawRectangleRoundedLinesEx(Rectangle rec, float roundness, int segments, float line_thick, Color color) @cname("DrawRectangleRoundedLinesEx");
+extern fn void drawRectangleRoundedLinesEx(Rectangle rec, float roundness, int segments, float thick, Color color) @cname("DrawRectangleRoundedLinesEx");
 
 <*
- Draw a color-filled triangle (vertex in counter-clockwise order!)
+ Draw a color-filled triangle, counter-clockwise vertex order
 *>
 extern fn void drawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color) @cname("DrawTriangle");
 
 <*
- Draw triangle outline (vertex in counter-clockwise order!)
+ Draw triangle with interpolated colors, counter-clockwise vertex/color order
+*>
+extern fn void drawTriangleGradient(Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3) @cname("DrawTriangleGradient");
+
+<*
+ Draw triangle outline, counter-clockwise vertex order
 *>
 extern fn void drawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color) @cname("DrawTriangleLines");
+
+<*
+ Draw triangle outline with line thickness, counter-clockwise vertex order
+*>
+extern fn void drawTriangleLinesEx(Vector2 v1, Vector2 v2, Vector2 v3, float thick, Color color) @cname("DrawTriangleLinesEx");
 
 <*
  Draw a triangle fan defined by points (first vertex is the center)
@@ -207,7 +252,7 @@ fn void drawTriangleStrip(Vector2[] points, Color color) @inline {
 }
 
 <*
- Draw a regular polygon (Vector version)
+ Draw a polygon of n sides
 *>
 extern fn void drawPoly(Vector2 center, int sides, float radius, float rotation, Color color) @cname("DrawPoly");
 
@@ -217,9 +262,9 @@ extern fn void drawPoly(Vector2 center, int sides, float radius, float rotation,
 extern fn void drawPolyLines(Vector2 center, int sides, float radius, float rotation, Color color) @cname("DrawPolyLines");
 
 <*
- Draw a polygon outline of n sides with extended parameters
+ Draw a polygon outline of n sides with line thickness
 *>
-extern fn void drawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float line_thick, Color color) @cname("DrawPolyLinesEx");
+extern fn void drawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float thick, Color color) @cname("DrawPolyLinesEx");
 
 // Splines drawing functions
 //------------------------------------------------------------------------------------
@@ -310,7 +355,7 @@ extern fn Vector2 getSplinePointCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, V
 <*
  Get (evaluate) spline point: Quadratic Bezier
 *>
-extern fn Vector2 getSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t) @cname("GetSplinePointBezierQuad");
+extern fn Vector2 getSplinePointBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float t) @cname("GetSplinePointBezierQuadratic");
 
 <*
  Get (evaluate) spline point: Cubic Bezier
@@ -336,7 +381,7 @@ extern fn bool checkCollisionCircles(Vector2 center1, float radius1, Vector2 cen
 extern fn bool checkCollisionCircleRec(Vector2 center, float radius, Rectangle rec) @cname("CheckCollisionCircleRec");
 
 <*
- Check if circle collides with a line created betweeen two points [p1] and [p2]
+ Check if circle collides with a line created between two points [p1] and [p2]
 *>
 extern fn bool checkCollisionCircleLine(Vector2 center, float radius, Vector2 p1, Vector2 p2) @cname("CheckCollisionCircleLine");
 

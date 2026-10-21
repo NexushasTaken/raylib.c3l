@@ -10,7 +10,7 @@
   // Authors, optionally with email.
   "authors": [ "NexushasTaken <nexushastaken@gmail.com>" ],
   // Version of raylib
-  "version": "5.5",
+  "version": "6.2",
   // Sources compiled for all targets.
   "sources": [ ],
   // C sources if the project also compiles C sources

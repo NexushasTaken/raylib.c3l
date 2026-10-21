@@ -13,17 +13,17 @@
 # Usage: scripts/fetch_libs.sh [target...]   (default: all targets below)
 set -eu
 
-VERSION="5.5"
+VERSION="6.2"
 BASE_URL="https://github.com/raysan5/raylib/releases/download/$VERSION"
 
-# c3 target | release asset | sha256 of the asset | library inside lib/ | sha256 of the library
+# c3 target | release asset | sha256 of the asset | library inside lib/ | sha256 of the library | installed as
 ASSETS="
-linux-x64     linux_amd64.tar.gz  3d95ef03d5b38dfa55c0a16ca122d382134b078f0e5b270b52fe7eae0549c000 libraylib.a 3323cbf14ec6e640e19d63e230e68c3a530be3e9a9d416435eab82160e9e9ccc
-macos-x64     macos.tar.gz        930c67b676963c6cffbd965814664523081ecbf3d30fc9df4211d0064aa6ba39 libraylib.a 5517f19555ce6e19540ac534bb5d5bf08ba45660d14642db4878f079a9f1b7da
-macos-aarch64 macos.tar.gz        930c67b676963c6cffbd965814664523081ecbf3d30fc9df4211d0064aa6ba39 libraylib.a 5517f19555ce6e19540ac534bb5d5bf08ba45660d14642db4878f079a9f1b7da
-windows-x64   win64_msvc16.zip    8d046084d12353183e701ef4c9d276c21fcd3243c2a368091fabfb2769b8507c raylib.lib  b4c0dc0d3999f528f298fa41eb1f72092b49aafc43cf98a65926518eb7137c43
-mingw-x64     win64_mingw-w64.zip fe8feda1b92fc02826e2d19c631d648fd0563b93b144893fe18140e9fe4fb6fd libraylib.a 434e2475f3b74ca625e49eada239b3a5dca79f5c468d2ff82820ffa0791ceff9
-wasm32        webassembly.zip     798b6bea650e78a60fe49f106a15d92ea4e33efd3aa1b3efa34b0438a14bbf2c libraylib.a ea2ff8be3fbce064de83788784d5b7742c7fbb14c5a09bfdd20e9ea95e312764
+linux-x64     linux_amd64.tar.gz  586bbc32f3596d439382b1c5dbc6c1c573eb7e1d00fe92be7d4deb116883720d libraylib.a     f0ac4cc3e9c1ceadae4ef6ead1f41a235ec333c5af21aa64aebd173c3b9dbcb1 libraylib.a
+macos-x64     macos.tar.gz        100437734a44d56ed9d2a1c4b249dbfc6d6cc3477a45e306f9f56fe5f1e2b4ef libraylib.a     8b0c2a190adf0af2c5b176c041c2357bda3b13e2cacb4db6c00fe1d8da1c4c00 libraylib.a
+macos-aarch64 macos.tar.gz        100437734a44d56ed9d2a1c4b249dbfc6d6cc3477a45e306f9f56fe5f1e2b4ef libraylib.a     8b0c2a190adf0af2c5b176c041c2357bda3b13e2cacb4db6c00fe1d8da1c4c00 libraylib.a
+windows-x64   win64_msvc16.zip    8467b5dd6db4d7ab942f3148a3d30d93be6ed9b2fab88069d177e59604268ebd raylib.lib      e50c66cf2521659f6f866247858cbcbb256a4ac8e45a547b9179b5e204ce730d raylib.lib
+mingw-x64     win64_mingw-w64.zip 48ba378d100fe7e13fc2c35d708764b855b815596f3b0a31746e37259283961f libraylib.a     ad05e94109e7690a07f8b8d9baa11025f809c3429e0d4252b36382db7f35dbe9 libraylib.a
+wasm32        webassembly.zip     5f77e0cc3f92de2c932e8b69c0b5adfe6d4afde1d313ee075133a5a3ca92e76c libraylib.web.a a6bd883872b6d2c528ca4068d3e6d6377ffc8b332357c54d36f8d894547d8840 libraylib.a
 "
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -51,13 +51,13 @@ for t in $TARGETS; do
 	echo "$ASSETS" | grep -q "^$t " || { echo "unknown target: $t" >&2; exit 1; }
 done
 
-echo "$ASSETS" | while read -r target asset sum lib libsum; do
+echo "$ASSETS" | while read -r target asset sum lib libsum dst; do
 	[ -n "$target" ] || continue
 	wanted "$target" || continue
 
-	dest="$ROOT/libs/$target/$lib"
+	dest="$ROOT/libs/$target/$dst"
 	if [ -f "$dest" ] && [ "$(sha256 "$dest")" = "$libsum" ]; then
-		echo "libs/$target/$lib is up to date"
+		echo "libs/$target/$dst is up to date"
 		continue
 	fi
 
@@ -87,5 +87,5 @@ echo "$ASSETS" | while read -r target asset sum lib libsum; do
 
 	mkdir -p "$ROOT/libs/$target"
 	cp "$TMP/$name/lib/$lib" "$dest"
-	echo "  -> libs/$target/$lib"
+	echo "  -> libs/$target/$dst"
 done

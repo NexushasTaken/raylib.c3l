@@ -1,6 +1,6 @@
 # raylib.c3l
 
-raylib.c3l is a set of C3 bindings for [raylib](http://www.raylib.com/) 5.5, with optional [rlgl](https://github.com/raysan5/raylib/blob/master/src/rlgl.h) and [raygui](https://github.com/raysan5/raygui) 4.0 bindings.
+raylib.c3l is a set of C3 bindings for [raylib](http://www.raylib.com/) 6.2, with optional [rlgl](https://github.com/raysan5/raylib/blob/master/src/rlgl.h) and [raygui](https://github.com/raysan5/raygui) 4.0 bindings.
 
 C libraries are easy to call from C3 directly, but these bindings also try to use C3 features where they make raylib nicer to use:
 - **Methods and aliases**: functions that act on a type are C3 methods, and each one also has a plain alias, so `image.loadColors()` and `rl::loadImageColors(image)` both work.
@@ -17,7 +17,8 @@ Function docs are the same comments as raylib's C headers, so the [raylib cheats
 ## Requirements
 
 - C3 compiler 0.8.5
-- raylib 5.5 and raygui 4.0 (prebuilt static libraries are bundled in [libs](./libs/), so you don't need to build them)
+- raylib 6.2 and raygui 4.0 (prebuilt static libraries are bundled in [libs](./libs/), so you don't need to build them)
+- on Linux, libX11 (raylib 6.2 links it for clipboard images)
 
 ## Supported Platforms
 
@@ -30,7 +31,7 @@ Bundled libraries exist for these targets. Only Linux has been tested with the c
 | mingw-x64     | :heavy_check_mark: |                    |
 | macos-x64     | :heavy_check_mark: |                    |
 | macos-aarch64 | :heavy_check_mark: |                    |
-| freebsd-x64   | :heavy_check_mark: |                    |
+| freebsd-x64   | :heavy_check_mark: (raylib 5.5, not updated yet) |                    |
 | wasm32        | :heavy_check_mark: |                    |
 
 ## Modules
@@ -94,7 +95,7 @@ or build it directly with `c3c build core_2d_camera`.
 # Development
 
 - `c3c test` runs the unit tests in [test/unit](./test/unit/).
-- `just fetch_libs` downloads the prebuilt libraries from the [raylib 5.5 release](https://github.com/raysan5/raylib/releases/tag/5.5) into [libs](./libs/) (pass target names to fetch only some, e.g. `just fetch_libs linux-x64`). freebsd-x64 has no official release, so its library is kept as is.
+- `just fetch_libs` downloads the prebuilt libraries from the [raylib 6.2 release](https://github.com/raysan5/raylib/releases/tag/6.2) into [libs](./libs/) (pass target names to fetch only some, e.g. `just fetch_libs linux-x64`). freebsd-x64 has no official release, so its library is kept as is.
 - `just build_raylib` builds the linux-x64 `libraylib.a` from `thirdparty/raylib` instead, if you want a custom build.
 - `just dist` packages the library into `dist/raylib.c3l`.
 

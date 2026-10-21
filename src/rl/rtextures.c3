@@ -41,7 +41,7 @@ extern fn Image loadImageFromMemory(ZString file_type, ZString file_data, int da
 extern fn Image loadImageFromTexture(Texture2D texture) @cname("LoadImageFromTexture");
 
 <*
- Load image from screen buffer and (screenshot)
+ Load image from screen buffer (screenshot)
 *>
 extern fn Image loadImageFromScreen() @cname("LoadImageFromScreen");
 
@@ -223,7 +223,7 @@ alias imageResize = Image.resize;
 <*
  Resize image (Nearest-Neighbor scaling algorithm)
 *>
-extern fn void Image.resizeNN(Image* image, int new_width,int new_height) @cname("ImageResizeNN");
+extern fn void Image.resizeNN(Image* image, int new_width, int new_height) @cname("ImageResizeNN");
 alias imageResizeNN = Image.resizeNN;
 
 <*
@@ -295,7 +295,7 @@ alias imageColorGrayscale = Image.colorGrayscale;
 <*
  Modify image color: contrast (-100 to 100)
 *>
-extern fn void Image.colorContrast(Image* image, float contrast) @cname("ImageColorContrast");
+extern fn void Image.colorContrast(Image* image, int contrast) @cname("ImageColorContrast");
 alias imageColorContrast = Image.colorContrast;
 
 <*
@@ -361,7 +361,7 @@ alias getImageColor = Image.getColor;
 //------------------------------------------------------------------------------------
 
 <*
- Clear image background with given color
+ Clear image background with provided color
 *>
 extern fn void Image.clearBackground(Image* dst, Color color) @cname("ImageClearBackground");
 alias imageClearBackground = Image.clearBackground;
@@ -389,6 +389,15 @@ alias imageDrawLine = Image.drawLine;
 *>
 extern fn void Image.drawLineEx(Image* dst, Vector2 start, Vector2 end, int thick, Color color) @cname("ImageDrawLineEx");
 alias imageDrawLineEx = Image.drawLineEx;
+
+<*
+ Draw a lines sequence within an image
+ @require points.len <= int::max
+*>
+fn void Image.drawLineStrip(Image* dst, Vector2[] points, Color color) @inline {
+	__image_draw_line_strip(dst, points.ptr, (int)points.len, color);
+}
+alias imageDrawLineStrip = Image.drawLineStrip;
 
 <*
  Draw line within an image (Vector version)
@@ -421,6 +430,12 @@ extern fn void Image.drawCircleLinesV(Image* dst, Vector2 center, int radius, Co
 alias imageDrawCircleLinesV = Image.drawCircleLinesV;
 
 <*
+ Draw a gradient-filled circle within an image
+*>
+extern fn void Image.drawCircleGradient(Image* dst, Vector2 center, float radius, Color inner, Color outer) @cname("ImageDrawCircleGradient");
+alias imageDrawCircleGradient = Image.drawCircleGradient;
+
+<*
  Draw rectangle within an image
 *>
 extern fn void Image.drawRectangle(Image* dst, int pos_x, int pos_y, int width, int height, Color color) @cname("ImageDrawRectangle");
@@ -439,10 +454,28 @@ extern fn void Image.drawRectangleRec(Image* dst, Rectangle rec, Color color) @c
 alias imageDrawRectangleRec = Image.drawRectangleRec;
 
 <*
+ Draw a color-filled rectangle with pro parameters within and image
+*>
+extern fn void Image.drawRectanglePro(Image* dst, Rectangle rec, Vector2 origin, float rotation, Color color) @cname("ImageDrawRectanglePro");
+alias imageDrawRectanglePro = Image.drawRectanglePro;
+
+<*
  Draw rectangle lines within an image
 *>
-extern fn void Image.drawRectangleLines(Image* dst, Rectangle rec, int thick, Color color) @cname("ImageDrawRectangleLines");
+extern fn void Image.drawRectangleLines(Image* dst, int pos_x, int pos_y, int width, int height, Color color) @cname("ImageDrawRectangleLines");
 alias imageDrawRectangleLines = Image.drawRectangleLines;
+
+<*
+ Draw rectangle lines within an image with line thickness
+*>
+extern fn void Image.drawRectangleLinesEx(Image* dst, Rectangle rec, int thick, Color color) @cname("ImageDrawRectangleLinesEx");
+alias imageDrawRectangleLinesEx = Image.drawRectangleLinesEx;
+
+<*
+ Draw rectangle with gradient colors within an image, counter-clockwise color order
+*>
+extern fn void Image.drawRectangleGradientEx(Image* dst, Rectangle rec, Color col1, Color col2, Color col3, Color col4) @cname("ImageDrawRectangleGradientEx");
+alias imageDrawRectangleGradientEx = Image.drawRectangleGradientEx;
 
 <*
  Draw triangle within an image
@@ -453,8 +486,8 @@ alias imageDrawTriangle = Image.drawTriangle;
 <*
  Draw triangle with interpolated colors within an image
 *>
-extern fn void Image.drawTriangleEx(Image* dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3) @cname("ImageDrawTriangleEx");
-alias imageDrawTriangleEx = Image.drawTriangleEx;
+extern fn void Image.drawTriangleGradient(Image* dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3) @cname("ImageDrawTriangleGradient");
+alias imageDrawTriangleGradient = Image.drawTriangleGradient;
 
 <*
  Draw triangle outline within an image
@@ -481,10 +514,28 @@ fn void Image.drawTriangleStrip(Image* dst, Vector2[] points, Color color) @inli
 alias imageDrawTriangleStrip = Image.drawTriangleStrip;
 
 <*
- Draw a source image within a destination image (tint applied to source)
+ Draw an image within an image
 *>
-extern fn void Image.draw(Image* dst, Image src, Rectangle src_rec, Rectangle dst_rec, Color tint) @cname("ImageDraw");
-alias imageDraw = Image.draw;
+extern fn void Image.drawImage(Image* dst, Image src, int pos_x, int pos_y, Color tint) @cname("ImageDrawImage");
+alias imageDrawImage = Image.drawImage;
+
+<*
+ Draw an image with scaling and rotation within an image
+*>
+extern fn void Image.drawImageEx(Image* dst, Image src, Vector2 position, float rotation, float scale, Color tint) @cname("ImageDrawImageEx");
+alias imageDrawImageEx = Image.drawImageEx;
+
+<*
+ Draw a part of an image defined by a rectangle within an image
+*>
+extern fn void Image.drawImageRec(Image* dst, Image src, Rectangle src_rec, Vector2 position, Color tint) @cname("ImageDrawImageRec");
+alias imageDrawImageRec = Image.drawImageRec;
+
+<*
+ Draw a part of an image defined by a rectangle into destination rectangle, with scaling and rotation, within an image
+*>
+extern fn void Image.drawImagePro(Image* dst, Image src, Rectangle src_rec, Rectangle dst_rec, Vector2 origin, float rotation, Color tint) @cname("ImageDrawImagePro");
+alias imageDrawImagePro = Image.drawImagePro;
 
 <*
  Draw text (using default font) within an image (destination)
@@ -497,6 +548,12 @@ alias imageDrawText = Image.drawText;
 *>
 extern fn void Image.drawTextEx(Image* dst, Font font, ZString text, Vector2 position, float font_size, float spacing, Color tint) @cname("ImageDrawTextEx");
 alias imageDrawTextEx = Image.drawTextEx;
+
+<*
+ Draw text using Font and pro parameters (rotation)
+*>
+extern fn void Image.drawTextPro(Image* dst, Font font, ZString text, Vector2 position, Vector2 origin, float rotation, float font_size, float spacing, Color tint) @cname("ImageDrawTextPro");
+alias imageDrawTextPro = Image.drawTextPro;
 
 // Texture loading functions
 // NOTE: These functions require GPU access
@@ -523,7 +580,12 @@ extern fn TextureCubemap loadTextureCubemap(Image image, CubemapLayout layout) @
 extern fn RenderTexture2D loadRenderTexture(int width, int height) @cname("LoadRenderTexture");
 
 <*
- Check if a texture is valid (loaded in GPU)
+ Load texture for rendering (framebuffer), with specific format
+*>
+extern fn RenderTexture2D loadRenderTextureEx(int width, int height, PixelFormat format) @cname("LoadRenderTextureEx");
+
+<*
+ Check if texture is valid (loaded in GPU)
 *>
 extern fn bool Texture2D.isValid(Texture2D texture) @cname("IsTextureValid");
 alias isTextureValid = Texture2D.isValid;
@@ -535,7 +597,7 @@ extern fn void Texture2D.unload(Texture2D texture) @cname("UnloadTexture");
 alias unloadTexture = Texture2D.unload;
 
 <*
- Check if a render texture is valid (loaded in GPU)
+ Check if render texture is valid (loaded in GPU)
 *>
 extern fn bool RenderTexture2D.isValid(RenderTexture2D target) @cname("IsRenderTextureValid");
 alias isRenderTextureValid = RenderTexture2D.isValid;
@@ -547,13 +609,13 @@ extern fn void RenderTexture2D.unload(RenderTexture2D target) @cname("UnloadRend
 alias unloadRenderTexture = RenderTexture2D.unload;
 
 <*
- Update GPU texture with new data
+ Update GPU texture with new data (pixels should be able to fill texture)
 *>
 extern fn void Texture2D.update(Texture2D texture, void* pixels) @cname("UpdateTexture");
 alias updateTexture = Texture2D.update;
 
 <*
- Update GPU texture rectangle with new data
+ Update GPU texture rectangle with new data (pixels and rec should fit in texture)
 *>
 extern fn void Texture2D.updateRec(Texture2D texture, Rectangle rec, void* pixels) @cname("UpdateTextureRec");
 alias updateTextureRec = Texture2D.updateRec;
@@ -593,24 +655,24 @@ extern fn void drawTexture(Texture2D texture, int pos_x, int pos_y, Color tint) 
 extern fn void drawTextureV(Texture2D texture, Vector2 position, Color tint) @cname("DrawTextureV");
 
 <*
- Draw a Texture2D with extended parameters
+ Draw a Texture2D with rotation and scale
 *>
 extern fn void drawTextureEx(Texture2D texture, Vector2 position, float rotation, float scale, Color tint) @cname("DrawTextureEx");
 
 <*
  Draw a part of a texture defined by a rectangle
 *>
-extern fn void drawTextureRec(Texture2D texture, Rectangle source, Vector2 position, Color tint) @cname("DrawTextureRec");
+extern fn void drawTextureRec(Texture2D texture, Rectangle rec, Vector2 position, Color tint) @cname("DrawTextureRec");
 
 <*
- Draw a part of a texture defined by a rectangle with 'pro' parameters
+ Draw a part of a texture defined by a source rectangle to destination rectangle, with scaling and rotation
 *>
-extern fn void drawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) @cname("DrawTexturePro");
+extern fn void drawTexturePro(Texture2D texture, Rectangle srcrec, Rectangle dstrec, Vector2 origin, float rotation, Color tint) @cname("DrawTexturePro");
 
 <*
- Draws a texture (or part of it) that stretches or shrinks nicely
+ Draw a texture (or part of it) that stretches or shrinks nicely
 *>
-extern fn void drawTextureNPatch(Texture2D texture, NPatchInfo n_patch_info, Rectangle dest, Vector2 origin, float rotation, Color tint) @cname("DrawTextureNPatch");
+extern fn void drawTextureNPatch(Texture2D texture, NPatchInfo n_patch_info, Rectangle dstrec, Vector2 origin, float rotation, Color tint) @cname("DrawTextureNPatch");
 
 // Color/pixel related functions
 //------------------------------------------------------------------------------------

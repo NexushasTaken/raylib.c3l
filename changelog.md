@@ -19,6 +19,17 @@
 ## v1.3.0
 
 ### Breaking Changes
+- updated to raylib 6.2. Changes that follow raylib's own API changes:
+  - `changeDirectory` returns `int` (0 on success) instead of `bool`.
+  - `drawCircleGradient` takes a `Vector2 center`. `Image.drawRectangleLines` takes `pos_x, pos_y, width, height` (the old form is now `Image.drawRectangleLinesEx`). `Image.colorContrast` takes an `int`.
+  - `loadFontData` takes an extra `int* glyph_count`. `Model.updateAnimation` takes a `float` frame.
+  - `drawCapsule`/`drawCapsuleWires` parameter order is now `rings, slices`.
+  - renamed `getSplinePointBezierQuad` -> `getSplinePointBezierQuadratic`, `Image.drawTriangleEx` -> `Image.drawTriangleGradient`, `Image.draw` -> `Image.drawImagePro` (now also takes `origin` and `rotation`).
+  - removed `drawModelPoints`, `drawModelPointsEx`, `Model.updateAnimationBones` and `ModelAnimation.unload` (use `unloadModelAnimations`).
+  - `Mesh`, `Model` and `ModelAnimation` changed layout: bones moved into the new `ModelSkeleton` (`Model.skeleton`), `ModelAnimation.frame_count`/`frame_poses` are now `keyframe_count`/`keyframe_poses`, `Mesh.bone_ids` is now `bone_indices`, and `Mesh.bone_matrices` moved to `Model.bone_matrices`. `FilePathList` has no `capacity` field anymore.
+  - `SHADER_UNIFORM_SAMPLER2D` is now 12, and `SHADER_LOC_BONE_MATRICES` is replaced by `SHADER_LOC_MATRIX_BONETRANSFORMS`.
+  - rlgl: `loadShaderProgram` now takes the shader code strings (it replaces `loadShaderCode`), the old id version is `loadShaderProgramEx`, `compileShader` -> `loadShader`, `loadComputeShaderProgram` -> `loadShaderProgramCompute`.
+- linux-x64 now also links `X11`.
 - rename `isWaveReady`/`Wave.isReady` -> `isWaveValid`/`Wave.isValid` and `isSoundReady`/`Sound.isReady` -> `isSoundValid`/`Sound.isValid` (raylib v5.5 removed `IsWaveReady`/`IsSoundReady`).
 - removed `rmath::Quaternionf`, use `math::Quaternionf` instead.
 - `rlgl::loadTextureCubemap` now takes `mipmapCount`, `rlgl::loadFramebuffer` takes no arguments, and the last parameter of `rlgl::setVertexAttribute` is now `int offset`, matching raylib v5.5.
@@ -26,6 +37,10 @@
 - bundled libraries moved into [libs](./libs/).
 
 ### Changes
+- added raylib 6.2 bindings: file functions (`fileRename`, `fileRemove`, `fileCopy`, `fileMove`, `fileTextReplace`, `fileTextFindIndex`, `isFileHidden`, `isPathDirectory`, `isPathAbsolute`, `getDirectoryFileCount`, `getDirectoryFileCountEx`), `computeSHA256`, `getKeyName`, new shapes (`drawLineDashed`, `drawTriangleGradient`, `drawTriangleLinesEx`, `drawCircleSectorLinesEx`, `drawCircleLinesEx`, `drawEllipseV`, `drawEllipseLinesV`, `drawEllipseLinesEx`, `drawRingLinesEx`), new image drawing (`Image.drawLineStrip`, `Image.drawRectanglePro`, `Image.drawRectangleLinesEx`, `Image.drawRectangleGradientEx`, `Image.drawCircleGradient`, `Image.drawImage`, `Image.drawImageEx`, `Image.drawImageRec`, `Image.drawTextPro`), `loadRenderTextureEx`, text functions (`measureTextCodepoints`, `loadTextLines`, `unloadTextLines`, `textRemoveSpaces`, `getTextBetween`, `textReplaceAlloc`, `textReplaceBetween`, `textReplaceBetweenAlloc`, `textInsertAlloc`), `Model.updateAnimationEx`, `vector2CrossProduct`, `matrixMultiplyValue`, `matrixCompose`, `SHADER_UNIFORM_UINT`/`UIVEC2`/`UIVEC3`/`UIVEC4`, `SHADER_LOC_VERTEX_INSTANCETRANSFORM`, and rlgl `disablePointMode`, `setPointSize`, `getPointSize`, `getProcAddress`, `copyFramebuffer`, `resizeFramebuffer`, `unloadShader` and `OPENGL_SOFTWARE`.
+- doc comments updated to the raylib 6.2 headers.
+- `encodeDataBase64` still returns the string without the NULL terminator (raylib 6.2 now counts it in the output size).
+- bundled libraries are the raylib 6.2 release builds. freebsd-x64 is still raylib 5.5.
 - update bindings for c3 v0.8.5 (`@extern` -> `@cname`, `@if`/`$feature` -> `@feat`).
 - fix `rlgl::VertexBuffer` and `rlgl::DrawCall` layouts to match raylib v5.5.
 - fix `@blendMode` calling `beginShaderMode`/`endShaderMode` instead of `beginBlendMode`/`endBlendMode`.
@@ -34,7 +49,7 @@
 - added rlgl v5.5 bindings: `setClipPlanes`, `getCullDistanceNear`, `getCullDistanceFar`, `getActiveFramebuffer`, `bindFramebuffer`, `colorMask` and `setUniformMatrices`.
 - added freebsd-x64 target to [manifest.json](manifest.json).
 - added mingw-x64 target to [manifest.json](manifest.json).
-- bundled libraries for linux-x64, macos-x64, macos-aarch64, windows-x64, mingw-x64 and wasm32 are now the official raylib 5.5 release builds, fetched with `just fetch_libs`.
+- bundled libraries for linux-x64, macos-x64, macos-aarch64, windows-x64, mingw-x64 and wasm32 are now the official raylib release builds, fetched with `just fetch_libs`.
 - `just dist` now includes `c-src`.
 - updated examples to the current API.
 - unit tests now use `@test`, run them with `c3c test`.

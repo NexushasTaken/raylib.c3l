@@ -3,7 +3,7 @@ import rl;
 
 const GRAPHICS_API_OPENGL_33 = true;
 
-const RLGL_VERSION = "4.5";
+const RLGL_VERSION = "6.0";
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -143,6 +143,7 @@ struct RenderBatch {
 
 // OpenGL version
 alias GlVersion = int;
+const OPENGL_SOFTWARE = 0;     // Software rendering
 const OPENGL_11 = 1;           // OpenGL 1.1
 const OPENGL_21 = 2;           // OpenGL 2.1 (GLSL 120)
 const OPENGL_33 = 3;           // OpenGL 3.3 (GLSL 330)
@@ -257,7 +258,11 @@ const OPENGL_ES_30 = 6;        // OpenGL ES 3.0 (GLSL 300 es)
 //const RL_SHADER_UNIFORM_IVEC2 = 5;        // Shader uniform type: ivec2 (2 int)
 //const RL_SHADER_UNIFORM_IVEC3 = 6;        // Shader uniform type: ivec3 (3 int)
 //const RL_SHADER_UNIFORM_IVEC4 = 7;        // Shader uniform type: ivec4 (4 int)
-//const RL_SHADER_UNIFORM_SAMPLER2D = 8;    // Shader uniform type: sampler2d
+//const RL_SHADER_UNIFORM_UINT   = 8;       // Shader uniform type: unsigned int
+//const RL_SHADER_UNIFORM_UIVEC2 = 9;       // Shader uniform type: uivec2 (2 unsigned int)
+//const RL_SHADER_UNIFORM_UIVEC3 = 10;      // Shader uniform type: uivec3 (3 unsigned int)
+//const RL_SHADER_UNIFORM_UIVEC4 = 11;      // Shader uniform type: uivec4 (4 unsigned int)
+//const RL_SHADER_UNIFORM_SAMPLER2D = 12;   // Shader uniform type: sampler2d
 
 // INFO: use rl::ShaderAttributeDataType instead
 // Shader attribute data types
@@ -633,17 +638,32 @@ fn void disableScissorTest() @cname("rlDisableScissorTest");
 fn void scissor(int x, int y, int width, int height) @cname("rlScissor");
 
 <*
- Enable wire mode
-*>
-fn void enableWireMode() @cname("rlEnableWireMode");
-
-<*
  Enable point mode
 *>
 fn void enablePointMode() @cname("rlEnablePointMode");
 
 <*
- Disable wire (and point) mode
+ Disable point mode
+*>
+fn void disablePointMode() @cname("rlDisablePointMode");
+
+<*
+ Set the point drawing size
+*>
+fn void setPointSize(float size) @cname("rlSetPointSize");
+
+<*
+ Get the point drawing size
+*>
+fn float getPointSize() @cname("rlGetPointSize");
+
+<*
+ Enable wire mode
+*>
+fn void enableWireMode() @cname("rlEnableWireMode");
+
+<*
+ Disable wire mode
 *>
 fn void disableWireMode() @cname("rlDisableWireMode");
 
@@ -732,6 +752,11 @@ fn void glClose() @cname("rlglClose");
  Load OpenGL extensions (loader function required)
 *>
 fn void loadExtensions(void *loader) @cname("rlLoadExtensions");
+
+<*
+ Get OpenGL procedure address
+*>
+fn void *getProcAddress(ZString procName) @cname("rlGetProcAddress");
 
 <*
  Get current OpenGL version
@@ -950,7 +975,7 @@ fn uint loadFramebuffer() @cname("rlLoadFramebuffer");
 <*
  Attach texture/renderbuffer to a framebuffer
 *>
-fn void framebufferAttach(uint fboId, uint texId, int attachType, int texType, int mipLevel) @cname("rlFramebufferAttach");
+fn void framebufferAttach(uint id, uint texId, int attachType, int texType, int mipLevel) @cname("rlFramebufferAttach");
 
 <*
  Verify framebuffer is complete
@@ -962,22 +987,44 @@ fn bool framebufferComplete(uint id) @cname("rlFramebufferComplete");
 *>
 fn void unloadFramebuffer(uint id) @cname("rlUnloadFramebuffer");
 
+// WARNING: Copy and resize framebuffer functionality only defined for software backend
+
+<*
+ Copy framebuffer pixel data to internal buffer
+*>
+fn void copyFramebuffer(int x, int y, int width, int height, int format, void *pixels) @cname("rlCopyFramebuffer");
+
+<*
+ Resize internal framebuffer
+*>
+fn void resizeFramebuffer(int width, int height) @cname("rlResizeFramebuffer");
+
 // Shaders management
+
+<*
+ Load (compile) shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+*>
+fn uint loadShader(ZString code, int type) @cname("rlLoadShader");
 
 <*
  Load shader from code strings
 *>
-fn uint loadShaderCode(ZString vsCode, ZString fsCode) @cname("rlLoadShaderCode");
+fn uint loadShaderProgram(ZString vsCode, ZString fsCode) @cname("rlLoadShaderProgram");
 
 <*
- Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+ Load shader program, using already loaded shader ids
 *>
-fn uint compileShader(ZString shaderCode, int type) @cname("rlCompileShader");
+fn uint loadShaderProgramEx(uint vsId, uint fsId) @cname("rlLoadShaderProgramEx");
 
 <*
- Load custom shader program
+ Load compute shader program
 *>
-fn uint loadShaderProgram(uint vShaderId, uint fShaderId) @cname("rlLoadShaderProgram");
+fn uint loadShaderProgramCompute(uint csId) @cname("rlLoadShaderProgramCompute");
+
+<*
+ Unload shader, loaded with rlLoadShader()
+*>
+fn void unloadShader(uint id) @cname("rlUnloadShader");
 
 <*
  Unload shader program
@@ -985,14 +1032,14 @@ fn uint loadShaderProgram(uint vShaderId, uint fShaderId) @cname("rlLoadShaderPr
 fn void unloadShaderProgram(uint id) @cname("rlUnloadShaderProgram");
 
 <*
- Get shader location uniform
+ Get shader location uniform, requires shader program id
 *>
-fn int getLocationUniform(uint shaderId, ZString uniformName) @cname("rlGetLocationUniform");
+fn int getLocationUniform(uint id, ZString uniformName) @cname("rlGetLocationUniform");
 
 <*
- Get shader location attribute
+ Get shader location attribute, requires shader program id
 *>
-fn int getLocationAttrib(uint shaderId, ZString attribName) @cname("rlGetLocationAttrib");
+fn int getLocationAttrib(uint id, ZString attribName) @cname("rlGetLocationAttrib");
 
 <*
  Set shader value uniform
@@ -1020,11 +1067,6 @@ fn void setUniformSampler(int locIndex, uint textureId) @cname("rlSetUniformSamp
 fn void setShader(uint id, int *locs) @cname("rlSetShader");
 
 // Compute shader management
-
-<*
- Load compute shader program
-*>
-fn uint loadComputeShaderProgram(uint shaderId) @cname("rlLoadComputeShaderProgram");
 
 <*
  Dispatch compute shader (equivalent to *draw* for graphics pipeline)

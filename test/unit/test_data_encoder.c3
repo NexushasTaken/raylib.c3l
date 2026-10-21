@@ -7,7 +7,7 @@ fn void test_encode_data_base64() @test {
   char[] str = "Hello, World";
 
   int len_encod = 0;
-  char[] ffi_encod = rl::__encode_data_base64(str.ptr, str.len, &len_encod)[:len_encod];
+  char[] ffi_encod = rl::__encode_data_base64(str.ptr, str.len, &len_encod)[:len_encod - 1]; // without the NULL terminator
   defer free(ffi_encod);
 
   char[] wra_encod = rl::encodeDataBase64(str);

@@ -113,7 +113,7 @@ extern fn void maximizeWindow() @cname("MaximizeWindow");
 extern fn void minimizeWindow() @cname("MinimizeWindow");
 
 <*
- Set window state: not minimized/maximized
+ Restore window from being minimized/maximized
 *>
 extern fn void restoreWindow() @cname("RestoreWindow");
 
@@ -281,12 +281,12 @@ extern fn void disableEventWaiting() @cname("DisableEventWaiting");
 //------------------------------------------------------------------------------------
 
 <*
- Shows cursor
+ Show cursor
 *>
 extern fn void showCursor() @cname("ShowCursor");
 
 <*
- Hides cursor
+ Hide cursor
 *>
 extern fn void hideCursor() @cname("HideCursor");
 
@@ -296,12 +296,12 @@ extern fn void hideCursor() @cname("HideCursor");
 extern fn bool isCursorHidden() @cname("IsCursorHidden");
 
 <*
- Enables cursor (unlock cursor)
+ Enable cursor (unlock cursor)
 *>
 extern fn void enableCursor() @cname("EnableCursor");
 
 <*
- Disables cursor (lock cursor)
+ Disable cursor (lock cursor)
 *>
 extern fn void disableCursor() @cname("DisableCursor");
 
@@ -315,17 +315,17 @@ extern fn bool isCursorOnScreen() @cname("IsCursorOnScreen");
 //------------------------------------------------------------------------------------
 
 <*
- Set background color (framebuffer clear color)
+ Clear background (framebuffer) to color
 *>
 extern fn void clearBackground(Color color) @cname("ClearBackground");
 
 <*
- Setup canvas (framebuffer) to start drawing
+ Begin canvas (framebuffer) drawing
 *>
 extern fn void beginDrawing() @cname("BeginDrawing");
 
 <*
- End canvas drawing and swap buffers (double buffering)
+ End canvas (framebuffer) drawing and swap buffers (double buffering)
 *>
 extern fn void endDrawing() @cname("EndDrawing");
 
@@ -335,7 +335,7 @@ extern fn void endDrawing() @cname("EndDrawing");
 extern fn void beginMode2D(Camera2D camera) @cname("BeginMode2D");
 
 <*
- Ends 2D mode with custom camera
+ End 2D mode with custom camera
 *>
 extern fn void endMode2D() @cname("EndMode2D");
 
@@ -345,7 +345,7 @@ extern fn void endMode2D() @cname("EndMode2D");
 extern fn void beginMode3D(Camera3D camera) @cname("BeginMode3D");
 
 <*
- Ends 3D mode and returns to default 2D orthographic mode
+ End 3D mode and returns to default 2D orthographic mode
 *>
 extern fn void endMode3D() @cname("EndMode3D");
 
@@ -355,7 +355,7 @@ extern fn void endMode3D() @cname("EndMode3D");
 extern fn void beginTextureMode(RenderTexture2D target) @cname("BeginTextureMode");
 
 <*
- Ends drawing to render texture
+ End drawing to render texture
 *>
 extern fn void endTextureMode() @cname("EndTextureMode");
 
@@ -430,7 +430,7 @@ extern fn Shader loadShader(ZString vs_file_name, ZString fs_file_name) @cname("
 extern fn Shader loadShaderFromMemory(ZString vs_code, ZString fs_code) @cname("LoadShaderFromMemory");
 
 <*
- Check if a shader is valid (loaded on GPU)
+ Check if shader is valid (loaded on GPU)
 *>
 extern fn bool Shader.isValid(Shader shader) @cname("IsShaderValid");
 alias isShaderValid = Shader.isValid;
@@ -470,7 +470,7 @@ extern fn void Shader.setValueMatrix(Shader shader, int locIndex, Matrix mat) @c
 alias setShaderValueMatrix = Shader.setValueMatrix;
 
 <*
- Set shader uniform value for texture (sampler2d)
+ Set shader uniform value and bind the texture (sampler2d)
 *>
 extern fn void Shader.setValueTexture(Shader shader, int locIndex, Texture2D texture) @cname("SetShaderValueTexture");
 alias setShaderValueTexture = Shader.setValueTexture;
@@ -501,22 +501,22 @@ extern fn Ray getScreenToWorldRay(Vector2 position, Camera camera) @cname("GetSc
 extern fn Ray getScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height) @cname("GetScreenToWorldRayEx");
 
 <*
- Get the screen space position for a 3d world space position
+ Get screen space position for a 3d world space position
 *>
 extern fn Vector2 getWorldToScreen(Vector3 position, Camera camera) @cname("GetWorldToScreen");
 
 <*
- Get size position for a 3d world space position
+ Get sized screen space position for a 3d world space position
 *>
 extern fn Vector2 getWorldToScreenEx(Vector3 position, Camera camera, int width, int height) @cname("GetWorldToScreenEx");
 
 <*
- Get the screen space position for a 2d camera world space position
+ Get screen space position for a 2d camera world space position
 *>
 extern fn Vector2 getWorldToScreen2D(Vector2 position, Camera2D camera) @cname("GetWorldToScreen2D");
 
 <*
- Get the world space position for a 2d camera screen space position
+ Get world space position for a 2d camera screen space position
 *>
 extern fn Vector2 getScreenToWorld2D(Vector2 position, Camera2D camera) @cname("GetScreenToWorld2D");
 
@@ -634,7 +634,7 @@ fn void unloadRandomSequence(int[] sequence) @inline {
 extern fn void takeScreenshot(ZString file_name) @cname("TakeScreenshot");
 
 <*
- Setup init configuration flags (view FLAGS)
+ Set init configuration flags (view FLAGS)
 *>
 extern fn void setConfigFlags(uint flags) @cname("SetConfigFlags");
 
@@ -755,19 +755,54 @@ extern fn bool saveFileText(ZString file_name, ZString text) @cname("SaveFileTex
 //------------------------------------------------------------------------------------
 
 <*
+ Rename file (if exists), returns 0 on success
+*>
+extern fn int fileRename(ZString file_name, ZString file_rename) @cname("FileRename");
+
+<*
+ Remove file (if exists), returns 0 on success
+*>
+extern fn int fileRemove(ZString file_name) @cname("FileRemove");
+
+<*
+ Copy file from one path to another, dstPath created if it doesn't exist, returns 0 on success
+*>
+extern fn int fileCopy(ZString src_path, ZString dst_path) @cname("FileCopy");
+
+<*
+ Move file from one directory to another, dstPath created if it doesn't exist, returns 0 on success
+*>
+extern fn int fileMove(ZString src_path, ZString dst_path) @cname("FileMove");
+
+<*
+ Replace text in an existing file, returns 0 on success
+*>
+extern fn int fileTextReplace(ZString file_name, ZString search, ZString replacement) @cname("FileTextReplace");
+
+<*
+ Find text in existing file, returns -1 if index not found or index otherwise
+*>
+extern fn int fileTextFindIndex(ZString file_name, ZString search) @cname("FileTextFindIndex");
+
+<*
  Check if file exists
 *>
 extern fn bool fileExists(ZString file_name) @cname("FileExists");
 
 <*
- Check if a directory path exists
+ Check if directory path exists
 *>
 extern fn bool directoryExists(ZString dir_path) @cname("DirectoryExists");
 
 <*
- Check file extension (including point: .png, .wav)
+ Check file extension (recommended include point: .png, .wav)
 *>
 extern fn bool isFileExtension(ZString file_name, ZString ext) @cname("IsFileExtension");
+
+<*
+ Check if file path (file or directory) is hidden by OS
+*>
+extern fn bool isFileHidden(ZString file_path) @cname("IsFileHidden");
 
 <*
  Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
@@ -790,12 +825,12 @@ extern fn ZString getFileName(ZString file_path) @cname("GetFileName");
 extern fn ZString getFileNameWithoutExt(ZString file_path) @cname("GetFileNameWithoutExt");
 
 <*
- Get full path for a given fileName with path (uses static string)
+ Get full path for a provided fileName with path (uses static string)
 *>
 extern fn ZString getDirectoryPath(ZString file_path) @cname("GetDirectoryPath");
 
 <*
- Get previous directory path for a given path (uses static string)
+ Get previous directory path for a provided path (uses static string)
 *>
 extern fn ZString getPrevDirectoryPath(ZString dir_path) @cname("GetPrevDirectoryPath");
 
@@ -815,14 +850,24 @@ extern fn ZString getApplicationDirectory() @cname("GetApplicationDirectory");
 extern fn int makeDirectory(ZString dir_path) @cname("MakeDirectory");
 
 <*
- Change working directory, return true on success
+ Change working directory, returns 0 on success
 *>
-extern fn bool changeDirectory(ZString dir) @cname("ChangeDirectory");
+extern fn int changeDirectory(ZString dir_path) @cname("ChangeDirectory");
 
 <*
- Check if a given path is a file or a directory
+ Check if provided path points to a file
 *>
 extern fn bool isPathFile(ZString path) @cname("IsPathFile");
+
+<*
+ Check if provided path points to a directory
+*>
+extern fn bool isPathDirectory(ZString path) @cname("IsPathDirectory");
+
+<*
+ Check if provided path is an absolute path
+*>
+extern fn bool isPathAbsolute(ZString path) @cname("IsPathAbsolute");
 
 <*
  Check if fileName is valid for the platform/OS
@@ -830,12 +875,12 @@ extern fn bool isPathFile(ZString path) @cname("IsPathFile");
 extern fn bool isFileNameValid(ZString file_name) @cname("IsFileNameValid");
 
 <*
- Load directory filepaths
+ Load directory filepaths, files and directories, no subdirs scan
 *>
 extern fn FilePathList loadDirectoryFiles(ZString dir_path) @cname("LoadDirectoryFiles");
 
 <*
- Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
+ Load directory filepaths with extension filtering and subdir scan; some filters available: '*.*','FILES*','DIRS*'
 *>
 extern fn FilePathList loadDirectoryFilesEx(ZString base_path, ZString filter, bool scan_subdirs) @cname("LoadDirectoryFilesEx");
 
@@ -846,7 +891,7 @@ extern fn void FilePathList.unload(FilePathList files) @cname("UnloadDirectoryFi
 alias unloadDirectoryFiles = FilePathList.unload;
 
 <*
- Check if a file has been dropped into window
+ Check if file has been dropped into window
 *>
 extern fn bool isFileDropped() @cname("IsFileDropped");
 
@@ -859,6 +904,16 @@ extern fn FilePathList loadDroppedFiles() @cname("LoadDroppedFiles");
  Unload dropped filepaths
 *>
 extern fn void unloadDroppedFiles(FilePathList files) @cname("UnloadDroppedFiles");
+
+<*
+ Get the file count in a directory
+*>
+extern fn uint getDirectoryFileCount(ZString dir_path) @cname("GetDirectoryFileCount");
+
+<*
+ Get the file count in a directory with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
+*>
+extern fn uint getDirectoryFileCountEx(ZString base_path, ZString filter, bool scan_subdirs) @cname("GetDirectoryFileCountEx");
 
 <*
  Get file modification time (last write time)
@@ -889,16 +944,16 @@ fn char[] decompressData(char[] comp_data) @inline {
 }
 
 <*
- Encode data to Base64 string, memory must be MemFree()
+ Encode data to Base64 string (includes NULL terminator), memory must be MemFree()
 *>
 macro char[] encodeDataBase64(char[] data) {
     int size = 0;
     char* encoded_data = __encode_data_base64(data.ptr, data.len, &size);
-    return encoded_data[:(usz)size];
+    return encoded_data[:(usz)size - 1]; // size counts the NULL terminator
 }
 
 <*
- Decode Base64 string data, memory must be MemFree()
+ Decode Base64 string (expected NULL terminated), memory must be MemFree()
 *>
 macro char[] decodeDataBase64(char[] data) {
     int size = 0;
@@ -923,6 +978,12 @@ extern fn uint* computeMD5(ZString data, int data_size) @cname("ComputeMD5");
  Compute SHA1 hash code, returns static int[5] (20 bytes)
 *>
 extern fn uint* computeSHA1(ZString data, int data_size) @cname("ComputeSHA1");
+
+// TODO: convert return value to uint[8]
+<*
+ Compute SHA256 hash code, returns static int[8] (32 bytes)
+*>
+extern fn uint* computeSHA256(ZString data, int data_size) @cname("ComputeSHA256");
 
 //------------------------------------------------------------------------------------
 // Automation events functionality
@@ -979,27 +1040,27 @@ extern fn void playAutomationEvent(AutomationEvent event) @cname("PlayAutomation
 //------------------------------------------------------------------------------------
 
 <*
- Check if a key has been pressed once
+ Check if key has been pressed once
 *>
 extern fn bool isKeyPressed(KeyboardKey key) @cname("IsKeyPressed");
 
 <*
- Check if a key has been pressed again
+ Check if key has been pressed again
 *>
 extern fn bool isKeyPressedRepeat(KeyboardKey key) @cname("IsKeyPressedRepeat");
 
 <*
- Check if a key is being pressed
+ Check if key is being pressed
 *>
 extern fn bool isKeyDown(KeyboardKey key) @cname("IsKeyDown");
 
 <*
- Check if a key has been released once
+ Check if key has been released once
 *>
 extern fn bool isKeyReleased(KeyboardKey key) @cname("IsKeyReleased");
 
 <*
- Check if a key is NOT being pressed
+ Check if key is NOT being pressed
 *>
 extern fn bool isKeyUp(KeyboardKey key) @cname("IsKeyUp");
 
@@ -1014,6 +1075,11 @@ extern fn KeyboardKey getKeyPressed() @cname("GetKeyPressed");
 extern fn KeyboardKey getCharPressed() @cname("GetCharPressed");
 
 <*
+ Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard)
+*>
+extern fn ZString getKeyName(KeyboardKey key) @cname("GetKeyName");
+
+<*
  Set a custom key to exit program (default is ESC)
 *>
 extern fn void setExitKey(KeyboardKey key) @cname("SetExitKey");
@@ -1022,7 +1088,7 @@ extern fn void setExitKey(KeyboardKey key) @cname("SetExitKey");
 //------------------------------------------------------------------------------------
 
 <*
- Check if a gamepad is available
+ Check if gamepad is available
 *>
 extern fn bool isGamepadAvailable(int gamepad) @cname("IsGamepadAvailable");
 
@@ -1032,22 +1098,22 @@ extern fn bool isGamepadAvailable(int gamepad) @cname("IsGamepadAvailable");
 extern fn ZString getGamepadName(int gamepad) @cname("GetGamepadName");
 
 <*
- Check if a gamepad button has been pressed once
+ Check if gamepad button has been pressed once
 *>
 extern fn bool isGamepadButtonPressed(int gamepad, GamepadButton button) @cname("IsGamepadButtonPressed");
 
 <*
- Check if a gamepad button is being pressed
+ Check if gamepad button is being pressed
 *>
 extern fn bool isGamepadButtonDown(int gamepad, GamepadButton button) @cname("IsGamepadButtonDown");
 
 <*
- Check if a gamepad button has been released once
+ Check if gamepad button has been released once
 *>
 extern fn bool isGamepadButtonReleased(int gamepad, GamepadButton button) @cname("IsGamepadButtonReleased");
 
 <*
- Check if a gamepad button is NOT being pressed
+ Check if gamepad button is NOT being pressed
 *>
 extern fn bool isGamepadButtonUp(int gamepad, GamepadButton button) @cname("IsGamepadButtonUp");
 
@@ -1057,12 +1123,12 @@ extern fn bool isGamepadButtonUp(int gamepad, GamepadButton button) @cname("IsGa
 extern fn int getGamepadButtonPressed() @cname("GetGamepadButtonPressed");
 
 <*
- Get gamepad axis count for a gamepad
+ Get axis count for a gamepad
 *>
 extern fn int getGamepadAxisCount(int gamepad) @cname("GetGamepadAxisCount");
 
 <*
- Get axis movement value for a gamepad axis
+ Get movement value for a gamepad axis
 *>
 extern fn float getGamepadAxisMovement(int gamepad, GamepadAxis axis) @cname("GetGamepadAxisMovement");
 
@@ -1080,22 +1146,22 @@ extern fn void setGamepadVibration(int gamepad, float left_motor, float right_mo
 //------------------------------------------------------------------------------------
 
 <*
- Check if a mouse button has been pressed once
+ Check if mouse button has been pressed once
 *>
 extern fn bool isMouseButtonPressed(MouseButton button) @cname("IsMouseButtonPressed");
 
 <*
- Check if a mouse button is being pressed
+ Check if mouse button is being pressed
 *>
 extern fn bool isMouseButtonDown(MouseButton button) @cname("IsMouseButtonDown");
 
 <*
- Check if a mouse button has been released once
+ Check if mouse button has been released once
 *>
 extern fn bool isMouseButtonReleased(MouseButton button) @cname("IsMouseButtonReleased");
 
 <*
- Check if a mouse button is NOT being pressed
+ Check if mouse button is NOT being pressed
 *>
 extern fn bool isMouseButtonUp(MouseButton button) @cname("IsMouseButtonUp");
 
@@ -1168,7 +1234,7 @@ extern fn int getTouchY() @cname("GetTouchY");
 extern fn Vector2 getTouchPosition(int index) @cname("GetTouchPosition");
 
 <*
- Get touch point identifier for given index
+ Get touch point identifier for provided index
 *>
 extern fn int getTouchPointId(int index) @cname("GetTouchPointId");
 
@@ -1187,7 +1253,7 @@ extern fn int getTouchPointCount() @cname("GetTouchPointCount");
 extern fn void setGesturesEnabled(Gesture flags) @cname("SetGesturesEnabled");
 
 <*
- Check if a gesture have been detected
+ Check if gesture has been detected
 *>
 extern fn bool isGestureDetected(Gesture gesture) @cname("IsGestureDetected");
 

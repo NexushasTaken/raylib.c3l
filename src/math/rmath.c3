@@ -107,6 +107,11 @@ extern fn float vector2LengthSqr(Vector2 v) @cname("Vector2LengthSqr");
 extern fn float vector2DotProduct(Vector2 v1, Vector2 v2) @cname("Vector2DotProduct");
 
 <*
+ Calculate two vectors cross product
+*>
+extern fn float vector2CrossProduct(Vector2 v1, Vector2 v2) @cname("Vector2CrossProduct");
+
+<*
  Calculate distance between two vectors
 *>
 extern fn float vector2Distance(Vector2 v1, Vector2 v2) @cname("Vector2Distance");
@@ -117,8 +122,9 @@ extern fn float vector2Distance(Vector2 v1, Vector2 v2) @cname("Vector2Distance"
 extern fn float vector2DistanceSqr(Vector2 v1, Vector2 v2) @cname("Vector2DistanceSqr");
 
 <*
- Calculate angle between two vectors
- NOTE: Angle is calculated from origin point (0, 0)
+ Calculate the signed angle from v1 to v2, relative to the origin (0, 0)
+ NOTE: Coordinate system convention: positive X right, positive Y down
+ positive angles appear clockwise, and negative angles appear counterclockwise
 *>
 extern fn float vector2Angle(Vector2 v1, Vector2 v2) @cname("Vector2Angle");
 
@@ -380,7 +386,7 @@ extern fn Vector3 vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c) 
 
 <*
  Projects a Vector3 from screen space into object space
- NOTE: We are avoiding calling other raymath functions despite available
+ NOTE: Self-contained function, no other raymath functions are called
 *>
 extern fn Vector3 vector3Unproject(Vector3 source, Matrix projection, Matrix view) @cname("Vector3Unproject");
 
@@ -420,12 +426,12 @@ extern fn Vector3 vector3Refract(Vector3 v, Vector3 n, float r) @cname("Vector3R
 //----------------------------------------------------------------------------------
 
 <*
- Vector with components value 0.0f
+ Get vector zero
 *>
 extern fn Vector4 vector4Zero() @cname("Vector4Zero");
 
 <*
- Vector with components value 1.0f
+ Get vector one
 *>
 extern fn Vector4 vector4One() @cname("Vector4One");
 
@@ -435,32 +441,32 @@ extern fn Vector4 vector4One() @cname("Vector4One");
 extern fn Vector4 vector4Add(Vector4 v1, Vector4 v2) @cname("Vector4Add");
 
 <*
- Add vector and float value
+ Add value to vector components
 *>
 extern fn Vector4 vector4AddValue(Vector4 v, float add) @cname("Vector4AddValue");
 
 <*
- Subtract two vectors
+ Substract vectors
 *>
 extern fn Vector4 vector4Subtract(Vector4 v1, Vector4 v2) @cname("Vector4Subtract");
 
 <*
- Subtract vector by float value
+ Substract value from vector components
 *>
 extern fn Vector4 vector4SubtractValue(Vector4 v, float add) @cname("Vector4SubtractValue");
 
 <*
- Calculate vector length
+ Vector length
 *>
 extern fn float vector4Length(Vector4 v) @cname("Vector4Length");
 
 <*
- Calculate vector square length
+ Vector square length
 *>
 extern fn float vector4LengthSqr(Vector4 v) @cname("Vector4LengthSqr");
 
 <*
- Calculate two vectors dot product
+ Vectors dot product
 *>
 extern fn float vector4DotProduct(Vector4 v1, Vector4 v2) @cname("Vector4DotProduct");
 
@@ -475,7 +481,7 @@ extern fn float vector4Distance(Vector4 v1, Vector4 v2) @cname("Vector4Distance"
 extern fn float vector4DistanceSqr(Vector4 v1, Vector4 v2) @cname("Vector4DistanceSqr");
 
 <*
- Multiply vector by scalar
+ Scale vector components by value (multiply)
 *>
 extern fn Vector4 vector4Scale(Vector4 v, float scale) @cname("Vector4Scale");
 
@@ -573,6 +579,11 @@ extern fn Matrix matrixSubtract(Matrix left, Matrix right) @cname("MatrixSubtrac
  NOTE: When multiplying matrices... the order matters!
 *>
 extern fn Matrix matrixMultiply(Matrix left, Matrix right) @cname("MatrixMultiply");
+
+<*
+ Multiply matrix components by value
+*>
+extern fn Matrix matrixMultiplyValue(Matrix left, float value) @cname("MatrixMultiplyValue");
 
 <*
  Get translation matrix
@@ -806,6 +817,12 @@ extern fn Quaternion quaternionTransform(Quaternion q, Matrix mat) @cname("Quate
 fn bool quaternionEquals(Quaternion p, Quaternion q) @inline => __quaternion_equals(p, q) != 0;
 
 <*
- Decompose a transformation matrix into its rotational, translational and scaling components
+ Compose a transformation matrix from rotational, translational and scaling components
+*>
+extern fn Matrix matrixCompose(Vector3 translation, Quaternion rotation, Vector3 scale) @cname("MatrixCompose");
+
+<*
+ Decompose a transformation matrix into its rotational, translational and scaling components and remove shear
+ TODO: WARNING: Following raymath convention and make the function self-contained
 *>
 extern fn void matrixDecompose(Matrix mat, Vector3 *translation, Quaternion *rotation, Vector3 *scale) @cname("MatrixDecompose");

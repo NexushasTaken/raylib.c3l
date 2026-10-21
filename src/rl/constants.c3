@@ -1,10 +1,10 @@
 module rl;
 import std::math;
 
-const RAYLIB_VERSION_MAJOR = 5;
-const RAYLIB_VERSION_MINOR = 5;
+const RAYLIB_VERSION_MAJOR = 6;
+const RAYLIB_VERSION_MINOR = 2;
 const RAYLIB_VERSION_PATCH = 0;
-const RAYLIB_VERSION = "5.5";
+const RAYLIB_VERSION = "6.2";
 
 //----------------------------------------------------------------------------------
 // Some basic Defines
@@ -290,14 +290,15 @@ const ShaderLocationIndex SHADER_LOC_MAP_NORMAL        = 17; // Shader location:
 const ShaderLocationIndex SHADER_LOC_MAP_ROUGHNESS     = 18; // Shader location: sampler2d texture: roughness
 const ShaderLocationIndex SHADER_LOC_MAP_OCCLUSION     = 19; // Shader location: sampler2d texture: occlusion
 const ShaderLocationIndex SHADER_LOC_MAP_EMISSION      = 20; // Shader location: sampler2d texture: emission
-const ShaderLocationIndex SHADER_LOC_MAP_HEIGHT        = 21; // Shader location: sampler2d texture: height
+const ShaderLocationIndex SHADER_LOC_MAP_HEIGHT        = 21; // Shader location: sampler2d texture: heightmap
 const ShaderLocationIndex SHADER_LOC_MAP_CUBEMAP       = 22; // Shader location: samplerCube texture: cubemap
 const ShaderLocationIndex SHADER_LOC_MAP_IRRADIANCE    = 23; // Shader location: samplerCube texture: irradiance
 const ShaderLocationIndex SHADER_LOC_MAP_PREFILTER     = 24; // Shader location: samplerCube texture: prefilter
 const ShaderLocationIndex SHADER_LOC_MAP_BRDF          = 25; // Shader location: sampler2d texture: brdf
-const ShaderLocationIndex SHADER_LOC_VERTEX_BONEIDS    = 26; // Shader location: vertex attribute: boneIds
-const ShaderLocationIndex SHADER_LOC_VERTEX_BONEWEIGHTS= 27; // Shader location: vertex attribute: boneWeights
-const ShaderLocationIndex SHADER_LOC_BONE_MATRICES     = 28; // Shader location: array of matrices uniform: boneMatrices
+const ShaderLocationIndex SHADER_LOC_VERTEX_BONEIDS    = 26; // Shader location: vertex attribute: bone indices
+const ShaderLocationIndex SHADER_LOC_VERTEX_BONEWEIGHTS= 27; // Shader location: vertex attribute: bone weights
+const ShaderLocationIndex SHADER_LOC_MATRIX_BONETRANSFORMS = 28; // Shader location: matrix attribute: bone transforms (animation)
+const ShaderLocationIndex SHADER_LOC_VERTEX_INSTANCETRANSFORM = 29; // Shader location: vertex attribute: instance transforms
 
 // Shader uniform data type
 alias ShaderUniformDataType = int;
@@ -309,7 +310,11 @@ const ShaderUniformDataType SHADER_UNIFORM_INT   = 4;        // Shader uniform t
 const ShaderUniformDataType SHADER_UNIFORM_IVEC2 = 5;        // Shader uniform type: ivec2 (2 int)
 const ShaderUniformDataType SHADER_UNIFORM_IVEC3 = 6;        // Shader uniform type: ivec3 (3 int)
 const ShaderUniformDataType SHADER_UNIFORM_IVEC4 = 7;        // Shader uniform type: ivec4 (4 int)
-const ShaderUniformDataType SHADER_UNIFORM_SAMPLER2D = 8;    // Shader uniform type: sampler2d
+const ShaderUniformDataType SHADER_UNIFORM_UINT   = 8;       // Shader uniform type: unsigned int
+const ShaderUniformDataType SHADER_UNIFORM_UIVEC2 = 9;       // Shader uniform type: uivec2 (2 unsigned int)
+const ShaderUniformDataType SHADER_UNIFORM_UIVEC3 = 10;      // Shader uniform type: uivec3 (3 unsigned int)
+const ShaderUniformDataType SHADER_UNIFORM_UIVEC4 = 11;      // Shader uniform type: uivec4 (4 unsigned int)
+const ShaderUniformDataType SHADER_UNIFORM_SAMPLER2D = 12;   // Shader uniform type: sampler2d
 
 // Shader attribute data types
 alias ShaderAttributeDataType = int;

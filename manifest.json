@@ -20,7 +20,7 @@
     },
     "linux-x64" : {
       "dependencies" : [],
-      "linked-libraries" : ["raylib", "c"]
+      "linked-libraries" : ["raylib", "X11", "c"]
     },
     "freebsd-x64" : {
       "dependencies" : [],
