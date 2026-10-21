@@ -30,6 +30,7 @@
   - `SHADER_UNIFORM_SAMPLER2D` is now 12, and `SHADER_LOC_BONE_MATRICES` is replaced by `SHADER_LOC_MATRIX_BONETRANSFORMS`.
   - rlgl: `loadShaderProgram` now takes the shader code strings (it replaces `loadShaderCode`), the old id version is `loadShaderProgramEx`, `compileShader` -> `loadShader`, `loadComputeShaderProgram` -> `loadShaderProgramCompute`.
 - linux-x64 now also links `X11`.
+- `SaveFileDataCallback` takes `int data_size` (was `uint`) and `LoadFileDataCallback` returns `char*` (was `ZString`), matching the C typedefs.
 - rename `isWaveReady`/`Wave.isReady` -> `isWaveValid`/`Wave.isValid` and `isSoundReady`/`Sound.isReady` -> `isSoundValid`/`Sound.isValid` (raylib v5.5 removed `IsWaveReady`/`IsSoundReady`).
 - removed `rmath::Quaternionf`, use `math::Quaternionf` instead.
 - `rlgl::loadTextureCubemap` now takes `mipmapCount`, `rlgl::loadFramebuffer` takes no arguments, and the last parameter of `rlgl::setVertexAttribute` is now `int offset`, matching raylib v5.5.
