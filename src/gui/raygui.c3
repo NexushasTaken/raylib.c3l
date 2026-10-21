@@ -1215,3 +1215,8 @@ enum GuiIconName : int {
 // TODO: find a way to make this work
 //$assert((int)GuiIconName.ICON_NONE == 0);
 //$assert((int)GuiIconName.ICON_FILETYPE_ICON == 256);
+
+// Without the built-in icons there is no icon enum, so icon ids are plain ints, as in C
+module raygui @feat(ENABLE_RAYGUI & (RAYGUI_NO_ICONS | RAYGUI_CUSTOM_ICONS));
+
+alias GuiIconName = int;
