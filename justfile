@@ -6,6 +6,10 @@ RAYGUI := "FALSE"
 sync_c_src:
   cp -v {{RAYLIB_SRC}}/raylib.h {{RAYGUI_SRC}}/raygui.h ./c-src/
 
+# Compare struct layouts and constant values between the C headers and the C3 bindings
+check_abi:
+  python3 ./scripts/check_abi.py
+
 # Download the prebuilt raylib libraries from the GitHub release into libs
 fetch_libs *TARGETS:
   ./scripts/fetch_libs.sh {{TARGETS}}

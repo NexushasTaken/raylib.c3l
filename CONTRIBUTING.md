@@ -8,6 +8,7 @@ You need:
 - [C3](https://c3-lang.org/) 0.8.5 (`c3c`)
 - [just](https://github.com/casey/just)
 - `curl`, `tar`, `unzip` and `sha256sum` (or `shasum` on macOS), used by `just fetch_libs`
+- `python3` and a C compiler, used by `just check_abi`
 - `make` and a C compiler, only if you build raylib yourself (`just build_raylib`)
 
 ```sh
@@ -31,7 +32,7 @@ src/gui/          module raygui, behind the ENABLE_RAYGUI feature
 c-src/            C files shipped in the package: raylib.h and raygui.h (copied from thirdparty), raygui.c
 libs/<target>/    prebuilt raylib static libraries, one folder per C3 target
 thirdparty/       git submodules: raylib 6.2 and raygui 5.0 sources (not shipped)
-scripts/          fetch_libs.sh
+scripts/          fetch_libs.sh, check_abi.py
 examples/         C3 ports of raylib/raygui examples, each one a target in project.json
 test/unit/        unit tests, run with `c3c test`
 ```
@@ -112,7 +113,7 @@ alias loadImageColors = Image.loadColors;
 
 ### ABI rules (where bugs hide)
 
-The C3 side must match the C side exactly. The compiler can't check this, so a mistake shows up as a crash or garbage values at runtime.
+The C3 side must match the C side exactly. The compiler can't check this, so a mistake shows up as a crash or garbage values at runtime. `just check_abi` catches most of these mistakes: it compiles a C program and a C3 program that print the size and field offsets of every bound struct and the value of every enum constant (plus rlgl's and raygui's numeric `#define`s), and reports every difference. It also fails on C enum constants and structs that have no binding, unless they are in the allowlists at the top of `scripts/check_abi.py`. It does not check function signatures.
 
 - **Structs** must have the same fields, order and types as raylib 6.2. If raylib changes a struct, compare it against `c-src/raylib.h` or `rlgl.h`.
 - **C `bool` vs `int`:** when C returns `int` but means a boolean (raymath's `*Equals`, most raygui controls), bind it as `int` in a private extern and wrap it, for example `fn bool floatEquals(...) => __float_equals(...) != 0;`. Binding it straight as `bool` can break on wasm.
@@ -131,6 +132,7 @@ for t in examples_template core_2d_camera core_3d_camera_free core_3d_camera_fir
 done
 
 c3c test
+just check_abi
 
 # GUI examples: should stay open until killed. Exit code 124 means it was still running, which is good.
 timeout 3 ./examples/core/core_3d_camera_free; echo $?
@@ -191,7 +193,7 @@ Copy `raylib/src/libraylib.a` to `libs/freebsd-x64/` and commit it. Keep `RAYLIB
    ```sh
    git diff HEAD -- c-src/raylib.h
    ```
-   For `rlgl.h`, `raymath.h` and `rcamera.h`, diff them between the two tags inside `thirdparty/raylib`.
+   For `rlgl.h`, `raymath.h` and `rcamera.h`, diff them between the two tags inside `thirdparty/raylib`. Run `just check_abi` to find enum values and struct layouts that still differ, and constants or structs that are not bound yet.
 4. In `scripts/fetch_libs.sh`, set `VERSION` and replace every hash. Check the library file names too: if a release renames one (6.2 ships `libraylib.web.a` for wasm), set the "installed as" column so it still lands under the name `manifest.json` links. Get the hashes by downloading each asset once and running `sha256sum` on the archive and on the library inside it. GitHub publishes no digests for these assets.
 5. `just fetch_libs`, then run all the checks in [Checking a change](#checking-a-change).
 6. Rebuild freebsd-x64 by hand, or write in the changelog that it is still on the old version.

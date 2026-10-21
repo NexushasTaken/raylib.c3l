@@ -14,7 +14,7 @@ Function docs are the same comments as raylib's C headers, so the [raylib cheats
 
 **Disclaimer: I created this binding to learn C3 more in depth, and took some inspiration from the [official raylib bindings](https://github.com/c3lang/vendor). Some things in this binding can still be improved, so feel free to make suggestions!**
 
-**AI disclosure: starting with v1.3.0 (commit `5cbf0bf` onward), the code in this repository is written by [Claude Code](https://claude.com/claude-code) using the Claude Opus 5.5 model, with me directing the work. I didn't review every change: some commits I accepted because I trusted they were correct. To catch mistakes, the changed struct layouts and enum values were compared against raylib's C headers with one-off scripts (not kept in this repository), the examples are built, and the unit tests are run. Still, there are only a few tests, and only linux-x64 is tested. If something looks wrong, please open an issue.**
+**AI disclosure: starting with v1.3.0 (commit `5cbf0bf` onward), the code in this repository is written by [Claude Code](https://claude.com/claude-code) using the Claude Opus 5.5 model, with me directing the work. I didn't review every change: some commits I accepted because I trusted they were correct. To catch mistakes, struct layouts and enum values are compared against the C headers with `just check_abi`, the examples are built, and the unit tests are run. Still, there are only a few tests, and only linux-x64 is tested. If something looks wrong, please open an issue.**
 
 ## Requirements
 
